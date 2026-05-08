@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Manager Pro V17.1</title>
+    <title>Welding Manager Pro V17.2 - Master</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -22,7 +22,7 @@
 <body class="bg-gray-100 font-sans pb-10 text-gray-800">
 
     <div id="home-screen" class="p-6 max-w-md mx-auto h-screen flex flex-col justify-center relative">
-        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-300 uppercase tracking-widest">v17.1</span>
+        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v17.2</span>
         
         <button onclick="showScreen('config-screen')" class="absolute top-6 right-6 text-gray-400 p-2 transition"><i class="fa-solid fa-gear text-3xl"></i></button>
         
@@ -38,7 +38,7 @@
                 <i class="fa-solid fa-plus-circle text-3xl"></i>
             </button>
             <button onclick="cargarPendientes()" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left">
-                <div><span class="block text-xl font-bold">Presupuesto</span><span class="text-sm opacity-50 text-left">Generar Cotización</span></div>
+                <div><span class="block text-xl font-bold">Presupuesto</span><span class="text-sm opacity-50">Generar Cotización</span></div>
                 <i class="fa-solid fa-file-invoice-dollar text-2xl text-azul"></i>
             </button>
             <button onclick="alert('Módulo de Informes en Desarrollo')" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left">
@@ -70,7 +70,7 @@
                 <div class="p-2 border-t mt-2">
                     <p class="text-[10px] font-bold text-gray-500 uppercase mb-3 tracking-widest">Accesorios Recibidos:</p>
                     <div class="checkbox-grid text-xs font-semibold text-gray-700">
-                        <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Pistola"> Pistola (MIG)</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Pistola (MIG)"> Pistola (MIG)</label>
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Carrete de alambre"> Carrete Alambre</label>
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Regulador"> Regulador</label>
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Porta Electrodo"> Porta Electrodo</label>
@@ -87,7 +87,7 @@
                 <textarea id="falla" placeholder="Dicta o escribe la falla..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 mt-1 shadow-inner"></textarea>
                 <button type="button" onclick="iniciarDictado('falla')" class="absolute right-3 bottom-3 bg-azul text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition"><i class="fa-solid fa-microphone text-xl"></i></button>
             </div>
-            <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition">REGISTRAR INGRESO</button>
+            <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition uppercase tracking-widest">Registrar Ingreso</button>
         </form>
     </div>
 
@@ -155,7 +155,7 @@
                 </div>
             </div>
             
-            <button id="btn-enviar-presupuesto" onclick="enviarPresupuesto()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-xl shadow-xl active:scale-95 transition">GENERAR COTIZACIÓN (PDF)</button>
+            <button id="btn-enviar-presupuesto" onclick="enviarPresupuesto()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-xl shadow-xl active:scale-95 transition uppercase tracking-widest">Generar Cotización</button>
         </div>
     </div>
 
@@ -164,10 +164,10 @@
             <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 transition active:scale-90"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
             <h2 class="text-2xl font-bold">Configuración</h2>
         </div>
-        <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200">
+        <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 shadow-inner">
             <label class="font-bold text-azul uppercase text-xs">Cargar Repuestos Maestros</label>
-            <textarea id="import-repuestos" class="w-full p-3 rounded-xl border h-40 text-sm mt-2" placeholder="Copia y pega tu lista aquí (uno por línea)..."></textarea>
-            <button onclick="importarRepuestosMasivo()" class="w-full bg-azul text-white py-3 rounded-xl font-bold mt-2 shadow-md active:scale-95">Actualizar Base Local</button>
+            <textarea id="import-repuestos" class="w-full p-3 rounded-xl border h-40 text-sm mt-2" placeholder="Pega tu lista aquí (uno por línea)..."></textarea>
+            <button onclick="importarRepuestosMasivo()" class="w-full bg-azul text-white py-3 rounded-xl font-bold mt-2 shadow-md active:scale-95">Actualizar App</button>
         </div>
     </div>
 
@@ -261,20 +261,25 @@
                     div.innerHTML = `<div class="flex justify-between items-center"><div><span class="text-[10px] font-bold text-azul uppercase">OT-${p.ot}</span><h3 class="font-bold text-gray-800">${p.nombre}</h3><p class="text-xs text-gray-500 font-medium">${p.marca} ${p.modelo}</p></div><i class="fa-solid fa-chevron-right text-gray-200"></i></div>`;
                     document.getElementById('lista-pendientes').appendChild(div);
                 });
-            } catch (e) { alert("Error al cargar datos."); }
+            } catch (e) { alert("Error de conexión."); }
         }
 
-        // --- GENERADOR PDF MAESTRO (SIN SOLAPAMIENTO) ---
+        // --- GENERADOR PDF MAESTRO V17.2 (CON ESPACIO PARA LOGO Y SIN SOBREESCRITURA) ---
         function generarPDFGlobal(tipo, ot, datos) {
             const { jsPDF } = window.jspdf; const doc = new jsPDF(); const r = 0, g = 112, b = 243; 
             const fmt = new Intl.NumberFormat("es-CL");
             
-            doc.setFillColor(r, g, b); doc.rect(0, 0, 210, 52, 'F');
-            doc.setTextColor(255, 255, 255); doc.setFontSize(16); doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 15, 15);
-            doc.setFontSize(22); doc.text(tipo === 'OT' ? "ORDEN DE INGRESO" : "COTIZACIÓN TÉCNICA", 15, 28);
-            doc.setFontSize(9); doc.text("RUT: 76.349.984-7 | Cerrillos, Santiago", 15, 38);
+            // Encabezado con espacio para Logo (reducimos ancho del bloque azul)
+            doc.setFillColor(r, g, b); doc.rect(0, 0, 150, 52, 'F'); 
+            // El espacio en blanco para el logo queda en el rect(150, 0, 60, 52)
             
-            doc.setTextColor(40, 40, 40); doc.text(`OT N°: ${ot.ot || 'PEND'}`, 160, 62); doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 160, 68);
+            doc.setTextColor(255, 255, 255); doc.setFontSize(14); doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 15);
+            doc.setFontSize(22); doc.text(tipo === 'OT' ? "ORDEN DE INGRESO" : "COTIZACIÓN TÉCNICA", 10, 28);
+            doc.setFontSize(9); doc.text("RUT: 76349984-7 | amsetecsi@gmail.com", 10, 38);
+            
+            // Datos OT
+            doc.setTextColor(40, 40, 40); doc.setFontSize(9);
+            doc.text(`OT N°: ${ot.ot || 'PEND'}`, 160, 62); doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 160, 68);
             doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.text(`Cliente: ${ot.nombre}`, 15, 62);
             doc.setFont("helvetica", "normal"); doc.text(`Equipo: ${ot.marca} ${ot.modelo}`, 15, 67);
             doc.text(`Dirección: ${ot.direccion || 'Cerrillos, Santiago'}`, 15, 72);
@@ -296,12 +301,21 @@
                 doc.setFillColor(240, 240, 240); doc.roundedRect(15, cursorY, 180, (repLines.length * 5) + 4, 2, 2, 'F');
                 doc.text(repLines, 20, cursorY + 5); cursorY += (repLines.length * 5) + 15;
 
+                // --- CORRECCIÓN TOTAL DE SOBREESCRITURA EN VALORES ---
                 const neto = parseInt(datos.valorNeto); const iva = Math.round(neto * 0.19); const total = neto + iva;
-                doc.setFontSize(10); doc.setFont("helvetica", "normal");
-                doc.text(`VALOR NETO:`, 130, cursorY); doc.text(`$${fmt.format(neto)}`, 195, cursorY, {align: 'right'}); cursorY += 6;
-                doc.text(`IVA (19%):`, 130, cursorY); doc.text(`$${fmt.format(iva)}`, 195, cursorY, {align: 'right'}); cursorY += 10;
-                doc.setFontSize(13); doc.setFont("helvetica", "bold");
-                doc.text(`TOTAL A CANCELAR:`, 130, cursorY); doc.text(`$${fmt.format(total)} CLP`, 195, cursorY, {align: 'right'});
+                doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.setTextColor(80);
+                
+                doc.text(`VALOR NETO:`, 110, cursorY); 
+                doc.setFont("helvetica", "normal"); doc.text(`$${fmt.format(neto)}`, 195, cursorY, {align: 'right'}); 
+                cursorY += 7;
+                
+                doc.setFont("helvetica", "bold"); doc.text(`IVA (19%):`, 110, cursorY); 
+                doc.setFont("helvetica", "normal"); doc.text(`$${fmt.format(iva)}`, 195, cursorY, {align: 'right'}); 
+                cursorY += 10;
+                
+                doc.setFontSize(13); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b);
+                doc.text(`TOTAL A CANCELAR:`, 110, cursorY); 
+                doc.text(`$${fmt.format(total)} CLP`, 195, cursorY, {align: 'right'});
                 cursorY += 15;
             } else {
                 doc.setFontSize(11); doc.setTextColor(r,g,b); doc.setFont("helvetica", "bold"); doc.text("FALLA REPORTADA:", 15, cursorY);
@@ -311,14 +325,15 @@
                 doc.text(fallaLines, 20, cursorY + 6); cursorY += (fallaLines.length * 6) + 20;
             }
 
-            // --- NORMAS AL PIE ---
-            cursorY = 240;
-            doc.setFontSize(8); doc.setTextColor(100); doc.setFont("helvetica", "bold");
+            // --- NORMAS AL PIE SIN INTERFERENCIA ---
+            if(cursorY > 230) { doc.addPage(); cursorY = 20; } else { cursorY = 235; }
+            
+            doc.setFontSize(8); doc.setTextColor(120); doc.setFont("helvetica", "bold");
             doc.text("CONDICIONES COMERCIALES Y NORMAS DEL SERVICIO:", 15, cursorY);
             doc.setFont("helvetica", "normal");
             const normas = [
                 `- Plazo de entrega estimado: ${datos.plazo || '3 a 5 días hábiles'}.`,
-                "- Garantía: 3 meses sobre reparaciones. No cubre mal uso o intervención de terceros.",
+                "- Garantía: 3 meses sobre reparaciones. No cubre mal uso o sellos rotos.",
                 "- Formas de pago: Débito, Crédito, Transferencia electrónica o Efectivo.",
                 "- IMPORTANTE: Pasados 7 días hábiles sin aprobación del presupuesto, se cobrará bodegaje diario.",
                 "- Equipos no retirados en 6 meses pasan a dominio del servicio técnico por ley."
@@ -336,8 +351,8 @@
             try { 
                 await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) }); 
                 generarPDFGlobal('COT', otActiva, { diagnostico: diag, repuestos: repuestosActuales, plazo: document.getElementById('plazo').value, valorNeto: val }); 
-                alert("✅ Presupuesto Guardado y PDF generado."); location.reload(); 
-            } catch (e) { alert("Error al guardar."); btn.disabled = false; }
+                alert("✅ Guardado con éxito."); location.reload(); 
+            } catch (e) { alert("Error de red."); btn.disabled = false; }
         }
 
         document.getElementById('ingreso-form').addEventListener('submit', async (e) => {
@@ -355,8 +370,8 @@
             try { 
                 await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(d) }); 
                 generarPDFGlobal('OT', d, { plazo: "Estimado" });
-                alert("✅ OT Registrada con éxito."); location.reload(); 
-            } catch (e) { alert("Error de red."); btn.disabled = false; }
+                alert("✅ Ingreso exitoso."); location.reload(); 
+            } catch (e) { alert("Error."); btn.disabled = false; }
         });
     </script>
 </body>
