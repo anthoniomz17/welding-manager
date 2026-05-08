@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Manager Pro V18.4 - Master</title>
+    <title>Welding Manager Pro V18.5 - Master</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -24,7 +24,7 @@
 <body class="bg-gray-100 font-sans pb-10 text-gray-800">
 
     <div id="home-screen" class="p-6 max-w-md mx-auto h-screen flex flex-col justify-center relative">
-        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v18.4</span>
+        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v18.5</span>
         
         <button onclick="showScreen('config-screen')" class="absolute top-6 right-6 text-gray-400 p-2 transition"><i class="fa-solid fa-gear text-3xl"></i></button>
         
@@ -55,29 +55,28 @@
                 <button onclick="showScreen('home-screen')" class="text-gray-600 mr-3 p-1 text-gray-900"><i class="fa-solid fa-arrow-left text-xl"></i></button>
                 <h2 class="text-xl font-bold text-gray-900">Gestión de Taller</h2>
             </div>
-            <button onclick="abrirInformes()" class="text-azul p-1"><i class="fa-solid fa-rotate"></i></button>
+            <button onclick="abrirInformes()" class="text-azul p-1 text-gray-900"><i class="fa-solid fa-rotate"></i></button>
         </div>
         
         <div class="flex overflow-x-auto border-b bg-gray-50 text-[11px] uppercase tracking-tighter">
-            <button onclick="filtrarInformes('ESPERANDO APROBACION')" id="tab-pres" class="tab-btn flex-1 py-3 px-2 text-center border-b-2 border-transparent text-gray-900">Cotizados</button>
-            <button onclick="filtrarInformes('EN REPARACION')" id="tab-rep" class="tab-btn flex-1 py-3 px-2 text-center border-b-2 border-transparent text-gray-900">Reparando</button>
-            <button onclick="filtrarInformes('LISTO PARA ENTREGA')" id="tab-listo" class="tab-btn flex-1 py-3 px-2 text-center border-b-2 border-transparent text-gray-900">Por Entregar</button>
-            <button onclick="filtrarInformes('RECHAZADO')" id="tab-rech" class="tab-btn flex-1 py-3 px-2 text-center border-b-2 border-transparent text-gray-900">Rechazos</button>
+            <button onclick="filtrarInformes('ESPERANDO APROBACION')" id="tab-pres" class="tab-btn flex-1 py-3 px-2 text-center border-b-2 border-transparent text-gray-900 text-gray-900">Cotizados</button>
+            <button onclick="filtrarInformes('EN REPARACION')" id="tab-rep" class="tab-btn flex-1 py-3 px-2 text-center border-b-2 border-transparent text-gray-900 text-gray-900">Reparando</button>
+            <button onclick="filtrarInformes('LISTO PARA ENTREGA')" id="tab-listo" class="tab-btn flex-1 py-3 px-2 text-center border-b-2 border-transparent text-gray-900 text-gray-900">Por Entregar</button>
+            <button onclick="filtrarInformes('RECHAZADO')" id="tab-rech" class="tab-btn flex-1 py-3 px-2 text-center border-b-2 border-transparent text-gray-900 text-gray-900">Rechazos</button>
         </div>
 
         <div id="loading-informes" class="flex flex-col items-center justify-center py-20 hidden text-gray-900">
-            <div class="loader rounded-full border-4 h-12 w-12 mb-4 border-t-azul"></div>
-            <p class="text-sm font-medium">Actualizando estados...</p>
+            <div class="loader rounded-full border-4 h-12 w-12 mb-4 border-t-azul text-gray-900"></div>
+            <p class="text-sm font-medium">Sincronizando estados...</p>
         </div>
 
-        <div id="lista-informes" class="p-4 space-y-4 pb-20 text-gray-900">
-            </div>
+        <div id="lista-informes" class="p-4 space-y-4 pb-20 text-gray-900"></div>
     </div>
 
-    <div id="ingreso-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen text-gray-900">
-        <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50 text-gray-900">
+    <div id="ingreso-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen">
+        <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50">
             <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 text-gray-900"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-bold text-gray-900">Registro de Ingreso</h2>
+            <h2 class="text-2xl font-bold text-gray-900 text-gray-900">Registro de Ingreso</h2>
         </div>
         <form id="ingreso-form" class="space-y-6 pb-20 px-1 text-gray-900">
             <div class="bg-blue-50 p-4 rounded-2xl space-y-3 border border-blue-100 shadow-sm relative text-gray-900">
@@ -110,9 +109,9 @@
             </div>
 
             <div class="relative text-gray-900">
-                <label class="font-bold text-gray-400 uppercase text-[10px] px-1">Falla Reportada</label>
+                <label class="font-bold text-gray-400 uppercase text-[10px] px-1 text-gray-900">Falla Reportada</label>
                 <textarea id="falla" placeholder="Dicta o escribe la falla..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 mt-1 shadow-inner text-gray-900"></textarea>
-                <button type="button" onclick="iniciarDictado('falla')" class="absolute right-3 bottom-3 bg-azul text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition"><i class="fa-solid fa-microphone text-xl text-white"></i></button>
+                <button type="button" onclick="iniciarDictado('falla')" class="absolute right-3 bottom-3 bg-azul text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition text-white"><i class="fa-solid fa-microphone text-xl text-white"></i></button>
             </div>
             <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition uppercase tracking-widest text-center">Registrar Ingreso</button>
         </form>
@@ -121,9 +120,9 @@
     <div id="presupuesto-list-screen" class="hidden p-4 max-w-md mx-auto bg-gray-50 min-h-screen text-gray-900">
         <div class="flex items-center mb-6 sticky top-0 bg-gray-50 py-2 border-b z-50 text-gray-900">
             <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 text-gray-900"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-bold text-gray-900 text-gray-900">Por Presupuestar</h2>
+            <h2 class="text-2xl font-bold text-gray-900">Por Presupuestar</h2>
         </div>
-        <div id="loading-pendientes" class="flex flex-col items-center justify-center py-20 hidden text-gray-900">
+        <div id="loading-pendientes" class="flex flex-col items-center justify-center py-20 hidden text-gray-900 text-gray-900">
             <div class="loader rounded-full border-4 h-12 w-12 mb-4 border-t-azul text-gray-900"></div>
             <p>Conectando...</p>
         </div>
@@ -132,8 +131,8 @@
 
     <div id="presupuesto-detail-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen pb-20 shadow-2xl text-gray-900">
         <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50 text-gray-900">
-            <button onclick="showScreen('presupuesto-list-screen')" class="text-gray-600 mr-4 p-2 transition active:scale-90 text-gray-900"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-bold text-gray-900">OT: <span id="ot-numero" class="text-azul font-black"></span></h2>
+            <button onclick="showScreen('presupuesto-list-screen')" class="text-gray-600 mr-4 p-2 transition active:scale-90 text-gray-900 text-gray-900"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
+            <h2 class="text-2xl font-bold text-gray-900 text-gray-900">OT: <span id="ot-numero" class="text-azul font-black"></span></h2>
         </div>
         
         <div class="space-y-5 px-1 text-gray-900">
@@ -144,19 +143,19 @@
             </div>
             
             <div class="relative text-gray-900">
-                <div class="flex justify-between items-center mb-1 text-gray-900">
+                <div class="flex justify-between items-center mb-1 text-gray-900 text-gray-900">
                     <label class="font-bold text-azul uppercase text-[10px] tracking-widest flex items-center gap-1 text-gray-900"><i class="fa-solid fa-stethoscope"></i> Diagnóstico Técnico</label>
-                    <button onclick="document.getElementById('foto-input').click()" class="text-azul p-1 text-gray-900"><i class="fa-solid fa-camera text-xl"></i></button>
+                    <button onclick="document.getElementById('foto-input').click()" class="text-azul p-1 text-gray-900 text-gray-900"><i class="fa-solid fa-camera text-xl"></i></button>
                     <input type="file" id="foto-input" accept="image/*" capture="environment" class="hidden" onchange="previewImagen(this)">
                 </div>
                 <textarea id="diagnostico" placeholder="Describe los hallazgos técnicos..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 shadow-inner text-gray-900"></textarea>
-                <button type="button" onclick="iniciarDictado('diagnostico')" class="absolute right-3 bottom-3 bg-azul text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition text-white"><i class="fa-solid fa-microphone text-lg text-white"></i></button>
-                <div id="preview-container" class="flex gap-2 mt-2 overflow-x-auto text-gray-900"></div>
+                <button type="button" onclick="iniciarDictado('diagnostico')" class="absolute right-3 bottom-3 bg-azul text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition text-white text-white"><i class="fa-solid fa-microphone text-lg text-white"></i></button>
+                <div id="preview-container" class="flex gap-2 mt-2 overflow-x-auto text-gray-900 text-gray-900"></div>
             </div>
 
             <div class="bg-gray-50 p-4 rounded-3xl border border-gray-200 shadow-sm text-gray-900">
-                <label class="font-bold text-azul uppercase text-[10px] tracking-widest text-gray-900">Repuestos / Servicios</label>
-                <div class="flex gap-2 mt-1 relative text-gray-900">
+                <label class="font-bold text-azul uppercase text-[10px] tracking-widest text-gray-900 text-gray-900 text-gray-900">Repuestos / Servicios</label>
+                <div class="flex gap-2 mt-1 relative text-gray-900 text-gray-900">
                     <input type="text" id="buscador-repuesto" onkeyup="buscarRepuesto(this.value)" placeholder="Buscar repuesto..." class="flex-1 p-3 rounded-xl border text-sm text-gray-900" autocomplete="off">
                     <ul id="sugerencias-repuestos" class="autocomplete-dropdown absolute w-full bg-white border hidden z-50 shadow-xl mt-12 text-gray-900"></ul>
                     <input type="number" id="cantidad-repuesto" value="1" min="1" class="w-16 p-3 rounded-xl border text-center font-bold text-gray-900">
@@ -166,8 +165,8 @@
             </div>
 
             <div class="grid grid-cols-2 gap-3 text-gray-900">
-                <div class="space-y-1 text-gray-900">
-                    <label class="text-[10px] font-bold text-gray-400 uppercase px-1 text-gray-900">Plazo de Entrega</label>
+                <div class="space-y-1 text-gray-900 text-gray-900">
+                    <label class="text-[10px] font-bold text-gray-400 uppercase px-1 text-gray-900 text-gray-900">Plazo de Entrega</label>
                     <select id="plazo" class="w-full p-4 rounded-xl border bg-gray-50 font-bold text-sm shadow-sm text-gray-700">
                         <option value="3 días hábiles">3 días</option>
                         <option value="5 días hábiles">5 días</option>
@@ -176,8 +175,8 @@
                         <option value="45 días hábiles">45 días</option>
                     </select>
                 </div>
-                <div class="space-y-1 text-gray-900">
-                    <label class="text-[10px] font-bold text-gray-400 uppercase px-1 text-gray-900">Valor Neto</label>
+                <div class="space-y-1 text-gray-900 text-gray-900">
+                    <label class="text-[10px] font-bold text-gray-400 uppercase px-1 text-gray-900 text-gray-900">Valor Neto</label>
                     <input type="number" id="valor-neto" placeholder="Neto CLP" class="w-full p-4 rounded-xl border bg-gray-50 text-xl font-black shadow-sm text-gray-900">
                 </div>
             </div>
@@ -187,9 +186,9 @@
     </div>
 
     <div id="config-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen text-gray-900">
-        <div class="flex items-center mb-6 text-gray-900">
-            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 transition active:scale-90 text-gray-900"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-bold text-gray-900">Configuración</h2>
+        <div class="flex items-center mb-6 text-gray-900 text-gray-900">
+            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 transition active:scale-90 text-gray-900 text-gray-900 text-gray-900"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
+            <h2 class="text-2xl font-bold text-gray-900 text-gray-900 text-gray-900 text-gray-900">Configuración</h2>
         </div>
         <div class="space-y-8 pb-10 text-gray-900">
             <div class="bg-orange-50 p-4 rounded-2xl border border-orange-200">
@@ -199,13 +198,13 @@
                     <button onclick="guardarIAKey()" class="bg-orange-600 text-white px-4 rounded-xl shadow-md text-white"><i class="fa-solid fa-save text-white"></i></button>
                 </div>
             </div>
-            <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 shadow-inner text-gray-900">
-                <label class="font-bold text-azul uppercase text-xs text-gray-900">Cargar Repuestos Maestros</label>
+            <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 shadow-inner text-gray-900 text-gray-900">
+                <label class="font-bold text-azul uppercase text-xs text-gray-900 text-gray-900 text-gray-900 text-gray-900 text-gray-900">Cargar Repuestos Maestros</label>
                 <textarea id="import-repuestos" class="w-full p-3 rounded-xl border h-40 text-sm mt-2 text-gray-900" placeholder="Uno por línea..."></textarea>
                 <button onclick="importarRepuestosMasivo()" class="w-full bg-azul text-white py-3 rounded-xl font-bold mt-2 shadow-md active:scale-95 text-white">Actualizar Base</button>
             </div>
-            <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200 shadow-inner text-gray-900">
-                <label class="font-bold text-blue-700 uppercase text-xs text-gray-900">Cargar Clientes Habituales</label>
+            <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200 shadow-inner text-gray-900 text-gray-900 text-gray-900">
+                <label class="font-bold text-blue-700 uppercase text-xs text-gray-900 text-gray-900 text-gray-900 text-gray-900">Cargar Clientes Habituales</label>
                 <textarea id="import-clientes" class="w-full p-3 rounded-xl border h-40 text-sm mt-2 text-gray-900" placeholder="Nombre, RUT, Dirección, WhatsApp..."></textarea>
                 <button onclick="importarClientesMasivo()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-2 shadow-md active:scale-95 text-white">Actualizar Clientes</button>
             </div>
@@ -279,7 +278,7 @@
         }
 
         function agregarRepuestoLista() { const name = document.getElementById('buscador-repuesto').value; const cant = document.getElementById('cantidad-repuesto').value; if(!name) return; repuestosActuales.push({ nombre: name, cantidad: parseInt(cant) }); renderRep(); document.getElementById('buscador-repuesto').value = ''; }
-        function renderRep() { document.getElementById('lista-repuestos-seleccionados').innerHTML = repuestosActuales.map((r, i) => `<li class="flex justify-between bg-white p-2 border rounded-xl text-xs shadow-sm font-medium text-gray-900"><span>${r.nombre} <b>x${r.cantidad}</b></span><button onclick="repuestosActuales.splice(${i},1);renderRep()" class="text-red-400 px-2"><i class="fa-solid fa-trash text-red-500"></i></button></li>`).join(''); }
+        function renderRep() { document.getElementById('lista-repuestos-seleccionados').innerHTML = repuestosActuales.map((r, i) => `<li class="flex justify-between bg-white p-2 border rounded-xl text-xs shadow-sm font-medium text-gray-900"><span>${r.nombre} <b>x${r.cantidad}</b></span><button onclick="repuestosActuales.splice(${i},1);renderRep()" class="text-red-400 px-2"><i class="fa-solid fa-trash text-red-500 text-red-500"></i></button></li>`).join(''); }
 
         async function abrirInformes() {
             showScreen('informes-screen');
@@ -302,27 +301,27 @@
 
             const filtrados = dbFull.filter(x => x.estado === estado);
             const container = document.getElementById('lista-informes');
-            container.innerHTML = filtrados.length === 0 ? '<p class="text-center text-gray-400 py-10">Sin equipos.</p>' : '';
+            container.innerHTML = filtrados.length === 0 ? '<p class="text-center text-gray-400 py-10">Sin equipos registrados.</p>' : '';
             
             filtrados.forEach(item => {
                 const diasTranscurridos = calcularDias(item.fecha_estado || item.fecha);
                 const card = document.createElement('div');
-                card.className = "bg-white p-5 rounded-2xl shadow-sm border border-gray-100 space-y-3 text-gray-900";
+                card.className = "bg-white p-5 rounded-2xl shadow-sm border border-gray-100 space-y-3 text-gray-900 text-gray-900";
                 let acciones = ''; let infoTiempo = '';
 
                 if(estado === 'ESPERANDO APROBACION') {
                     infoTiempo = `<span class="text-blue-500 font-bold"><i class="fa-regular fa-clock"></i> ${diasTranscurridos} días cotizado</span>`;
-                    acciones = `<div class="grid grid-cols-2 gap-2 pt-2"><button onclick="cambiarEstado(${item.fila}, 'EN REPARACION')" class="bg-green-600 text-white py-2 rounded-xl text-xs font-bold uppercase">Aprobar</button><button onclick="cambiarEstado(${item.fila}, 'RECHAZADO')" class="bg-red-500 text-white py-2 rounded-xl text-xs font-bold uppercase">Rechazar</button></div>`;
+                    acciones = `<div class="grid grid-cols-2 gap-2 pt-2 text-gray-900"><button onclick="cambiarEstado(${item.fila}, 'EN REPARACION')" class="bg-green-600 text-white py-2 rounded-xl text-xs font-bold uppercase">Aprobar</button><button onclick="cambiarEstado(${item.fila}, 'RECHAZADO')" class="bg-red-500 text-white py-2 rounded-xl text-xs font-bold uppercase">Rechazar</button></div>`;
                 } else if(estado === 'EN REPARACION') {
                     infoTiempo = `<span class="text-orange-500 font-bold"><i class="fa-solid fa-wrench"></i> Reparando</span>`;
                     acciones = `<button onclick="cambiarEstado(${item.fila}, 'LISTO PARA ENTREGA')" class="w-full bg-azul text-white py-3 rounded-xl text-xs font-bold uppercase mt-2 shadow-md">Finalizar Reparación</button>`;
                 } else if(estado === 'LISTO PARA ENTREGA') {
                     const esBodegaje = diasTranscurridos > 7;
                     infoTiempo = esBodegaje ? `<span class="text-red-600 font-black">BODEGAJE: ${diasTranscurridos - 7} DÍAS</span>` : `<span class="text-azul font-bold">Gracia: ${diasTranscurridos} / 7 días</span>`;
-                    acciones = `<button onclick="cambiarEstado(${item.fila}, 'ENTREGADO')" class="w-full bg-gray-900 text-white py-3 rounded-xl text-xs font-bold uppercase mt-2">Entregar (Retirado)</button>`;
+                    acciones = `<button onclick="cambiarEstado(${item.fila}, 'ENTREGADO')" class="w-full bg-gray-900 text-white py-3 rounded-xl text-xs font-bold uppercase mt-2 text-white">Entregar (Retirado)</button>`;
                 }
 
-                card.innerHTML = `<div class="flex justify-between items-start"><div><span class="status-pill bg-gray-100 text-gray-500">OT-${item.ot}</span><h4 class="font-black text-lg">${item.nombre}</h4><p class="text-sm text-gray-500">${item.marca} ${item.modelo}</p></div><a href="https://wa.me/${item.whatsapp}" class="bg-green-100 text-green-600 w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-brands fa-whatsapp text-xl"></i></a></div><div class="flex justify-between py-2 border-t border-b border-gray-50 text-[11px]">${infoTiempo}</div>${acciones}`;
+                card.innerHTML = `<div class="flex justify-between items-start text-gray-900"><div><span class="status-pill bg-gray-100 text-gray-500">OT-${item.ot}</span><h4 class="font-black text-lg text-gray-900">${item.nombre}</h4><p class="text-sm text-gray-500">${item.marca} ${item.modelo}</p></div><a href="https://wa.me/${item.whatsapp}" class="bg-green-100 text-green-600 w-10 h-10 rounded-full flex items-center justify-center text-green-600"><i class="fa-brands fa-whatsapp text-xl text-green-600"></i></a></div><div class="flex justify-between py-2 border-t border-b border-gray-50 text-[11px] text-gray-900">${infoTiempo}</div>${acciones}`;
                 container.appendChild(card);
             });
         }
@@ -338,10 +337,10 @@
         async function cargarPendientes() {
             showScreen('presupuesto-list-screen'); document.getElementById('lista-pendientes').innerHTML = ''; document.getElementById('loading-pendientes').classList.remove('hidden');
             try { const res = await fetch(WEB_APP_URL); dbFull = await res.json(); document.getElementById('loading-pendientes').classList.add('hidden'); 
-            dbFull.filter(p => !p.diagnostico && p.estado !== 'ENTREGADO').forEach(p => { const div = document.createElement('div'); div.className = "bg-white p-5 rounded-2xl shadow-sm border-l-8 border-azul active:scale-95 transition cursor-pointer mb-4 card-pendientes text-gray-900"; div.onclick = () => { otActiva = p; document.getElementById('ot-numero').innerText = p.ot; document.getElementById('det-cliente').innerText = p.nombre; document.getElementById('det-equipo').innerText = p.marca + " " + p.modelo; document.getElementById('det-falla').innerText = p.falla; repuestosActuales = []; renderRep(); showScreen('presupuesto-detail-screen'); }; div.innerHTML = `<div class="flex justify-between items-center text-gray-900"><div><span class="text-[10px] font-bold text-azul uppercase text-gray-900">OT-${p.ot}</span><h3 class="font-bold text-gray-800">${p.nombre}</h3><p class="text-xs text-gray-500 font-medium">${p.marca} ${p.modelo}</p></div><i class="fa-solid fa-chevron-right text-gray-200"></i></div>`; document.getElementById('lista-pendientes').appendChild(div); }); } catch (e) { alert("Error."); }
+            dbFull.filter(p => !p.diagnostico && p.estado !== 'ENTREGADO').forEach(p => { const div = document.createElement('div'); div.className = "bg-white p-5 rounded-2xl shadow-sm border-l-8 border-azul active:scale-95 transition cursor-pointer mb-4 card-pendientes text-gray-900"; div.onclick = () => { otActiva = p; document.getElementById('ot-numero').innerText = p.ot; document.getElementById('det-cliente').innerText = p.nombre; document.getElementById('det-equipo').innerText = p.marca + " " + p.modelo; document.getElementById('det-falla').innerText = p.falla; repuestosActuales = []; renderRep(); showScreen('presupuesto-detail-screen'); }; div.innerHTML = `<div class="flex justify-between items-center text-gray-900"><div><span class="text-[10px] font-bold text-azul uppercase text-gray-900 text-gray-900">OT-${p.ot}</span><h3 class="font-bold text-gray-800 text-gray-900">${p.nombre}</h3><p class="text-xs text-gray-500 font-medium">${p.marca} ${p.modelo}</p></div><i class="fa-solid fa-chevron-right text-gray-200 text-gray-200"></i></div>`; document.getElementById('lista-pendientes').appendChild(div); }); } catch (e) { alert("Error."); }
         }
 
-        // --- MOTOR PDF V18.4 (INTANGIBLE) ---
+        // --- MOTOR PDF (V18.5 INTANGIBLE) ---
         function generarPDFGlobal(tipo, ot, datos) {
             const { jsPDF } = window.jspdf; const doc = new jsPDF(); const r = 0, g = 112, b = 243; const fmt = new Intl.NumberFormat("es-CL");
             doc.setFillColor(r, g, b); doc.rect(0, 0, 210, 52, 'F');
@@ -392,7 +391,7 @@
                 doc.setFillColor(248, 249, 250); doc.roundedRect(10, cursorY, 190, hDiag, 1, 1, 'F');
                 doc.setTextColor(40,40,40); doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.text(diagLines, 14, cursorY + 6); cursorY += hDiag + 10;
                 doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("REPUESTOS Y SERVICIOS", 10, cursorY); cursorY += 5;
-                const repT = datos.repuestos.map(r => `• ${r.nombre} (x${r.cantidad})`).join('\n') || "Mano de obra y servicios integrales.";
+                const repT = datos.repuestos.map(r => `• ${r.nombre} (x${r.cantidad})`).join('\n') || "Servicios de mantenimiento.";
                 const repLines = doc.splitTextToSize(repT, 190); const hRep = (repLines.length * 6) + 4;
                 doc.setFillColor(242, 244, 245); doc.roundedRect(10, cursorY, 190, hRep, 1, 1, 'F');
                 doc.setTextColor(40,40,40); doc.text(repLines, 14, cursorY + 6); cursorY += hRep + 10;
@@ -402,25 +401,29 @@
                 doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.text("VALOR NETO:", 125, cursorY + 8); doc.setFont("helvetica", "normal"); doc.text(`$${fmt.format(neto)}`, 195, cursorY + 8, {align: 'right'});
                 doc.text("IVA (19%):", 125, cursorY + 15); doc.text(`$${fmt.format(iva)}`, 195, cursorY + 15, {align: 'right'});
                 doc.setFontSize(12); doc.setTextColor(r,g,b); doc.setFont("helvetica", "bold"); doc.text("TOTAL A PAGAR:", 125, cursorY + 23); doc.text(`$${fmt.format(total)} CLP`, 195, cursorY + 23, {align: 'right'});
-                cursorY = 240; doc.setFontSize(8.5); doc.setTextColor(100); doc.setFont("helvetica", "bold"); doc.text("CONDICIONES COMERCIALES:", 10, cursorY); doc.setFont("helvetica", "normal");
+                cursorY = 240; doc.setFontSize(8.5); doc.setTextColor(100); doc.setFont("helvetica", "bold"); doc.text("CONDICIONES COMERCIALES:", 10, cursorY);
+                doc.setFont("helvetica", "normal");
                 const normasCOT = [`- Plazo: ${datos.plazo}.`, "- Validez: 7 días hábiles.", "- Bodegaje (día 8): 0,07 UF diario.", "- Pago: Débito, Crédito, Transferencia o Efectivo."];
                 normasCOT.forEach((n, i) => { doc.text(n, 10, cursorY + 6 + (i * 4.5)); });
             }
             doc.save(`${tipo}_OT${ot.ot}_${ot.nombre}.pdf`);
         }
 
+        // --- LÓGICA ENVÍO WHATSAPP BUSINESS V18.5 ---
         async function enviarPresupuesto() {
             const diag = document.getElementById('diagnostico').value; const val = document.getElementById('valor-neto').value;
-            if(!diag || !val) return alert("⚠️ Completa diagnóstico y valor.");
-            const btn = document.getElementById('btn-enviar-presupuesto'); btn.disabled = true; btn.innerHTML = 'GENERANDO Y ENVIANDO...';
+            if(!diag || !val) return alert("⚠️ Completa los datos.");
+            const btn = document.getElementById('btn-enviar-presupuesto'); btn.disabled = true; btn.innerHTML = 'PROCESANDO...';
             const payload = { action: "update_presupuesto", fila: otActiva.fila, diagnostico: diag, valor: val, estado: 'ESPERANDO APROBACION' };
             try { 
                 await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) }); 
                 generarPDFGlobal('COT', otActiva, { diagnostico: diag, repuestos: repuestosActuales, plazo: document.getElementById('plazo').value, valorNeto: val }); 
-                // Disparo de WhatsApp
-                const msg = `Hola ${otActiva.nombre}, adjuntamos presupuesto para su equipo ${otActiva.marca} ${otActiva.modelo}. Quedamos atentos a su aprobación.`;
-                window.open(`https://wa.me/${otActiva.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
-                alert("✅ Cotización guardada en sistema y WhatsApp abierto."); location.reload(); 
+                
+                // MENSAJE PROFESIONAL BUSINESS
+                const msg = `Estimado(a) *${otActiva.nombre}*, le saluda el Servicio Técnico de Soluciones Integrales. 👋%0A%0AAdjuntamos la *Cotización Técnica* para su equipo *${otActiva.marca} ${otActiva.modelo}* correspondiente a la *OT ${otActiva.ot}*.%0A%0AQuedamos atentos a su confirmación para iniciar los trabajos.%0A%0A*Saludos.*`;
+                
+                window.open(`https://wa.me/${otActiva.whatsapp}?text=${msg}`, '_blank');
+                alert("✅ Cotización registrada y WhatsApp abierto."); location.reload(); 
             } catch (e) { alert("Error."); btn.disabled = false; }
         }
 
