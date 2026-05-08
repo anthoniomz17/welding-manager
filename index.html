@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Manager Pro V17.4 - Master</title>
+    <title>Welding Manager Pro V17.5 - Professional PDF</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -16,12 +16,14 @@
         @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .autocomplete-dropdown { max-height: 200px; overflow-y: auto; z-index: 100; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
         .checkbox-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .card-pendientes:active { scale: 0.98; transition: 0.1s; }
     </style>
 </head>
 <body class="bg-gray-100 font-sans pb-10 text-gray-800">
 
     <div id="home-screen" class="p-6 max-w-md mx-auto h-screen flex flex-col justify-center relative">
-        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v17.4</span>
+        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-300 uppercase tracking-widest">v17.5</span>
+        
         <button onclick="showScreen('config-screen')" class="absolute top-6 right-6 text-gray-400 p-2 transition"><i class="fa-solid fa-gear text-3xl"></i></button>
         
         <div class="text-center mb-10">
@@ -52,7 +54,7 @@
         </div>
         <form id="ingreso-form" class="space-y-6 pb-20 px-1">
             <div class="bg-blue-50 p-4 rounded-2xl space-y-3 border border-blue-100 shadow-sm relative">
-                <input type="text" id="nombre" onkeyup="buscarCliente(this.value)" placeholder="Nombre Cliente / Empresa" class="w-full p-3 rounded-xl border" required autocomplete="off">
+                <input type="text" id="nombre" onkeyup="buscarCliente(this.value)" placeholder="Cliente / Empresa" class="w-full p-3 rounded-xl border" required autocomplete="off">
                 <ul id="sugerencias-cliente" class="autocomplete-dropdown absolute w-full bg-white border hidden mt-1 left-0"></ul>
                 <input type="text" id="rut" placeholder="RUT" class="w-full p-3 rounded-xl border">
                 <input type="tel" id="whatsapp" placeholder="WhatsApp / Celular" class="w-full p-3 rounded-xl border">
@@ -61,9 +63,9 @@
             </div>
             
             <div class="bg-gray-50 p-4 rounded-2xl space-y-3 border border-gray-100">
-                <input type="text" id="marca" placeholder="Marca" class="w-full p-3 rounded-xl border" required>
+                <input type="text" id="marca" placeholder="Marca del Equipo" class="w-full p-3 rounded-xl border" required>
                 <input type="text" id="modelo" placeholder="Modelo" class="w-full p-3 rounded-xl border">
-                <input type="text" id="serie" placeholder="N° de Serie" class="w-full p-3 rounded-xl border">
+                <input type="text" id="serie" placeholder="N° de Serie" class="w-full p-3 rounded-xl border shadow-sm">
                 
                 <div class="p-2 border-t mt-2">
                     <p class="text-[10px] font-bold text-gray-500 uppercase mb-3 tracking-widest">Accesorios Recibidos:</p>
@@ -73,7 +75,7 @@
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Regulador"> Regulador</label>
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Porta Electrodo"> Porta Electrodo</label>
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Grampa Tierra"> Grampa Tierra</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Cable Alimentación"> Cable Aliment.</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Cable Alimentación"> Cable Alim.</label>
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Enchufe"> Enchufe</label>
                     </div>
                     <input type="text" id="otros-acc" placeholder="Otros accesorios..." class="w-full mt-3 p-2 border-b bg-transparent text-sm">
@@ -96,7 +98,7 @@
         </div>
         <div id="loading-pendientes" class="flex flex-col items-center justify-center py-20 hidden">
             <div class="loader rounded-full border-4 h-12 w-12 mb-4 border-t-azul"></div>
-            <p class="text-gray-500 font-medium">Conectando...</p>
+            <p class="text-gray-500 font-medium">Cargando pendientes...</p>
         </div>
         <div id="lista-pendientes" class="space-y-4 pb-10"></div>
     </div>
@@ -186,7 +188,14 @@
             ul.classList.remove('hidden');
             fil.forEach(c => {
                 const li = document.createElement('li'); li.className = "p-4 border-b hover:bg-blue-50 cursor-pointer font-semibold text-sm"; li.innerText = c.nombre;
-                li.onclick = () => { document.getElementById('nombre').value = c.nombre; document.getElementById('rut').value = c.rut || ''; document.getElementById('direccion').value = c.direccion || ''; document.getElementById('whatsapp').value = c.whatsapp || ''; document.getElementById('correo').value = c.correo || ''; ul.classList.add('hidden'); };
+                li.onclick = () => { 
+                    document.getElementById('nombre').value = c.nombre; 
+                    document.getElementById('rut').value = c.rut || ''; 
+                    document.getElementById('direccion').value = c.direccion || ''; 
+                    document.getElementById('whatsapp').value = c.whatsapp || ''; 
+                    document.getElementById('correo').value = c.correo || '';
+                    ul.classList.add('hidden'); 
+                };
                 ul.appendChild(li);
             });
         }
@@ -227,101 +236,115 @@
             try { const res = await fetch(WEB_APP_URL); const data = await res.json(); document.getElementById('loading-pendientes').classList.add('hidden'); clientesDB = data; data.filter(p => !p.diagnostico).forEach(p => { const div = document.createElement('div'); div.className = "bg-white p-5 rounded-2xl shadow-sm border-l-8 border-azul active:scale-95 transition cursor-pointer mb-4 card-pendientes"; div.onclick = () => { otActiva = p; document.getElementById('ot-numero').innerText = p.ot; document.getElementById('det-cliente').innerText = p.nombre; document.getElementById('det-equipo').innerText = p.marca + " " + p.modelo; document.getElementById('det-falla').innerText = p.falla; repuestosActuales = []; renderRep(); showScreen('presupuesto-detail-screen'); }; div.innerHTML = `<div class="flex justify-between items-center"><div><span class="text-[10px] font-bold text-azul uppercase">OT-${p.ot}</span><h3 class="font-bold text-gray-800">${p.nombre}</h3><p class="text-xs text-gray-500 font-medium">${p.marca} ${p.modelo}</p></div><i class="fa-solid fa-chevron-right text-gray-200"></i></div>`; document.getElementById('lista-pendientes').appendChild(div); }); } catch (e) { alert("Error de conexión."); }
         }
 
-        // --- GENERADOR PDF MAESTRO V17.4 (FORMATO EXACTO REFERENCIA) ---
+        // --- GENERADOR PDF MAESTRO V17.5 (DISTRIBUCIÓN PROFESIONAL) ---
         function generarPDFGlobal(tipo, ot, datos) {
             const { jsPDF } = window.jspdf; const doc = new jsPDF(); const r = 0, g = 112, b = 243; 
             const fmt = new Intl.NumberFormat("es-CL");
             
-            // 1. Bloque Azul COMPLETO (Sin recortes para logo)
+            // 1. Encabezado Azul de ancho completo
             doc.setFillColor(r, g, b); doc.rect(0, 0, 210, 52, 'F');
             doc.setTextColor(255, 255, 255); 
-            doc.setFontSize(13); doc.setFont("helvetica", "bold"); doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 15);
-            doc.setFontSize(24); doc.text(tipo === 'OT' ? "COMPROBANTE DE INGRESO" : "COTIZACIÓN TÉCNICA", 10, 28);
-            doc.setFontSize(8); doc.setFont("helvetica", "normal"); 
-            doc.text(`RUT: 76.349.984-7 | amsetecsi@gmail.com`, 10, 38);
-            doc.text(`Fono: +56 9 95412322 | Santiago, Felix Margoz 225 Cerrillos`, 10, 43);
+            doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 15);
+            doc.setFontSize(26); doc.text(tipo === 'OT' ? "ORDEN DE INGRESO" : "COTIZACIÓN TÉCNICA", 10, 30);
+            doc.setFontSize(9); doc.setFont("helvetica", "normal"); 
+            doc.text(`RUT: 76.349.984-7 | amsetecsi@gmail.com`, 10, 40);
+            doc.text(`Fono: +56 9 95412322 | Santiago, Felix Margoz 225 Cerrillos`, 10, 45);
             
-            // Espacio Logo DENTRO del azul
-            doc.setDrawColor(255); doc.setLineWidth(0.5); doc.rect(160, 8, 35, 35); // Borde blanco
-            doc.setFontSize(7); doc.text("LOGO AQUÍ", 171, 27);
+            // Espacio Logotipo en el azul
+            doc.setDrawColor(255); doc.setLineWidth(0.5); doc.rect(165, 8, 35, 35);
+            doc.setFontSize(7); doc.text("LOGO AQUÍ", 175, 27);
 
-            // 2. Datos OT
-            doc.setTextColor(40, 40, 40); doc.setFontSize(10);
-            doc.text(`OT N°: ${ot.ot || 'PEND'}`, 160, 62); doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 160, 68);
-            doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.text(tipo === 'OT' ? "DATOS DEL CLIENTE" : "DATOS DEL CLIENTE E INGRESO", 10, 62);
-            doc.setFontSize(10); doc.setFont("helvetica", "normal"); 
-            doc.text(`Nombre: ${ot.nombre} | RUT: ${ot.rut || 'N/A'}`, 10, 68);
-            doc.text(`Equipo: ${ot.marca} ${ot.modelo} (Serie: ${ot.serie || 'S/N'})`, 10, 74);
-            doc.text(`Accesorios: ${ot.accesorios || 'Ninguno'}`, 10, 80);
+            // 2. Bloque de Datos (DISTRIBUCIÓN EN 2 COLUMNAS PARA EVITAR ESPACIO EN BLANCO)
+            doc.setTextColor(40, 40, 40);
+            doc.setFontSize(10); doc.text(`OT N°: ${ot.ot || 'PEND'}`, 165, 62); doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 165, 68);
+            
+            doc.setFont("helvetica", "bold"); doc.text("INFORMACIÓN DEL CLIENTE", 10, 62);
+            doc.setFont("helvetica", "normal");
+            doc.text(`Cliente: ${ot.nombre}`, 10, 68);
+            doc.text(`RUT: ${ot.rut || 'N/A'}`, 10, 73);
+            doc.text(`Dirección: ${ot.direccion || 'No registrada'}`, 10, 78);
 
-            let cursorY = 90;
+            doc.setFont("helvetica", "bold"); doc.text("DETALLES DEL EQUIPO", 100, 62);
+            doc.setFont("helvetica", "normal");
+            doc.text(`Equipo: ${ot.marca} ${ot.modelo}`, 100, 68);
+            doc.text(`Serie: ${ot.serie || 'S/N'}`, 100, 73);
+            doc.text(`Accesorios: ${ot.accesorios || 'Ninguno'}`, 100, 78);
+
+            let cursorY = 88;
 
             if(tipo === 'COT') {
-                // Diagnostico (Casilla Gris Referencia)
+                // Diagnóstico con sombreado elegante
                 doc.setFontSize(11); doc.setTextColor(r,g,b); doc.setFont("helvetica", "bold"); doc.text("DIAGNÓSTICO TÉCNICO", 10, cursorY);
-                cursorY += 6; doc.setTextColor(40,40,40); doc.setFont("helvetica", "normal"); doc.setFontSize(10);
-                const diagLines = doc.splitTextToSize(datos.diagnostico, 185);
-                doc.setFillColor(245, 247, 250); doc.roundedRect(10, cursorY, 190, (diagLines.length * 6) + 4, 1, 1, 'F');
-                doc.text(diagLines, 15, cursorY + 6); cursorY += (diagLines.length * 6) + 15;
+                cursorY += 5; doc.setTextColor(40,40,40); doc.setFont("helvetica", "normal"); doc.setFontSize(10);
+                const diagLines = doc.splitTextToSize(datos.diagnostico, 190);
+                doc.setFillColor(248, 249, 250); doc.roundedRect(10, cursorY, 190, (diagLines.length * 6) + 4, 1, 1, 'F');
+                doc.text(diagLines, 14, cursorY + 6); cursorY += (diagLines.length * 6) + 14;
 
-                // Repuestos (Casilla Gris Referencia)
-                doc.setTextColor(r,g,b); doc.setFont("helvetica", "bold"); doc.text("REPUESTOS Y SERVICIOS A REALIZAR", 10, cursorY);
-                cursorY += 6; doc.setTextColor(40,40,40);
-                const repT = datos.repuestos.map(r => `• ${r.nombre} (x${r.cantidad})`).join('\n') || "Ningún repuesto adicional ingresado.";
-                const repLines = doc.splitTextToSize(repT, 185);
-                doc.setFillColor(240, 240, 240); doc.roundedRect(10, cursorY, 190, (repLines.length * 6) + 4, 1, 1, 'F');
-                doc.text(repLines, 15, cursorY + 6); cursorY += (repLines.length * 6) + 15;
+                // Repuestos con sombreado
+                doc.setTextColor(r,g,b); doc.setFont("helvetica", "bold"); doc.text("REPUESTOS Y SERVICIOS", 10, cursorY);
+                cursorY += 5; doc.setTextColor(40,40,40);
+                const repT = datos.repuestos.map(r => `• ${r.nombre} (x${r.cantidad})`).join('\n') || "Servicios incluidos.";
+                const repLines = doc.splitTextToSize(repT, 190);
+                doc.setFillColor(242, 244, 245); doc.roundedRect(10, cursorY, 190, (repLines.length * 6) + 4, 1, 1, 'F');
+                doc.text(repLines, 14, cursorY + 6); cursorY += (repLines.length * 6) + 15;
 
-                // --- RESUMEN DE COSTOS (SIN SOLAPAMIENTO) ---
-                doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b);
-                doc.text("RESUMEN DE COSTOS", 10, cursorY); cursorY += 8;
-                doc.setFontSize(10); doc.setTextColor(80);
+                // 3. BLOQUE DE COSTOS PROFESIONAL (ALINEADO A LA DERECHA SIN SOLAPAMIENTO)
                 const neto = parseInt(datos.valorNeto); const iva = Math.round(neto * 0.19); const total = neto + iva;
                 
-                // Alineación separada
-                doc.text(`Valor Neto:`, 130, cursorY); doc.text(`$${fmt.format(neto)} CLP`, 195, cursorY, {align: 'right'}); cursorY += 7;
-                doc.text(`IVA (19%):`, 130, cursorY); doc.text(`$${fmt.format(iva)} CLP`, 195, cursorY, {align: 'right'}); cursorY += 10;
-                doc.setFontSize(13); doc.setFont("helvetica", "bold"); doc.setTextColor(0);
-                doc.text(`TOTAL A PAGAR:`, 130, cursorY); doc.text(`$${fmt.format(total)} CLP`, 195, cursorY, {align: 'right'});
-                cursorY += 15;
+                // Recuadro de totales
+                doc.setFillColor(250); doc.setDrawColor(200); doc.rect(120, cursorY, 80, 28);
+                doc.setFontSize(10); doc.setFont("helvetica", "bold");
+                doc.text("VALOR NETO:", 125, cursorY + 8); doc.setFont("helvetica", "normal"); doc.text(`$${fmt.format(neto)}`, 195, cursorY + 8, {align: 'right'});
+                doc.setFont("helvetica", "bold");
+                doc.text("IVA (19%):", 125, cursorY + 15); doc.setFont("helvetica", "normal"); doc.text(`$${fmt.format(iva)}`, 195, cursorY + 15, {align: 'right'});
+                doc.setFontSize(12); doc.setTextColor(r,g,b);
+                doc.text("TOTAL A PAGAR:", 125, cursorY + 23); doc.text(`$${fmt.format(total)}`, 195, cursorY + 23, {align: 'right'});
+                cursorY += 35;
             } else {
-                doc.setFontSize(11); doc.setTextColor(r,g,b); doc.setFont("helvetica", "bold"); doc.text("REPORTE DE FALLA", 10, cursorY);
-                cursorY += 6; doc.setTextColor(40,40,40); doc.setFont("helvetica", "normal"); doc.setFontSize(10);
-                const fallaLines = doc.splitTextToSize(ot.falla, 185);
-                doc.setFillColor(245, 247, 250); doc.roundedRect(10, cursorY, 190, (fallaLines.length * 6) + 4, 1, 1, 'F');
-                doc.text(fallaLines, 15, cursorY + 6); cursorY += (fallaLines.length * 6) + 20;
+                doc.setFontSize(11); doc.setTextColor(r,g,b); doc.setFont("helvetica", "bold"); doc.text("REPORTE DE FALLA DEL CLIENTE", 10, cursorY);
+                cursorY += 5; doc.setTextColor(40,40,40); doc.setFont("helvetica", "normal"); doc.setFontSize(10);
+                const fallaLines = doc.splitTextToSize(ot.falla, 190);
+                doc.setFillColor(248, 249, 250); doc.roundedRect(10, cursorY, 190, (fallaLines.length * 6) + 4, 1, 1, 'F');
+                doc.text(fallaLines, 14, cursorY + 6); cursorY += (fallaLines.length * 6) + 20;
             }
 
-            // --- NORMAS AL PIE (DINAMICO) ---
-            cursorY = 230; doc.setFontSize(8); doc.setTextColor(120); doc.setFont("helvetica", "bold");
-            doc.text(tipo === 'OT' ? "TÉRMINOS Y CONDICIONES DEL SERVICIO:" : "CONDICIONES DEL PRESUPUESTO:", 10, cursorY);
+            // --- NORMAS DEL SERVICIO ---
+            if(cursorY > 230) { doc.addPage(); cursorY = 20; } else { cursorY = 235; }
+            doc.setFontSize(8.5); doc.setTextColor(100); doc.setFont("helvetica", "bold");
+            doc.text(tipo === 'OT' ? "TÉRMINOS Y CONDICIONES DEL SERVICIO:" : "CONDICIONES COMERCIALES:", 10, cursorY);
             doc.setFont("helvetica", "normal");
             const normas = tipo === 'OT' ? [
-                "1. El cliente dispone de 7 días hábiles para aprobar o rechazar la cotización.",
-                "2. En caso de rechazo, se cobrará una tarifa de 0,05 UF por revisión técnica.",
+                "1. El cliente dispone de 7 días hábiles para aprobar o rechazar el presupuesto desde su notificación.",
+                "2. En caso de rechazo, se cobrará una tarifa de 0,05 UF por concepto de revisión técnica y desarme.",
                 "3. Transcurridos 7 días sin respuesta, se aplicará un recargo diario de 0,07 UF por bodegaje.",
-                "4. Equipos no retirados en 6 meses serán desmantelados o donados según ley."
+                "4. Equipos no retirados en un plazo de 6 meses pasan a dominio del servicio técnico por ley."
             ] : [
-                `- Plazo de reparación: ${datos.plazo || '3 días hábiles'}.`,
-                "- Validez del presupuesto: 7 días hábiles.",
-                "- En caso de rechazo, se cobrará 0,05 UF por concepto de revisión.",
-                "- Si no hay respuesta en 7 días hábiles, se cobrará bodegaje de 0,07 UF diario.",
-                "- Pago: Débito, Crédito, Transferencia o Efectivo."
+                `- Plazo estimado de reparación: ${datos.plazo || '3 días hábiles'}.`,
+                "- Este presupuesto tiene una validez de 7 días hábiles.",
+                "- En caso de rechazo, se procederá al cobro de 0,05 UF por revisión técnica.",
+                "- Si el equipo no es retirado en 7 días tras el aviso, se cobrará bodegaje de 0,07 UF diario.",
+                "- Formas de pago: Débito, Crédito, Transferencia electrónica o Efectivo."
             ];
-            normas.forEach((n, i) => { doc.text(n, 10, cursorY + 5 + (i * 4)); });
+            normas.forEach((n, i) => { doc.text(n, 10, cursorY + 6 + (i * 4.5)); });
 
-            // Firmas para Ingreso
-            if(tipo === 'OT') { doc.text("__________________________", 30, 265); doc.text("Firma Cliente", 45, 270); doc.text("__________________________", 130, 265); doc.text("Firma Recepción", 145, 270); }
+            if(tipo === 'OT') { 
+                doc.line(30, 275, 80, 275); doc.text("Firma Cliente", 45, 280);
+                doc.line(130, 275, 180, 275); doc.text("Firma Recepción", 145, 280);
+            }
 
             doc.save(`${tipo}_OT${ot.ot || 'PEND'}_${ot.nombre}.pdf`);
         }
 
         async function enviarPresupuesto() {
             const diag = document.getElementById('diagnostico').value; const val = document.getElementById('valor-neto').value;
-            if(!diag || !val) return alert("⚠️ Completa el diagnóstico y valor.");
+            if(!diag || !val) return alert("⚠️ Completa diagnóstico y valor neto.");
             const btn = document.getElementById('btn-enviar-presupuesto'); btn.disabled = true; btn.innerHTML = 'GENERANDO...';
             const payload = { action: "update_presupuesto", fila: otActiva.fila, diagnostico: diag, valor: val };
-            try { await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) }); generarPDFGlobal('COT', otActiva, { diagnostico: diag, repuestos: repuestosActuales, plazo: document.getElementById('plazo').value, valorNeto: val }); alert("✅ Guardado con éxito."); location.reload(); } catch (e) { alert("Error de red."); btn.disabled = false; }
+            try { 
+                await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) }); 
+                generarPDFGlobal('COT', otActiva, { diagnostico: diag, repuestos: repuestosActuales, plazo: document.getElementById('plazo').value, valorNeto: val }); 
+                alert("✅ Cotización generada correctamente."); location.reload(); 
+            } catch (e) { alert("Error de red."); btn.disabled = false; }
         }
 
         document.getElementById('ingreso-form').addEventListener('submit', async (e) => {
@@ -329,8 +352,18 @@
             const accs = Array.from(document.querySelectorAll('.acc:checked')).map(el => el.value).join(', ');
             const otros = document.getElementById('otros-acc').value;
             const totalAcc = accs + (otros ? (accs ? ', ' : '') + otros : '');
-            const d = { nombre: document.getElementById('nombre').value, rut: document.getElementById('rut').value, whatsapp: document.getElementById('whatsapp').value, direccion: document.getElementById('direccion').value, correo: document.getElementById('correo').value, marca: document.getElementById('marca').value, modelo: document.getElementById('modelo').value, serie: document.getElementById('serie').value, falla: document.getElementById('falla').value, accesorios: totalAcc };
-            try { await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(d) }); generarPDFGlobal('OT', d, {}); alert("✅ OT Registrada con éxito."); location.reload(); } catch (e) { alert("Error de red."); btn.disabled = false; }
+            const d = { 
+                nombre: document.getElementById('nombre').value, rut: document.getElementById('rut').value, 
+                whatsapp: document.getElementById('whatsapp').value, direccion: document.getElementById('direccion').value,
+                correo: document.getElementById('correo').value, marca: document.getElementById('marca').value, 
+                modelo: document.getElementById('modelo').value, serie: document.getElementById('serie').value, 
+                falla: document.getElementById('falla').value, accesorios: totalAcc
+            };
+            try { 
+                await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(d) }); 
+                generarPDFGlobal('OT', { ...d, ot: "PENDIENTE" }, {});
+                alert("✅ OT Registrada con éxito."); location.reload(); 
+            } catch (e) { alert("Error de red."); btn.disabled = false; }
         });
     </script>
 </body>
