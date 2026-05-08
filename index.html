@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Manager Pro V14 - Formato Original</title>
+    <title>Welding Manager Pro V15 - Base Original</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -11,7 +11,7 @@
         :root { --azul: #0070f3; }
         .bg-azul { background-color: var(--azul); }
         .text-azul { color: var(--azul); }
-        input:focus, textarea:focus { outline: 2px solid var(--azul); border-color: transparent; }
+        input:focus, textarea:focus, select:focus { outline: 2px solid var(--azul); border-color: transparent; }
         .loader { border-top-color: var(--azul); animation: spinner 0.6s linear infinite; }
         @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .autocomplete-dropdown { max-height: 250px; overflow-y: auto; z-index: 100; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2); }
@@ -20,122 +20,123 @@
 <body class="bg-gray-100 font-sans pb-10 text-gray-800">
 
     <div id="home-screen" class="p-6 max-w-md mx-auto h-screen flex flex-col justify-center relative">
-        <button onclick="showScreen('config-screen')" class="absolute top-6 right-6 text-gray-400 p-2"><i class="fa-solid fa-gear text-3xl"></i></button>
+        <button onclick="showScreen('config-screen')" class="absolute top-6 right-6 text-gray-400 p-2 transition"><i class="fa-solid fa-gear text-3xl"></i></button>
         <div class="text-center mb-10">
             <i class="fa-solid fa-bolt-lightning text-azul text-6xl mb-4"></i>
             <h1 class="text-3xl font-bold uppercase tracking-tight text-gray-900">Welding Manager</h1>
             <p class="text-gray-500 font-medium italic text-sm">Servicio Técnico Soluciones Integrales</p>
         </div>
         <div class="grid gap-4">
-            <button onclick="showScreen('ingreso-screen')" class="bg-azul text-white p-6 rounded-2xl shadow-xl flex items-center justify-between active:scale-95 transition">
-                <div class="text-left"><span class="block text-xl font-bold">Ingreso de Equipo</span><span class="text-sm opacity-80">Nueva OT</span></div>
+            <button onclick="showScreen('ingreso-screen')" class="bg-azul text-white p-6 rounded-2xl shadow-xl flex items-center justify-between active:scale-95 transition text-left">
+                <div><span class="block text-xl font-bold">Ingreso de Equipo</span><span class="text-sm opacity-80 text-left">Nueva OT y Datos Cliente</span></div>
                 <i class="fa-solid fa-plus-circle text-3xl"></i>
             </button>
-            <button onclick="cargarPendientes()" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition">
-                <div class="text-left"><span class="block text-xl font-bold">Presupuesto</span><span class="text-sm opacity-50">Equipos por revisar</span></div>
+            <button onclick="cargarPendientes()" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left">
+                <div><span class="block text-xl font-bold">Presupuesto</span><span class="text-sm opacity-50 text-left">Equipos por revisar</span></div>
                 <i class="fa-solid fa-file-invoice-dollar text-2xl text-azul"></i>
             </button>
-            <button onclick="alert('Módulo de Informes en Desarrollo')" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition">
+            <button onclick="alert('Módulo de Informes en Desarrollo')" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left">
                 <span class="text-xl font-bold">Informes</span><i class="fa-solid fa-chart-line text-2xl text-azul"></i>
             </button>
         </div>
     </div>
 
-    <div id="ingreso-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen">
+    <div id="ingreso-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen shadow-2xl">
         <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50">
             <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-bold">Registro OT</h2>
+            <h2 class="text-2xl font-bold">Nueva OT</h2>
         </div>
-        <form id="ingreso-form" class="space-y-4 pb-10">
+        <form id="ingreso-form" class="space-y-6 pb-10">
             <div class="bg-blue-50 p-4 rounded-2xl space-y-3 relative shadow-sm border border-blue-100">
-                <input type="text" id="nombre" onkeyup="buscarCliente(this.value)" placeholder="Cliente / Empresa" class="w-full p-3 rounded-xl border" required autocomplete="off">
+                <input type="text" id="nombre" onkeyup="buscarCliente(this.value)" placeholder="Nombre Cliente / Empresa" class="w-full p-3 rounded-xl border" required autocomplete="off">
                 <ul id="sugerencias-cliente" class="autocomplete-dropdown absolute w-full bg-white border border-blue-200 rounded-lg hidden mt-1"></ul>
                 <input type="text" id="rut" placeholder="RUT" class="w-full p-3 rounded-xl border">
-                <input type="tel" id="whatsapp" placeholder="WhatsApp" class="w-full p-3 rounded-xl border">
-                <input type="text" id="direccion" placeholder="Dirección" class="w-full p-3 rounded-xl border">
+                <input type="tel" id="whatsapp" placeholder="WhatsApp / Teléfono" class="w-full p-3 rounded-xl border">
+                <input type="text" id="direccion" placeholder="Dirección del Cliente" class="w-full p-3 rounded-xl border">
                 <input type="email" id="correo" placeholder="Email" class="w-full p-3 rounded-xl border">
             </div>
+            
             <div class="bg-gray-50 p-4 rounded-2xl space-y-3 border border-gray-100">
                 <input type="text" id="marca" placeholder="Marca" class="w-full p-3 rounded-xl border" required>
                 <input type="text" id="modelo" placeholder="Modelo" class="w-full p-3 rounded-xl border">
                 <input type="text" id="serie" placeholder="N° de Serie" class="w-full p-3 rounded-xl border">
+                <input type="text" id="accesorios" placeholder="Accesorios (Cables, antorcha, maleta...)" class="w-full p-3 rounded-xl border shadow-sm">
             </div>
-            <div class="relative">
-                <textarea id="falla" placeholder="Falla reportada..." class="w-full p-4 rounded-2xl border h-28 bg-gray-50"></textarea>
-                <button type="button" onclick="iniciarDictado('falla')" class="absolute right-3 bottom-3 bg-azul text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
+
+            <div class="space-y-2">
+                <label class="font-bold text-gray-500 uppercase text-xs px-1">Falla Reportada</label>
+                <div class="relative">
+                    <textarea id="falla" placeholder="Dicta la falla del cliente..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 shadow-inner"></textarea>
+                    <button type="button" onclick="iniciarDictado('falla')" class="absolute right-3 bottom-3 bg-azul text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition"><i class="fa-solid fa-microphone text-xl"></i></button>
+                </div>
             </div>
-            <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg">REGISTRAR INGRESO</button>
+            <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition">REGISTRAR EN PLANILLA</button>
         </form>
     </div>
 
     <div id="presupuesto-list-screen" class="hidden p-4 max-w-md mx-auto bg-gray-50 min-h-screen">
         <div class="flex items-center mb-6 sticky top-0 bg-gray-50 py-2 border-b z-50">
             <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-bold">Pendientes</h2>
+            <h2 class="text-2xl font-bold">Presupuestos</h2>
         </div>
         <div id="loading-pendientes" class="flex flex-col items-center justify-center py-20 hidden">
             <div class="loader rounded-full border-4 h-12 w-12 mb-4 border-t-azul"></div>
+            <p class="text-gray-500">Consultando Base de Datos...</p>
         </div>
         <div id="lista-pendientes" class="space-y-4 pb-10"></div>
     </div>
 
-    <div id="presupuesto-detail-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen pb-10">
+    <div id="presupuesto-detail-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen shadow-2xl pb-10">
         <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50">
-            <button onclick="showScreen('presupuesto-list-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
+            <button onclick="showScreen('presupuesto-list-screen')" class="text-gray-600 mr-4 p-2 transition active:scale-90"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
             <h2 class="text-2xl font-bold">OT: <span id="ot-numero" class="text-azul font-black"></span></h2>
         </div>
-        <div class="space-y-5">
-            <div class="bg-gray-100 p-4 rounded-2xl border-l-8 border-azul">
-                <p id="det-cliente" class="text-lg font-bold"></p>
-                <p id="det-equipo" class="text-gray-600 text-sm"></p>
-                <p id="det-falla" class="mt-2 text-sm text-red-700 italic border-t pt-2"></p>
+        <div class="space-y-6">
+            <div class="bg-gray-100 p-4 rounded-2xl border-l-8 border-azul shadow-sm text-sm">
+                <p id="det-cliente" class="text-lg font-bold text-gray-900"></p>
+                <p id="det-equipo" class="text-gray-600 font-semibold"></p>
+                <p id="det-falla" class="mt-2 text-red-700 italic border-t border-gray-200 pt-2"></p>
             </div>
             
-            <div class="relative">
-                <label class="font-bold text-azul uppercase text-[10px] tracking-widest">Diagnóstico Técnico</label>
-                <textarea id="diagnostico" placeholder="Describe los hallazgos..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 mt-1"></textarea>
-                <button type="button" onclick="iniciarDictado('diagnostico')" class="absolute right-3 bottom-3 bg-azul text-white w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
+            <div class="space-y-3">
+                <label class="font-bold text-azul uppercase text-[10px] tracking-widest flex items-center gap-1"><i class="fa-solid fa-stethoscope"></i> Diagnóstico Técnico</label>
+                <div class="relative">
+                    <textarea id="diagnostico" placeholder="Dicta los hallazgos técnicos..." class="w-full p-5 rounded-3xl border h-32 bg-gray-50 shadow-inner"></textarea>
+                    <button type="button" onclick="iniciarDictado('diagnostico')" class="absolute right-3 bottom-3 bg-azul text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-microphone"></i></button>
+                </div>
             </div>
 
-            <div class="bg-gray-50 p-4 rounded-2xl border">
-                <label class="font-bold text-azul uppercase text-[10px] tracking-widest">Repuestos / Servicios</label>
-                <div class="flex gap-2 mt-1">
-                    <input type="text" id="buscador-repuesto" onkeyup="buscarRepuesto(this.value)" placeholder="Buscar..." class="flex-1 p-3 rounded-xl border text-sm">
+            <div class="space-y-3 bg-gray-50 p-4 rounded-3xl border border-gray-200 shadow-sm">
+                <label class="font-bold text-azul uppercase text-[10px] tracking-widest">Repuestos Requeridos</label>
+                <div class="flex gap-2 relative">
+                    <input type="text" id="buscador-repuesto" onkeyup="buscarRepuesto(this.value)" placeholder="Buscar repuesto..." class="flex-1 p-3 rounded-xl border text-sm" autocomplete="off">
+                    <ul id="sugerencias-repuestos" class="autocomplete-dropdown absolute w-full bg-white border border-gray-300 rounded-lg hidden mt-1 shadow-2xl z-50"></ul>
                     <input type="number" id="cantidad-repuesto" value="1" min="1" class="w-16 p-3 rounded-xl border text-center font-bold">
-                    <button onclick="agregarRepuestoLista()" class="bg-azul text-white px-4 rounded-xl"><i class="fa-solid fa-plus"></i></button>
+                    <button onclick="agregarRepuestoLista()" class="bg-azul text-white px-4 rounded-xl shadow-md active:scale-90 transition"><i class="fa-solid fa-plus"></i></button>
                 </div>
-                <ul id="sugerencias-repuestos" class="autocomplete-dropdown absolute w-64 bg-white border hidden mt-1 shadow-2xl z-50"></ul>
                 <ul id="lista-repuestos-seleccionados" class="space-y-2 mt-3"></ul>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
-                <div>
-                    <label class="text-[10px] font-bold text-gray-400">Plazo Entrega</label>
-                    <select id="plazo" class="w-full p-3 rounded-xl border font-bold">
-                        <option value="3 días hábiles">3 días</option>
-                        <option value="5 días hábiles">5 días</option>
-                        <option value="15 días hábiles">15 días</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="text-[10px] font-bold text-gray-400">Valor Neto</label>
-                    <input type="number" id="valor-neto" placeholder="Neto CLP" class="w-full p-3 rounded-xl border text-lg font-black">
-                </div>
+                <select id="plazo" class="w-full p-4 rounded-xl border bg-gray-50 font-bold text-sm">
+                    <option value="3 días hábiles">3 días</option><option value="5 días hábiles">5 días</option><option value="15 días hábiles">15 días</option>
+                </select>
+                <input type="number" id="valor-neto" placeholder="Valor Neto CLP" class="w-full p-4 rounded-xl border bg-gray-50 text-xl font-black shadow-sm">
             </div>
             
-            <button id="btn-enviar-presupuesto" onclick="enviarPresupuesto()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-xl shadow-xl">GENERAR COTIZACIÓN</button>
+            <button id="btn-enviar-presupuesto" onclick="enviarPresupuesto()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-xl shadow-xl active:scale-95 transition">GENERAR COTIZACIÓN (PDF)</button>
         </div>
     </div>
 
-    <div id="config-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen">
+    <div id="config-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen shadow-2xl">
         <div class="flex items-center mb-6">
             <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
             <h2 class="text-2xl font-bold">Configuración</h2>
         </div>
-        <div class="bg-gray-50 p-4 rounded-2xl border">
-            <label class="font-bold text-azul uppercase text-xs">Cargar Lista de Repuestos</label>
-            <textarea id="import-repuestos" class="w-full p-3 rounded-xl border h-40 text-sm mt-2" placeholder="Copia y pega tu lista aquí..."></textarea>
-            <button onclick="importarRepuestosMasivo()" class="w-full bg-azul text-white py-3 rounded-xl font-bold mt-2 shadow-md">Importar Datos</button>
+        <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200">
+            <label class="font-bold text-azul uppercase text-xs">Repuestos Maestros</label>
+            <textarea id="import-repuestos" class="w-full p-3 rounded-xl border h-40 text-sm mt-2" placeholder="Uno por línea..."></textarea>
+            <button onclick="importarRepuestosMasivo()" class="w-full bg-azul text-white py-3 rounded-xl font-bold mt-2 shadow-md">Cargar a la App</button>
         </div>
     </div>
 
@@ -145,11 +146,9 @@
         let repuestosDB = JSON.parse(localStorage.getItem('wm_repuestos')) || [];
         let otActiva = null; let repuestosActuales = []; 
 
-        // Lógica de pantallas e interfaz
         function showScreen(id) { document.querySelectorAll('div[id$="-screen"]').forEach(s => s.style.display = 'none'); document.getElementById(id).style.display = (id === 'home-screen') ? 'flex' : 'block'; window.scrollTo(0,0); }
         function iniciarDictado(id) { const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); rec.lang = 'es-ES'; rec.start(); rec.onresult = (e) => { document.getElementById(id).value = e.results[0][0].transcript; }; }
 
-        // Gestión de Autocompletado
         function buscarCliente(t) {
             const ul = document.getElementById('sugerencias-cliente'); ul.innerHTML = '';
             if(t.length < 2) { ul.classList.add('hidden'); return; }
@@ -157,8 +156,8 @@
             if(fil.length === 0) { ul.classList.add('hidden'); return; }
             ul.classList.remove('hidden');
             fil.forEach(c => {
-                const li = document.createElement('li'); li.className = "p-4 border-b hover:bg-blue-50 cursor-pointer font-semibold text-sm"; li.innerText = c.nombre;
-                li.onclick = () => { document.getElementById('nombre').value = c.nombre; document.getElementById('rut').value = c.rut || ''; document.getElementById('direccion').value = c.direccion || ''; ul.classList.add('hidden'); };
+                const li = document.createElement('li'); li.className = "p-4 border-b hover:bg-blue-50 cursor-pointer text-sm font-semibold"; li.innerText = c.nombre;
+                li.onclick = () => { document.getElementById('nombre').value = c.nombre; document.getElementById('rut').value = c.rut || ''; document.getElementById('direccion').value = c.direccion || ''; document.getElementById('whatsapp').value = c.whatsapp || ''; document.getElementById('correo').value = c.correo || ''; ul.classList.add('hidden'); };
                 ul.appendChild(li);
             });
         }
@@ -170,7 +169,7 @@
             if(fil.length === 0) { ul.classList.add('hidden'); return; }
             ul.classList.remove('hidden');
             fil.forEach(r => {
-                const li = document.createElement('li'); li.className = "p-3 border-b hover:bg-gray-100 cursor-pointer text-xs"; li.innerText = r;
+                const li = document.createElement('li'); li.className = "p-4 border-b hover:bg-gray-100 cursor-pointer text-sm font-semibold"; li.innerText = r;
                 li.onclick = () => { document.getElementById('buscador-repuesto').value = r; ul.classList.add('hidden'); };
                 ul.appendChild(li);
             });
@@ -181,36 +180,72 @@
             const l = t.split('\n').map(x => x.trim()).filter(x => x !== ""); 
             repuestosDB = [...new Set([...repuestosDB, ...l])]; 
             localStorage.setItem('wm_repuestos', JSON.stringify(repuestosDB)); 
-            alert("✅ Repuestos cargados."); 
+            alert("✅ Base actualizada."); document.getElementById('import-repuestos').value = ""; 
         }
-
+        
         function agregarRepuestoLista() {
             const name = document.getElementById('buscador-repuesto').value; 
             const cant = document.getElementById('cantidad-repuesto').value;
-            if(!name) return; repuestosActuales.push({ nombre: name, cantidad: parseInt(cant) }); 
-            renderRep(); document.getElementById('buscador-repuesto').value = ''; 
+            if(!name) return; repuestosActuales.push({ nombre: name, cantidad: parseInt(cant) }); renderRep();
+            document.getElementById('buscador-repuesto').value = ''; 
         }
 
         function renderRep() { 
-            document.getElementById('lista-repuestos-seleccionados').innerHTML = repuestosActuales.map((r, i) => `<li class="flex justify-between bg-white p-2 border rounded-xl text-xs shadow-sm font-medium"><span>${r.nombre} <b>x${r.cantidad}</b></span><button onclick="repuestosActuales.splice(${i},1);renderRep()" class="text-red-400 px-2"><i class="fa-solid fa-trash"></i></button></li>`).join(''); 
+            document.getElementById('lista-repuestos-seleccionados').innerHTML = repuestosActuales.map((r, i) => `<li class="flex justify-between bg-white p-3 border border-gray-100 rounded-xl text-sm mb-2 shadow-sm font-medium"><span>${r.nombre} <span class="text-azul font-bold ml-1">x${r.cantidad}</span></span><button onclick="repuestosActuales.splice(${i},1);renderRep()" class="text-red-400 px-2"><i class="fa-solid fa-trash"></i></button></li>`).join(''); 
         }
 
-        // Conexión con Google Sheets
         async function cargarPendientes() {
-            showScreen('presupuesto-list-screen'); document.getElementById('lista-pendientes').innerHTML = ''; document.getElementById('loading-pendientes').classList.remove('hidden');
+            showScreen('presupuesto-list-screen'); document.getElementById('lista-pendientes').innerHTML = ''; document.getElementById('loading-pendientes').style.display = 'flex';
             try {
-                const res = await fetch(WEB_APP_URL); const data = await res.json(); document.getElementById('loading-pendientes').classList.add('hidden');
+                const res = await fetch(WEB_APP_URL); const data = await res.json(); document.getElementById('loading-pendientes').style.display = 'none';
                 data.forEach(p => {
-                    const div = document.createElement('div'); div.className = "bg-white p-5 rounded-2xl shadow-sm border-l-8 border-azul cursor-pointer";
-                    div.onclick = () => { otActiva = p; document.getElementById('ot-numero').innerText = p.ot; document.getElementById('det-cliente').innerText = p.nombre; document.getElementById('det-equipo').innerText = p.marca + " " + p.modelo; document.getElementById('det-falla').innerText = p.falla; repuestosActuales = []; renderRep(); showScreen('presupuesto-detail-screen'); };
-                    div.innerHTML = `<span class="text-[10px] font-bold text-azul uppercase">OT-${p.ot}</span><h3 class="font-bold">${p.nombre}</h3><p class="text-xs text-gray-400">${p.marca} ${p.modelo}</p>`;
+                    const div = document.createElement('div'); div.className = "bg-white p-5 rounded-2xl shadow-md border-l-8 border-azul active:scale-95 transition cursor-pointer mb-4";
+                    div.onclick = () => { otActiva = p; document.getElementById('ot-numero').innerText = p.ot; document.getElementById('det-cliente').innerText = p.nombre; document.getElementById('det-equipo').innerText = p.marca + " " + p.modelo; document.getElementById('det-falla').innerText = '"' + p.falla + '"'; repuestosActuales = []; renderRep(); showScreen('presupuesto-detail-screen'); };
+                    div.innerHTML = `<span class="text-[10px] font-bold text-azul uppercase">OT-${p.ot}</span><h3 class="font-bold">${p.nombre}</h3><p class="text-xs text-gray-500 font-medium">${p.marca} ${p.modelo}</p>`;
                     document.getElementById('lista-pendientes').appendChild(div);
                 });
-            } catch (e) { alert("Error de conexión"); }
+            } catch (e) { alert("Error al cargar datos."); }
         }
 
         async function enviarPresupuesto() {
             const diag = document.getElementById('diagnostico').value; const val = document.getElementById('valor-neto').value;
-            if(!diag || !val) return alert("⚠️ Completa diagnóstico y valor.");
-            const btn = document.getElementById('btn-enviar-presupuesto'); btn.disabled = true; btn.innerHTML = 'PROCESANDO...';
-            const payload = { action: "update_presupuesto", fila: otActiva.fila, diagnostico: diag, valor
+            if(!diag || !val) return alert("⚠️ Faltan datos.");
+            const btn = document.getElementById('btn-enviar-presupuesto'); btn.disabled = true; btn.innerHTML = 'GUARDANDO...';
+            const payload = { action: "update_presupuesto", fila: otActiva.fila, diagnostico: diag, valor: val };
+            try { await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) }); generarPDFCotizacion(otActiva, diag, repuestosActuales, document.getElementById('plazo').value, val); alert("✅ Guardado y PDF generado."); location.reload(); } catch (e) { alert("Error."); btn.disabled = false; }
+        }
+
+        // PDF ORIGINAL RECUPERADO
+        function generarPDFCotizacion(ot, diagnostico, arrRepuestos, plazo, valorNeto) {
+            const { jsPDF } = window.jspdf; const doc = new jsPDF(); const r = 0, g = 112, b = 243; 
+            doc.setFillColor(r, g, b); doc.rect(0, 0, 210, 52, 'F');
+            doc.setTextColor(255, 255, 255); doc.setFontSize(16); doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 15, 15); doc.setFontSize(22); doc.text("COTIZACIÓN TÉCNICA", 15, 28); doc.setFontSize(9); doc.text("RUT: 76349984-7 | amsetecsi@gmail.com", 15, 38);
+            doc.setTextColor(40, 40, 40); doc.text(`OT N°: ${ot.ot}`, 160, 62); doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 160, 68);
+            
+            doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.text("DATOS DEL CLIENTE / EQUIPO", 15, 62);
+            doc.setFont("helvetica", "normal"); doc.text(`Cliente: ${ot.nombre}`, 15, 68); doc.text(`Equipo: ${ot.marca} ${ot.modelo}`, 15, 73);
+
+            let cursorY = 85; doc.setFontSize(12); doc.setTextColor(r,g,b); doc.setFont("helvetica", "bold"); doc.text("DIAGNÓSTICO TÉCNICO", 15, cursorY); cursorY += 8;
+            doc.setTextColor(40,40,40); doc.setFont("helvetica", "normal"); doc.setFontSize(10);
+            const diagLines = doc.splitTextToSize(diagnostico, 175); doc.setFillColor(245, 247, 250); doc.roundedRect(15, cursorY, 180, (diagLines.length * 6) + 4, 2, 2, 'F'); doc.text(diagLines, 20, cursorY + 6); cursorY += (diagLines.length * 6) + 15;
+            
+            doc.setTextColor(r,g,b); doc.setFont("helvetica", "bold"); doc.text("REPUESTOS Y SERVICIOS", 15, cursorY); cursorY += 8;
+            doc.setTextColor(40,40,40); const repT = arrRepuestos.map(r => `• ${r.nombre} (x${r.cantidad})`).join('\n') || "Servicios incluidos."; const repLines = doc.splitTextToSize(repT, 175); doc.setFillColor(240, 240, 240); doc.roundedRect(15, cursorY, 180, (repLines.length * 6) + 4, 2, 2, 'F'); doc.text(repLines, 20, cursorY + 6); cursorY += (repLines.length * 6) + 15;
+            
+            const neto = parseInt(valorNeto); const iva = Math.round(neto * 0.19); const total = neto + iva;
+            doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.text(`TOTAL A PAGAR (IVA INC): $${new Intl.NumberFormat("es-CL").format(total)} CLP`, 15, cursorY);
+            
+            cursorY += 20; doc.setFontSize(9); doc.setTextColor(100); doc.text("CONDICIONES COMERCIALES:", 15, cursorY);
+            doc.text(`- Plazo de Entrega: ${plazo}`, 15, cursorY + 6); doc.text("- Garantía: 3 meses sobre reparaciones.", 15, cursorY + 11); doc.text("- Validez del presupuesto: 10 días.", 15, cursorY + 16);
+
+            doc.save(`Cotizacion_OT${ot.ot}.pdf`);
+        }
+
+        document.getElementById('ingreso-form').addEventListener('submit', async (e) => {
+            e.preventDefault(); const btn = document.getElementById('btn-submit'); btn.disabled = true; btn.innerHTML = 'REGISTRANDO...';
+            const d = { nombre: document.getElementById('nombre').value, rut: document.getElementById('rut').value, whatsapp: document.getElementById('whatsapp').value, direccion: document.getElementById('direccion').value, correo: document.getElementById('correo').value, marca: document.getElementById('marca').value, modelo: document.getElementById('modelo').value, serie: document.getElementById('serie').value, falla: document.getElementById('falla').value, accesorios: document.getElementById('accesorios').value };
+            try { await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(d) }); alert("✅ OT Registrada con éxito."); location.reload(); } catch (e) { alert("Error."); btn.disabled = false; }
+        });
+    </script>
+</body>
+</html>
