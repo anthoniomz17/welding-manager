@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Manager Pro V19.2 - Gestión Autónoma</title>
+    <title>Welding Manager Pro V19.3 - Master Workflow</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -16,13 +16,19 @@
         @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .autocomplete-dropdown { max-height: 200px; overflow-y: auto; z-index: 100; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
         .checkbox-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .card-gestion:active { scale: 0.98; transition: 0.1s; }
+        .btn-menu-gestion { transition: 0.3s; border-left: 8px solid var(--azul); }
+        .btn-menu-gestion:active { scale: 0.95; }
+        .status-pill { font-size: 10px; padding: 2px 8px; border-radius: 99px; text-transform: uppercase; font-weight: 800; }
+        .counter-pill { font-weight: 900; padding: 4px 10px; border-radius: 8px; font-size: 11px; display: inline-flex; align-items: center; gap: 4px; }
+        .tabla-entregados { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .tabla-entregados th { background: #f3f4f6; padding: 10px; text-align: left; }
+        .tabla-entregados td { padding: 10px; border-bottom: 1px solid #eee; }
     </style>
 </head>
 <body class="bg-gray-100 font-sans pb-10 text-gray-800">
 
     <div id="home-screen" class="p-6 max-w-md mx-auto h-screen flex flex-col justify-center relative">
-        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v19.2</span>
+        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v19.3</span>
         <button onclick="showScreen('config-screen')" class="absolute top-6 right-6 text-gray-400 p-2 transition"><i class="fa-solid fa-gear text-3xl"></i></button>
         
         <div class="text-center mb-10">
@@ -40,52 +46,78 @@
                 <div><span class="block text-xl font-bold">Presupuesto</span><span class="text-sm opacity-50 text-left">Generar Cotización</span></div>
                 <i class="fa-solid fa-file-invoice-dollar text-2xl text-azul"></i>
             </button>
-            <button onclick="abrirGestionTaller()" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left text-gray-900">
-                <span class="text-xl font-bold">Gestión de Taller</span><i class="fa-solid fa-clipboard-list text-2xl text-azul"></i>
+            <button onclick="showScreen('menu-gestion-screen')" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left text-gray-900">
+                <span class="text-xl font-bold">Gestión de Taller</span><i class="fa-solid fa-layer-group text-2xl text-azul"></i>
             </button>
         </div>
     </div>
 
-    <div id="gestion-screen" class="hidden p-0 max-w-md mx-auto bg-white min-h-screen text-gray-900">
+    <div id="menu-gestion-screen" class="hidden p-6 max-w-md mx-auto bg-white min-h-screen text-gray-900">
+        <div class="flex items-center mb-8">
+            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
+            <h2 class="text-2xl font-black uppercase tracking-tighter">Panel de Gestión</h2>
+        </div>
+
+        <div class="grid gap-4">
+            <button onclick="abrirListaGestion('PRESUPUESTADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl shadow-sm flex items-center justify-between text-gray-900">
+                <div class="text-left"><span class="block text-lg font-black uppercase">Presupuestos</span><span class="text-xs text-gray-400">Esperando aprobación</span></div>
+                <i class="fa-solid fa-clock-rotate-left text-2xl text-blue-500"></i>
+            </button>
+            <button onclick="abrirListaGestion('APROBADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl shadow-sm flex items-center justify-between text-gray-900">
+                <div class="text-left"><span class="block text-lg font-black uppercase">Aprobados</span><span class="text-xs text-gray-400">En reparación</span></div>
+                <i class="fa-solid fa-screwdriver-wrench text-2xl text-orange-500"></i>
+            </button>
+            <button onclick="abrirListaGestion('RECHAZADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl shadow-sm flex items-center justify-between text-gray-900">
+                <div class="text-left"><span class="block text-lg font-black uppercase">Rechazados</span><span class="text-xs text-gray-400">Esperando retiro</span></div>
+                <i class="fa-solid fa-ban text-2xl text-red-500"></i>
+            </button>
+            <button onclick="abrirListaGestion('REPARADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl shadow-sm flex items-center justify-between text-gray-900">
+                <div class="text-left"><span class="block text-lg font-black uppercase">Reparados</span><span class="text-xs text-gray-400">Listos para entrega</span></div>
+                <i class="fa-solid fa-circle-check text-2xl text-green-500"></i>
+            </button>
+            <button onclick="abrirListaGestion('ENTREGADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl shadow-sm flex items-center justify-between text-gray-900 border-l-gray-300">
+                <div class="text-left"><span class="block text-lg font-black uppercase">Entregados</span><span class="text-xs text-gray-400">Historial histórico</span></div>
+                <i class="fa-solid fa-box-open text-2xl text-gray-400"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="lista-gestion-screen" class="hidden p-0 max-w-md mx-auto bg-white min-h-screen text-gray-900">
         <div class="p-4 border-b sticky top-0 bg-white z-50 flex items-center justify-between">
             <div class="flex items-center">
-                <button onclick="showScreen('home-screen')" class="text-gray-600 mr-3 p-1"><i class="fa-solid fa-arrow-left text-xl"></i></button>
-                <h2 class="text-xl font-bold">Pizarra de Gestión</h2>
+                <button onclick="showScreen('menu-gestion-screen')" class="text-gray-600 mr-3 p-1"><i class="fa-solid fa-arrow-left text-xl"></i></button>
+                <h2 id="titulo-lista-gestion" class="text-xl font-black uppercase tracking-tighter">GESTIÓN</h2>
             </div>
-            <button onclick="limpiarGestion()" class="text-red-400 text-xs uppercase font-bold">Limpiar</button>
         </div>
-        
-        <div id="lista-gestion-local" class="p-4 space-y-4 pb-20">
-            </div>
+        <div id="contenedor-items-gestion" class="p-4 space-y-4"></div>
     </div>
 
     <div id="ingreso-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen text-gray-900">
         <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50">
             <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-bold text-gray-900">Registro de Ingreso</h2>
+            <h2 class="text-2xl font-bold">Registro de Ingreso</h2>
         </div>
         <form id="ingreso-form" class="space-y-6 pb-20 px-1 text-gray-900">
             <div class="bg-blue-50 p-4 rounded-2xl space-y-3 border border-blue-100 relative text-gray-900">
-                <input type="text" id="nombre" onkeyup="buscarCliente(this.value)" placeholder="Nombre Cliente / Empresa" class="w-full p-3 rounded-xl border text-gray-900" required autocomplete="off">
+                <input type="text" id="nombre" onkeyup="buscarCliente(this.value)" placeholder="Nombre Cliente / Empresa" class="w-full p-3 rounded-xl border" required autocomplete="off">
                 <ul id="sugerencias-cliente" class="autocomplete-dropdown absolute w-full bg-white border hidden mt-1 left-0"></ul>
-                <input type="text" id="rut" placeholder="RUT" class="w-full p-3 rounded-xl border text-gray-900">
-                <input type="tel" id="whatsapp" placeholder="WhatsApp / Celular" class="w-full p-3 rounded-xl border text-gray-900">
-                <input type="text" id="direccion" placeholder="Dirección del Cliente" class="w-full p-3 rounded-xl border text-gray-900">
-                <input type="email" id="correo" placeholder="Email del Cliente" class="w-full p-3 rounded-xl border text-gray-900">
+                <input type="text" id="rut" placeholder="RUT" class="w-full p-3 rounded-xl border">
+                <input type="tel" id="whatsapp" placeholder="WhatsApp / Celular" class="w-full p-3 rounded-xl border">
+                <input type="text" id="direccion" placeholder="Dirección del Cliente" class="w-full p-3 rounded-xl border">
+                <input type="email" id="correo" placeholder="Email del Cliente" class="w-full p-3 rounded-xl border">
             </div>
             
             <div class="bg-gray-50 p-4 rounded-2xl space-y-3 border border-gray-100 text-gray-900">
                 <div class="grid grid-cols-2 gap-2 text-gray-900">
-                    <input type="text" id="marca" placeholder="Marca" class="w-full p-3 rounded-xl border text-gray-900" required>
-                    <input type="text" id="modelo" placeholder="Modelo" class="w-full p-3 rounded-xl border text-gray-900">
+                    <input type="text" id="marca" placeholder="Marca" class="w-full p-3 rounded-xl border" required>
+                    <input type="text" id="modelo" placeholder="Modelo" class="w-full p-3 rounded-xl border">
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-gray-900">
-                    <input type="text" id="serie" placeholder="N° de Serie" class="w-full p-3 rounded-xl border text-gray-900">
-                    <input type="text" id="guia" placeholder="N° Guía Cliente" class="w-full p-3 rounded-xl border text-gray-900 font-bold bg-blue-50">
+                    <input type="text" id="serie" placeholder="N° de Serie" class="w-full p-3 rounded-xl border">
+                    <input type="text" id="guia" placeholder="N° Guía Cliente" class="w-full p-3 rounded-xl border font-bold bg-blue-50">
                 </div>
-                
                 <div class="p-2 border-t mt-2 text-gray-900">
-                    <p class="text-[10px] font-bold text-gray-500 uppercase mb-3 tracking-widest text-gray-900">Accesorios Recibidos:</p>
+                    <p class="text-[10px] font-bold text-gray-500 uppercase mb-3 tracking-widest">Accesorios Recibidos:</p>
                     <div class="checkbox-grid text-xs font-semibold text-gray-700">
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Pistola"> Pistola (MIG)</label>
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Carrete"> Carrete Alambre</label>
@@ -95,34 +127,33 @@
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Cable Alimentacion"> Cable Alim.</label>
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Enchufe"> Enchufe</label>
                     </div>
-                    <input type="text" id="otros-acc" placeholder="Otros accesorios..." class="w-full mt-3 p-2 border-b bg-transparent text-sm text-gray-900">
+                    <input type="text" id="otros-acc" placeholder="Otros accesorios..." class="w-full mt-3 p-2 border-b bg-transparent text-sm">
                 </div>
             </div>
-
             <div class="relative text-gray-900">
-                <label class="font-bold text-gray-400 uppercase text-[10px] px-1 text-gray-900">Falla Reportada</label>
-                <textarea id="falla" placeholder="Dicta la falla..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 mt-1 shadow-inner text-gray-900"></textarea>
-                <button type="button" onclick="iniciarDictado('falla')" class="absolute right-3 bottom-3 bg-azul text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center"><i class="fa-solid fa-microphone text-xl text-white"></i></button>
+                <label class="font-bold text-gray-400 uppercase text-[10px] px-1">Falla Reportada</label>
+                <textarea id="falla" placeholder="Dicta la falla..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 mt-1 shadow-inner"></textarea>
+                <button type="button" onclick="iniciarDictado('falla')" class="absolute right-3 bottom-3 bg-azul text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center"><i class="fa-solid fa-microphone text-xl"></i></button>
             </div>
-            <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition uppercase tracking-widest text-white">Registrar Ingreso</button>
+            <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition uppercase tracking-widest">Registrar Ingreso</button>
         </form>
     </div>
 
     <div id="presupuesto-list-screen" class="hidden p-4 max-w-md mx-auto bg-gray-50 min-h-screen text-gray-900">
-        <div class="flex items-center mb-6 sticky top-0 bg-gray-50 py-2 border-b z-50 text-gray-900">
-            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl text-gray-900"></i></button>
+        <div class="flex items-center mb-6 sticky top-0 bg-gray-50 py-2 border-b z-50">
+            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
             <h2 class="text-2xl font-bold">Por Presupuestar</h2>
         </div>
         <div id="loading-pendientes" class="flex flex-col items-center justify-center py-20 hidden">
             <div class="loader rounded-full border-4 h-12 w-12 mb-4 border-t-azul"></div>
-            <p>Sincronizando...</p>
+            <p>Conectando...</p>
         </div>
         <div id="lista-pendientes" class="space-y-4 pb-10"></div>
     </div>
 
     <div id="presupuesto-detail-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen pb-20 shadow-2xl text-gray-900">
-        <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50 text-gray-900">
-            <button onclick="showScreen('presupuesto-list-screen')" class="text-gray-600 mr-4 p-2 transition"><i class="fa-solid fa-arrow-left text-2xl text-gray-900"></i></button>
+        <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50">
+            <button onclick="showScreen('presupuesto-list-screen')" class="text-gray-600 mr-4 p-2 transition"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
             <h2 class="text-2xl font-bold">OT: <span id="ot-numero" class="text-azul font-black"></span></h2>
         </div>
         
@@ -130,70 +161,69 @@
             <div class="bg-gray-100 p-4 rounded-2xl border-l-8 border-azul text-sm shadow-sm text-gray-900">
                 <p id="det-cliente" class="text-lg font-bold"></p>
                 <p id="det-equipo" class="text-gray-600 font-semibold"></p>
-                <p id="det-guia-ref" class="text-azul font-black text-[10px]"></p>
                 <p id="det-falla" class="mt-2 text-red-700 italic border-t pt-2"></p>
             </div>
             
             <div class="relative text-gray-900">
                 <label class="font-bold text-azul uppercase text-[10px] tracking-widest"><i class="fa-solid fa-stethoscope"></i> Diagnóstico Técnico</label>
-                <textarea id="diagnostico" placeholder="Describe los hallazgos técnicos..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 shadow-inner text-gray-900"></textarea>
-                <button type="button" onclick="iniciarDictado('diagnostico')" class="absolute right-3 bottom-3 bg-azul text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition"><i class="fa-solid fa-microphone text-lg text-white"></i></button>
+                <textarea id="diagnostico" placeholder="Describe los hallazgos..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 shadow-inner"></textarea>
+                <button type="button" onclick="iniciarDictado('diagnostico')" class="absolute right-3 bottom-3 bg-azul text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center"><i class="fa-solid fa-microphone text-lg text-white"></i></button>
             </div>
 
             <div class="bg-gray-50 p-4 rounded-3xl border border-gray-200 text-gray-900">
                 <label class="font-bold text-azul uppercase text-[10px] tracking-widest">Repuestos / Servicios</label>
                 <div class="flex gap-2 mt-1 relative text-gray-900">
-                    <input type="text" id="buscador-repuesto" onkeyup="buscarRepuesto(this.value)" placeholder="Buscar..." class="flex-1 p-3 rounded-xl border text-sm text-gray-900" autocomplete="off">
+                    <input type="text" id="buscador-repuesto" onkeyup="buscarRepuesto(this.value)" placeholder="Buscar..." class="flex-1 p-3 rounded-xl border text-sm" autocomplete="off">
                     <ul id="sugerencias-repuestos" class="autocomplete-dropdown absolute w-full bg-white border hidden z-50 shadow-xl mt-12"></ul>
                     <input type="number" id="cantidad-repuesto" value="1" min="1" class="w-16 p-3 rounded-xl border text-center font-bold">
-                    <button onclick="agregarRepuestoLista()" class="bg-azul text-white px-4 rounded-xl shadow-md"><i class="fa-solid fa-plus text-white"></i></button>
+                    <button onclick="agregarRepuestoLista()" class="bg-azul text-white px-4 rounded-xl shadow-md active:scale-90 transition"><i class="fa-solid fa-plus text-white"></i></button>
                 </div>
-                <ul id="lista-repuestos-seleccionados" class="space-y-2 mt-3 text-gray-900"></ul>
+                <ul id="lista-repuestos-seleccionados" class="space-y-2 mt-3"></ul>
             </div>
 
             <div class="grid grid-cols-2 gap-3 text-gray-900">
                 <div class="space-y-1">
-                    <label class="text-[10px] font-bold text-gray-400 uppercase px-1">Plazo</label>
-                    <select id="plazo" class="w-full p-4 rounded-xl border bg-gray-50 font-bold text-sm text-gray-700">
-                        <option value="3 días hábiles">3 días</option>
-                        <option value="5 días hábiles">5 días</option>
-                        <option value="8 días hábiles">8 días</option>
-                        <option value="15 días hábiles">15 días</option>
-                        <option value="45 días hábiles">45 días</option>
+                    <label class="text-[10px] font-bold text-gray-400 uppercase px-1">Plazo Entrega</label>
+                    <select id="plazo" class="w-full p-4 rounded-xl border bg-gray-50 font-bold text-sm">
+                        <option value="3">3 días</option>
+                        <option value="5">5 días</option>
+                        <option value="8">8 días</option>
+                        <option value="15">15 días</option>
+                        <option value="45">45 días</option>
                     </select>
                 </div>
                 <div class="space-y-1">
                     <label class="text-[10px] font-bold text-gray-400 uppercase px-1">Valor Neto</label>
-                    <input type="number" id="valor-neto" placeholder="Neto CLP" class="w-full p-4 rounded-xl border bg-gray-50 text-xl font-black text-gray-900">
+                    <input type="number" id="valor-neto" placeholder="Neto CLP" class="w-full p-4 rounded-xl border bg-gray-50 text-xl font-black">
                 </div>
             </div>
             
-            <button id="btn-enviar-presupuesto" onclick="enviarPresupuesto()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-xl shadow-xl active:scale-95 transition uppercase tracking-widest text-white">Guardar y Enviar al Cliente</button>
+            <button id="btn-enviar-presupuesto" onclick="enviarPresupuesto()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-xl shadow-xl active:scale-95 transition uppercase tracking-widest">Guardar y Enviar al Cliente</button>
         </div>
     </div>
 
     <div id="config-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen text-gray-900">
-        <div class="flex items-center mb-6 border-b pb-4 text-gray-900">
-            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl text-gray-900"></i></button>
+        <div class="flex items-center mb-6 border-b pb-4">
+            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
             <h2 class="text-2xl font-bold">Configuración</h2>
         </div>
-        <div class="space-y-8 pb-10 text-gray-900">
+        <div class="space-y-8 pb-10">
             <div class="bg-orange-50 p-4 rounded-2xl border border-orange-200">
-                <label class="font-bold text-orange-700 uppercase text-xs">Llave IA (Groq gsk_...)</label>
+                <label class="font-bold text-orange-700 uppercase text-xs">Llave IA (Groq)</label>
                 <div class="flex gap-2 mt-2">
-                    <input type="password" id="ia-key-input" placeholder="Pega tu llave aquí..." class="flex-1 p-3 rounded-xl border bg-white">
-                    <button onclick="guardarIAKey()" class="bg-orange-600 text-white px-4 rounded-xl shadow-md text-white"><i class="fa-solid fa-save"></i></button>
+                    <input type="password" id="ia-key-input" placeholder="gsk_..." class="flex-1 p-3 rounded-xl border bg-white">
+                    <button onclick="guardarIAKey()" class="bg-orange-600 text-white px-4 rounded-xl shadow-md"><i class="fa-solid fa-save"></i></button>
                 </div>
             </div>
             <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200">
-                <label class="font-bold text-azul uppercase text-xs">Repuestos Maestros</label>
-                <textarea id="import-repuestos" class="w-full p-3 rounded-xl border h-40 text-sm mt-2 text-gray-900" placeholder="Uno por línea..."></textarea>
-                <button onclick="importarRepuestosMasivo()" class="w-full bg-azul text-white py-3 rounded-xl font-bold mt-2 shadow-md text-white">Actualizar Base</button>
+                <label class="font-bold text-azul uppercase text-xs">Cargar Repuestos</label>
+                <textarea id="import-repuestos" class="w-full p-3 rounded-xl border h-40 text-sm mt-2" placeholder="Uno por línea..."></textarea>
+                <button onclick="importarRepuestosMasivo()" class="w-full bg-azul text-white py-3 rounded-xl font-bold mt-2 shadow-md active:scale-95">Actualizar Base</button>
             </div>
             <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200">
-                <label class="font-bold text-blue-700 uppercase text-xs">Cargar Clientes Habituales</label>
-                <textarea id="import-clientes" class="w-full p-3 rounded-xl border h-40 text-sm mt-2 text-gray-900" placeholder="Nombre, RUT, Dirección, WhatsApp..."></textarea>
-                <button onclick="importarClientesMasivo()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-2 shadow-md text-white">Actualizar Clientes</button>
+                <label class="font-bold text-blue-700 uppercase text-xs">Cargar Clientes</label>
+                <textarea id="import-clientes" class="w-full p-3 rounded-xl border h-40 text-sm mt-2" placeholder="NOMBRE, RUT, DIRECCION..."></textarea>
+                <button onclick="importarClientesMasivo()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-2 shadow-md">Actualizar Clientes</button>
             </div>
         </div>
     </div>
@@ -215,61 +245,155 @@
             try { const res = await fetch(WEB_APP_URL); dbFull = await res.json(); } catch(e) {}
         }
 
-        function showScreen(id) { document.querySelectorAll('div[id$="-screen"]').forEach(s => s.style.display = 'none'); document.getElementById(id).style.display = (id === 'home-screen') ? 'flex' : 'block'; window.scrollTo(0,0); }
-        function iniciarDictado(id) { const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); rec.lang = 'es-ES'; rec.start(); rec.onresult = (e) => { document.getElementById(id).value = e.results[0][0].transcript; }; }
-        function guardarIAKey() { localStorage.setItem('wm_ia_key', document.getElementById('ia-key-input').value.trim()); alert("✅ Llave IA Guardada."); }
-
-        // --- LÓGICA GESTIÓN AUTÓNOMA V19.2 ---
-        function inyectarEnGestion(equipo) {
-            let gestionLocal = JSON.parse(localStorage.getItem('wm_gestion_taller')) || [];
-            // Evitar duplicados
-            if (!gestionLocal.find(x => x.ot === equipo.ot)) {
-                gestionLocal.push({
-                    ot: equipo.ot,
-                    nombre: equipo.NOMBRE || equipo.nombre,
-                    modelo: equipo.MODELO || equipo.modelo,
-                    marca: equipo.MARCA || equipo.marca,
-                    whatsapp: equipo.WHATSAPP || equipo.whatsapp,
-                    guia: equipo.GUIA || equipo.guia,
-                    fechaGestion: new Date().toLocaleDateString(),
-                    estado: 'PRESUPUESTADO'
-                });
-                localStorage.setItem('wm_gestion_taller', JSON.stringify(gestionLocal));
-            }
+        function showScreen(id) { 
+            document.querySelectorAll('div[id$="-screen"]').forEach(s => s.style.display = 'none'); 
+            document.getElementById(id).style.display = (id === 'home-screen') ? 'flex' : 'block'; 
+            window.scrollTo(0,0); 
         }
 
-        function abrirGestionTaller() {
-            showScreen('gestion-screen');
-            const lista = document.getElementById('lista-gestion-local');
-            const gestionLocal = JSON.parse(localStorage.getItem('wm_gestion_taller')) || [];
+        function iniciarDictado(id) { 
+            const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); 
+            rec.lang = 'es-ES'; rec.start(); 
+            rec.onresult = (e) => { document.getElementById(id).value = e.results[0][0].transcript; }; 
+        }
+
+        function guardarIAKey() { localStorage.setItem('wm_ia_key', document.getElementById('ia-key-input').value.trim()); alert("✅ Llave IA Guardada."); }
+
+        // --- LÓGICA DE FLUJO DE TALLER V19.3 ---
+
+        function calcularDias(fechaRef) {
+            if (!fechaRef) return 0;
+            const hoy = new Date();
+            const ref = new Date(fechaRef);
+            const diff = hoy - ref;
+            return Math.floor(diff / (1000 * 60 * 60 * 24));
+        }
+
+        function inyectarEnGestion(equipo, estado) {
+            let gestionLocal = JSON.parse(localStorage.getItem('wm_gestion_taller')) || [];
+            // Eliminar si ya existe para actualizar estado
+            gestionLocal = gestionLocal.filter(x => x.ot !== equipo.ot);
             
-            if (gestionLocal.length === 0) {
-                lista.innerHTML = '<div class="text-center py-20 text-gray-400 italic">No hay equipos en gestión. Envía un presupuesto para que aparezcan aquí automáticamente.</div>';
+            gestionLocal.push({
+                ot: equipo.ot,
+                nombre: equipo.NOMBRE || equipo.nombre,
+                modelo: equipo.MODELO || equipo.modelo,
+                marca: equipo.MARCA || equipo.marca,
+                whatsapp: equipo.WHATSAPP || equipo.whatsapp,
+                guia: equipo.GUIA || equipo.guia,
+                plazo: equipo.PLAZO || equipo.plazo || 3,
+                fechaEntrada: equipo.fechaEntrada || new Date().toISOString(),
+                estado: estado,
+                pdfLink: equipo.pdfLink || `COT_OT${equipo.ot}_${equipo.NOMBRE || equipo.nombre}.pdf`
+            });
+            localStorage.setItem('wm_gestion_taller', JSON.stringify(gestionLocal));
+        }
+
+        function abrirListaGestion(filtro) {
+            showScreen('lista-gestion-screen');
+            document.getElementById('titulo-lista-gestion').innerText = filtro + "S";
+            renderizarListaGestion(filtro);
+        }
+
+        function renderizarListaGestion(filtro) {
+            const container = document.getElementById('contenedor-items-gestion');
+            const gestionLocal = JSON.parse(localStorage.getItem('wm_gestion_taller')) || [];
+            const filtrados = gestionLocal.filter(x => x.estado === filtro);
+
+            if (filtro === 'ENTREGADO') {
+                renderizarTablaEntregados(filtrados);
                 return;
             }
 
-            lista.innerHTML = gestionLocal.map(item => `
-                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 card-gestion text-gray-900">
+            if (filtrados.length === 0) {
+                container.innerHTML = '<p class="text-center py-20 text-gray-400 italic">No hay equipos en esta etapa.</p>';
+                return;
+            }
+
+            container.innerHTML = filtrados.map(item => {
+                const dias = calcularDias(item.fechaEntrada);
+                let colorClass = "bg-blue-100 text-blue-600";
+                
+                // LÓGICA DE COLORES DINÁMICA
+                if(filtro === 'PRESUPUESTADO') {
+                    if(dias >= 4 && dias <= 7) colorClass = "bg-orange-100 text-orange-600";
+                    if(dias > 7) colorClass = "bg-red-100 text-red-600";
+                } else if(filtro === 'APROBADO') {
+                    const restante = item.plazo - dias;
+                    if(restante <= 1) colorClass = "bg-orange-100 text-orange-600";
+                    if(restante < 0) colorClass = "bg-red-600 text-white animate-pulse";
+                } else if(filtro === 'REPARADO' || filtro === 'RECHAZADO') {
+                    if(dias <= 7) colorClass = "bg-green-100 text-green-600";
+                    if(dias > 7) colorClass = "bg-red-600 text-white";
+                }
+
+                let botones = '';
+                if(filtro === 'PRESUPUESTADO') {
+                    botones = `<div class="grid grid-cols-2 gap-2 mt-4">
+                        <button onclick="cambiarEstadoLocal('${item.ot}', 'APROBADO')" class="bg-green-600 text-white py-2 rounded-xl text-[10px] font-black uppercase">Aprobar</button>
+                        <button onclick="cambiarEstadoLocal('${item.ot}', 'RECHAZADO')" class="bg-red-500 text-white py-2 rounded-xl text-[10px] font-black uppercase">Rechazar</button>
+                    </div>`;
+                } else if(filtro === 'APROBADO') {
+                    botones = `<button onclick="cambiarEstadoLocal('${item.ot}', 'REPARADO')" class="w-full bg-azul text-white py-3 rounded-xl text-[10px] font-black uppercase mt-4">Equipo Listo</button>`;
+                } else if(filtro === 'REPARADO' || filtro === 'RECHAZADO') {
+                    botones = `<button onclick="cambiarEstadoLocal('${item.ot}', 'ENTREGADO')" class="w-full bg-gray-900 text-white py-3 rounded-xl text-[10px] font-black uppercase mt-4">Entregado</button>`;
+                }
+
+                return `
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 text-gray-900">
                     <div class="flex justify-between items-start">
                         <div>
-                            <span class="status-pill bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-[10px] font-black uppercase">OT-${item.ot}</span>
-                            <h4 class="font-black text-lg mt-1 text-gray-900">${item.nombre}</h4>
+                            <span class="status-pill bg-gray-100 text-gray-500">OT-${item.ot}</span>
+                            <h4 class="font-black text-lg text-gray-900">${item.nombre}</h4>
                             <p class="text-xs text-gray-500 font-bold">${item.marca} ${item.modelo}</p>
-                            <p class="text-[10px] text-azul mt-1">Guía Ref: ${item.guia || 'S/G'}</p>
                         </div>
                         <a href="https://wa.me/${item.whatsapp}" class="bg-green-100 text-green-600 w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-brands fa-whatsapp text-xl"></i></a>
                     </div>
-                    <div class="mt-3 pt-3 border-t flex justify-between items-center text-[11px] font-bold text-gray-400">
-                        <span>ESTADO: <span class="text-orange-500">${item.estado}</span></span>
-                        <span>${item.fechaGestion}</span>
+                    <div class="mt-3 flex items-center justify-between">
+                        <span class="counter-pill ${colorClass}">
+                            <i class="fa-regular fa-clock"></i> ${dias} DÍAS
+                        </span>
+                        ${filtro === 'APROBADO' ? `<span class="text-[10px] font-bold text-gray-300 uppercase">Plazo: ${item.plazo} días</span>` : ''}
                     </div>
-                </div>
-            `).join('');
+                    ${botones}
+                </div>`;
+            }).join('');
         }
 
-        function limpiarGestion() { if(confirm("¿Limpiar toda la pizarra de gestión?")) { localStorage.removeItem('wm_gestion_taller'); abrirGestionTaller(); } }
+        function renderizarTablaEntregados(datos) {
+            const container = document.getElementById('contenedor-items-gestion');
+            if (datos.length === 0) {
+                container.innerHTML = '<p class="text-center py-20 text-gray-400 italic">No hay registros históricos.</p>';
+                return;
+            }
+            let html = `<div class="overflow-x-auto"><table class="tabla-entregados">
+                <thead><tr><th>OT</th><th>CLIENTE</th><th>FECHA</th><th>PDF</th></tr></thead>
+                <tbody>`;
+            datos.forEach(x => {
+                html += `<tr>
+                    <td class="font-bold">#${x.ot}</td>
+                    <td>${x.nombre}</td>
+                    <td>${new Date(x.fechaEntrada).toLocaleDateString()}</td>
+                    <td><button onclick="alert('Buscando: ${x.pdfLink}')" class="text-azul"><i class="fa-solid fa-file-pdf"></i></button></td>
+                </tr>`;
+            });
+            html += `</tbody></table></div>`;
+            container.innerHTML = html;
+        }
 
-        // --- BÚSQUEDA DE CLIENTES Y REPUESTOS ---
+        function cambiarEstadoLocal(ot, nuevoEstado) {
+            const gestionLocal = JSON.parse(localStorage.getItem('wm_gestion_taller')) || [];
+            const equipo = gestionLocal.find(x => x.ot === ot);
+            if (equipo) {
+                equipo.estado = nuevoEstado;
+                equipo.fechaEntrada = new Date().toISOString(); // Reiniciar contador al mover
+                localStorage.setItem('wm_gestion_taller', JSON.stringify(gestionLocal));
+                renderizarListaGestion(document.getElementById('titulo-lista-gestion').innerText.slice(0, -1));
+                // Sincronizar con Excel en segundo plano
+                fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "update_status_simple", ot: ot, estado: nuevoEstado }) });
+            }
+        }
+
         function buscarCliente(t) {
             const ul = document.getElementById('sugerencias-cliente'); ul.innerHTML = '';
             if(t.length < 2) { ul.classList.add('hidden'); return; }
@@ -292,25 +416,6 @@
             });
         }
 
-        function buscarRepuesto(t) {
-            const ul = document.getElementById('sugerencias-repuestos'); ul.innerHTML = '';
-            if(t.length < 2) { ul.classList.add('hidden'); return; }
-            const fil = repuestosDB.filter(r => r.toLowerCase().includes(t.toLowerCase()));
-            if(fil.length === 0) { ul.classList.add('hidden'); return; }
-            ul.classList.remove('hidden');
-            fil.forEach(r => {
-                const li = document.createElement('li'); li.className = "p-3 border-b text-xs font-medium text-gray-900"; li.innerText = r;
-                li.onclick = () => { document.getElementById('buscador-repuesto').value = r; ul.classList.add('hidden'); };
-                ul.appendChild(li);
-            });
-        }
-
-        function importarRepuestosMasivo() { const t = document.getElementById('import-repuestos').value; if(!t.trim()) return; const l = t.split('\n').map(x => x.trim()).filter(x => x !== ""); repuestosDB = [...new Set([...repuestosDB, ...l])]; localStorage.setItem('wm_repuestos', JSON.stringify(repuestosDB)); alert("✅ Base de repuestos lista."); }
-        function importarClientesMasivo() { const t = document.getElementById('import-clientes').value; if(!t.trim()) return; const l = t.split('\n').map(x => { const p = x.split(',').map(s => s.trim()); return { NOMBRE: p[0], RUT: p[1], DIRECCION: p[2], WHATSAPP: p[3], CORREO: p[4] }; }).filter(x => x.NOMBRE); localStorage.setItem('wm_clientes_locales', JSON.stringify(l)); alert("✅ Clientes importados."); }
-
-        function agregarRepuestoLista() { const n = document.getElementById('buscador-repuesto').value; const c = document.getElementById('cantidad-repuesto').value; if(!n) return; repuestosActuales.push({ nombre: n, cantidad: parseInt(c) }); renderRep(); document.getElementById('buscador-repuesto').value = ''; }
-        function renderRep() { document.getElementById('lista-repuestos-seleccionados').innerHTML = repuestosActuales.map((r, i) => `<li class="flex justify-between bg-white p-2 border rounded-xl text-xs font-medium text-gray-900"><span>${r.nombre} <b>x${r.cantidad}</b></span><button onclick="repuestosActuales.splice(${i},1);renderRep()" class="text-red-500"><i class="fa-solid fa-trash"></i></button></li>`).join(''); }
-
         async function cargarPendientes() {
             showScreen('presupuesto-list-screen'); document.getElementById('lista-pendientes').innerHTML = ''; document.getElementById('loading-pendientes').classList.remove('hidden');
             try {
@@ -324,89 +429,68 @@
                         document.getElementById('ot-numero').innerText = p.ot;
                         document.getElementById('det-cliente').innerText = p.NOMBRE || p.nombre;
                         document.getElementById('det-equipo').innerText = (p.MARCA || p.marca) + " " + (p.MODELO || p.modelo);
-                        document.getElementById('det-guia-ref').innerText = "GUIA REF: " + (p.GUIA || p.guia || 'S/G');
                         document.getElementById('det-falla').innerText = p.FALLA || p.falla;
                         repuestosActuales = []; renderRep(); showScreen('presupuesto-detail-screen');
                     };
                     div.innerHTML = `<div class="flex justify-between items-center"><div><span class="text-[10px] font-bold text-azul uppercase">OT-${p.ot}</span><h3 class="font-bold text-gray-900">${p.NOMBRE || p.nombre}</h3><p class="text-xs text-gray-500 font-medium">${p.MARCA || p.marca} ${p.MODELO || p.modelo}</p></div><i class="fa-solid fa-chevron-right text-gray-200"></i></div>`;
                     document.getElementById('lista-pendientes').appendChild(div);
                 });
-            } catch (e) { alert("Error de conexión."); }
+            } catch (e) { alert("Error."); }
         }
 
-        // --- MOTOR PDF (V19.2 INTANGIBLE) ---
+        // --- MOTOR PDF (V19.3 INTANGIBLE) ---
         function generarPDFGlobal(tipo, ot, datos) {
             const { jsPDF } = window.jspdf; const doc = new jsPDF(); const r = 0, g = 112, b = 243; const fmt = new Intl.NumberFormat("es-CL");
             doc.setFillColor(r, g, b); doc.rect(0, 0, 210, 52, 'F');
-            doc.setTextColor(255, 255, 255); doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 15);
+            doc.setTextColor(255); doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 15);
             doc.setFontSize(26); doc.text(tipo === 'OT' ? "ORDEN DE INGRESO" : "COTIZACIÓN TÉCNICA", 10, 30);
             doc.setFontSize(9); doc.setFont("helvetica", "normal"); doc.text(`RUT: 76.349.984-7 | amsetecsi@gmail.com`, 10, 40);
             doc.text(`Fono: +56 9 95412322 | Cerrillos, Santiago`, 10, 45);
-            doc.setDrawColor(255); doc.setLineWidth(0.5); doc.rect(165, 8, 35, 35); doc.setFontSize(7); doc.text("LOGO AQUÍ", 175, 27);
+            doc.setDrawColor(255); doc.rect(165, 8, 35, 35);
             let cursorY = 65;
-            
             const NOMBRE = ot.NOMBRE || ot.nombre;
-            const MARCA = ot.MARCA || ot.marca;
-            const MODELO = ot.MODELO || ot.modelo;
-
             if(tipo === 'OT') {
                 doc.setTextColor(r,g,b); doc.setFontSize(32); doc.setFont("helvetica", "bold"); doc.text(`OT: ${ot.ot}`, 130, 75);
                 doc.setTextColor(40); doc.setFontSize(10); doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 130, 82);
-                doc.setFontSize(15); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("I. DATOS DEL CLIENTE", 10, cursorY); cursorY += 10;
-                doc.setFontSize(13); doc.setFont("helvetica", "normal"); doc.setTextColor(40);
-                doc.text(`Nombre / Empresa: ${NOMBRE}`, 12, cursorY); cursorY += 9;
-                doc.text(`RUT: ${ot.RUT || ot.rut || 'N/A'}`, 12, cursorY); cursorY += 9;
-                doc.text(`WhatsApp: ${ot.WHATSAPP || ot.whatsapp || 'N/A'}`, 12, cursorY); cursorY += 9;
-                doc.text(`Dirección: ${ot.DIRECCION || ot.direccion || 'N/A'}`, 12, cursorY); cursorY += 15;
+                doc.setFontSize(15); doc.text("I. DATOS DEL CLIENTE", 10, cursorY); cursorY += 10;
+                doc.setFontSize(13); doc.setFont("helvetica", "normal"); doc.text(`Nombre: ${NOMBRE}`, 12, cursorY); cursorY += 9;
+                doc.text(`RUT: ${ot.RUT || 'N/A'}`, 12, cursorY); cursorY += 15;
                 doc.setFontSize(15); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("II. DETALLES DEL EQUIPO", 10, cursorY); cursorY += 10;
-                doc.setFontSize(13); doc.text(`Marca / Modelo: ${MARCA} ${MODELO}`, 12, cursorY); cursorY += 9;
-                doc.text(`Guía Cliente: ${ot.GUIA || ot.guia || 'No presenta'}`, 12, cursorY); cursorY += 10;
-                const accText = `Accesorios: ${ot.ACCESORIOS || ot.accesorios || 'Ninguno'}`;
-                const accLines = doc.splitTextToSize(accText, 180); doc.text(accLines, 12, cursorY); cursorY += (accLines.length * 8) + 8;
-                doc.setFontSize(15); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("III. FALLA REPORTADA", 10, cursorY); cursorY += 8;
-                const fL = doc.splitTextToSize(ot.FALLA || ot.falla, 185); doc.setFillColor(248); doc.roundedRect(10, cursorY, 190, (fL.length * 8) + 8, 1, 1, 'F');
-                doc.setFontSize(13); doc.text(fL, 15, cursorY + 8);
-                cursorY = 230; doc.setFontSize(9); doc.setTextColor(100); doc.setFont("helvetica", "bold"); doc.text("TÉRMINOS Y CONDICIONES:", 10, cursorY);
-                ["1. Respuesta en 3 días hábiles.", "2. Rechazo genera cobro 0,05 UF.", "3. Día 8 sin retiro aplica bodegaje.", "4. 6 meses sin retiro pasa a dominio técnico."].forEach((n, i) => { doc.text(n, 10, cursorY + 6 + (i * 4.5)); });
-                doc.line(30, 275, 80, 275); doc.text("Firma Cliente", 45, 280); doc.line(130, 275, 180, 275); doc.text("Firma Recepción", 145, 280);
+                doc.setFontSize(13); doc.text(`Marca/Modelo: ${ot.MARCA || ot.marca} ${ot.MODELO || ot.modelo}`, 12, cursorY); cursorY += 10;
+                const acc = doc.splitTextToSize(`Accesorios: ${ot.ACCESORIOS || 'Ninguno'}`, 180); doc.text(acc, 12, cursorY); cursorY += (acc.length*8)+8;
+                doc.setFontSize(15); doc.setTextColor(r,g,b); doc.text("III. FALLA REPORTADA", 10, cursorY); cursorY += 8;
+                const fL = doc.splitTextToSize(ot.FALLA || ot.falla, 185); doc.setFillColor(248); doc.roundedRect(10, cursorY, 190, (fL.length*8)+8, 1, 1, 'F');
+                doc.setFontSize(13); doc.text(fL, 15, cursorY+8);
+                doc.line(30, 275, 80, 275); doc.text("Firma Cliente", 45, 280);
             } else {
-                doc.setTextColor(40); doc.setFontSize(10); doc.text(`OT N°: ${ot.ot}`, 165, 62); doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 165, 68);
+                doc.setTextColor(40); doc.setFontSize(10); doc.text(`OT N°: ${ot.ot}`, 165, 62);
                 doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("DATOS DEL CLIENTE", 10, 62);
-                doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(40);
-                doc.text(`Nombre: ${NOMBRE}`, 10, 68); doc.text(`RUT: ${ot.RUT || ot.rut || 'N/A'}`, 10, 73); doc.text(`Guía: ${ot.GUIA || ot.guia || 'S/G'}`, 10, 78);
-                doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("DETALLES DEL EQUIPO", 110, 62);
-                doc.setFontSize(10); doc.text(`Equipo: ${MARCA} ${MODELO}`, 110, 68); doc.text(`Serie: ${ot.SERIE || ot.serie}`, 110, 73);
+                doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.text(`Nombre: ${NOMBRE}`, 10, 68);
+                doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.text("DETALLES DEL EQUIPO", 110, 62);
+                doc.setFontSize(10); doc.text(`Equipo: ${ot.MARCA || ot.marca} ${ot.MODELO || ot.modelo}`, 110, 68);
                 cursorY = 105;
                 doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("DIAGNÓSTICO TÉCNICO", 10, cursorY); cursorY += 5;
-                const dL = doc.splitTextToSize(datos.diagnostico, 190); doc.setFillColor(248); doc.roundedRect(10, cursorY, 190, (dL.length * 6) + 4, 1, 1, 'F');
-                doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.text(dL, 14, cursorY + 6); cursorY += (dL.length * 6) + 10;
-                doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("REPUESTOS Y SERVICIOS", 10, cursorY); cursorY += 5;
-                const rT = datos.repuestos.map(r => `• ${r.nombre} (x${r.cantidad})`).join('\n') || "Servicios integrales.";
-                const rL = doc.splitTextToSize(rT, 190); doc.setFillColor(242); doc.roundedRect(10, cursorY, 190, (rL.length * 6) + 4, 1, 1, 'F');
-                doc.text(rL, 14, cursorY + 6); cursorY += (rL.length * 6) + 15;
+                const dL = doc.splitTextToSize(datos.diagnostico, 190); doc.setFillColor(248); doc.roundedRect(10, cursorY, 190, (dL.length*6)+4, 1, 1, 'F');
+                doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.text(dL, 14, cursorY+6); cursorY += (dL.length*6)+10;
                 const neto = parseInt(datos.valorNeto); const iva = Math.round(neto * 0.19); const total = neto + iva;
                 doc.setFillColor(250); doc.rect(120, cursorY, 80, 28);
-                doc.setFontSize(10); doc.text("NETO:", 125, cursorY + 8); doc.text(`$${fmt.format(neto)}`, 195, cursorY + 8, {align: 'right'});
-                doc.text("IVA (19%):", 125, cursorY + 15); doc.text(`$${fmt.format(iva)}`, 195, cursorY + 15, {align: 'right'});
-                doc.setFontSize(12); doc.setTextColor(r,g,b); doc.text("TOTAL:", 125, cursorY + 23); doc.text(`$${fmt.format(total)} CLP`, 195, cursorY + 23, {align: 'right'});
+                doc.text("NETO:", 125, cursorY+8); doc.text(`$${fmt.format(neto)}`, 195, cursorY+8, {align:'right'});
+                doc.setFontSize(12); doc.setTextColor(r,g,b); doc.text("TOTAL:", 125, cursorY+23); doc.text(`$${fmt.format(total)} CLP`, 195, cursorY+23, {align:'right'});
             }
             doc.save(`${tipo}_OT${ot.ot}_${NOMBRE}.pdf`);
         }
 
         async function enviarPresupuesto() {
             const diag = document.getElementById('diagnostico').value; const val = document.getElementById('valor-neto').value;
+            const plazo = document.getElementById('plazo').value;
             if(!diag || !val) return alert("⚠️ Completa los datos.");
             const btn = document.getElementById('btn-enviar-presupuesto'); btn.disabled = true;
             
-            // 1. INYECTAR EN GESTIÓN LOCAL (Paso clave V19.2)
-            inyectarEnGestion(otActiva);
+            inyectarEnGestion({...otActiva, plazo: plazo}, 'PRESUPUESTADO');
 
-            // 2. ENVIAR A EXCEL (Background)
-            const payload = { action: "update_presupuesto", fila: otActiva.fila, DIAGNOSTICO: diag, NETO: val, ESTADO: 'PRESUPUESTADO' };
             try { 
-                await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) }); 
-                generarPDFGlobal('COT', otActiva, { diagnostico: diag, repuestos: repuestosActuales, plazo: document.getElementById('plazo').value, valorNeto: val }); 
-                // WHATSAPP BUSINESS
+                await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "update_presupuesto", fila: otActiva.fila, DIAGNOSTICO: diag, NETO: val, ESTADO: 'PRESUPUESTADO' }) }); 
+                generarPDFGlobal('COT', otActiva, { diagnostico: diag, repuestos: [], plazo: plazo, valorNeto: val }); 
                 const msg = `Estimado(a) *${otActiva.NOMBRE || otActiva.nombre}*, le saluda el Servicio Técnico de Soluciones Integrales. 👋%0A%0AAdjuntamos la *Cotización Técnica* para su equipo correspondiente a la *OT ${otActiva.ot}*.%0A%0A*Saludos.*`;
                 window.open(`https://wa.me/${otActiva.WHATSAPP || otActiva.whatsapp}?text=${msg}`, '_blank');
                 setTimeout(() => location.reload(), 1500); 
@@ -415,9 +499,7 @@
 
         document.getElementById('ingreso-form').addEventListener('submit', async (e) => {
             e.preventDefault(); const btn = document.getElementById('btn-submit'); btn.disabled = true;
-            const accs = Array.from(document.querySelectorAll('.acc:checked')).map(el => el.value).join(', ');
-            const totalAcc = accs + (document.getElementById('otros-acc').value ? ', ' + document.getElementById('otros-acc').value : '');
-            const d = { NOMBRE: document.getElementById('nombre').value, RUT: document.getElementById('rut').value, WHATSAPP: document.getElementById('whatsapp').value, DIRECCION: document.getElementById('direccion').value, CORREO: document.getElementById('correo').value, MARCA: document.getElementById('marca').value, MODELO: document.getElementById('modelo').value, SERIE: document.getElementById('serie').value, ACCESORIOS: totalAcc, FALLA: document.getElementById('falla').value, GUIA: document.getElementById('guia').value, ESTADO: 'INGRESADO' };
+            const d = { NOMBRE: document.getElementById('nombre').value, RUT: document.getElementById('rut').value, WHATSAPP: document.getElementById('whatsapp').value, MARCA: document.getElementById('marca').value, MODELO: document.getElementById('modelo').value, FALLA: document.getElementById('falla').value, GUIA: document.getElementById('guia').value, ESTADO: 'INGRESADO' };
             try { 
                 const res = await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(d) });
                 const result = await res.json();
