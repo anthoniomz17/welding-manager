@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Manager Master V11.2</title>
+    <title>Welding Manager Pro V11.5</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -15,21 +15,20 @@
         .loader { border-top-color: var(--azul); animation: spinner 0.6s linear infinite; }
         @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .autocomplete-dropdown { max-height: 250px; overflow-y: auto; z-index: 100; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2); }
-        .card-pendientes:active { scale: 0.98; transition: 0.1s; }
     </style>
 </head>
 <body class="bg-gray-100 font-sans pb-10 text-gray-800">
 
     <div id="home-screen" class="p-6 max-w-md mx-auto h-screen flex flex-col justify-center relative">
-        <button onclick="showScreen('config-screen')" class="absolute top-6 right-6 text-gray-400 p-2 transition"><i class="fa-solid fa-gear text-3xl"></i></button>
+        <button onclick="showScreen('config-screen')" class="absolute top-6 right-6 text-gray-400 p-2"><i class="fa-solid fa-gear text-3xl"></i></button>
         <div class="text-center mb-10">
             <i class="fa-solid fa-bolt-lightning text-azul text-6xl mb-4"></i>
-            <h1 class="text-3xl font-bold uppercase tracking-tight text-gray-900">Welding Manager</h1>
+            <h1 class="text-3xl font-bold uppercase tracking-tight">Welding Manager</h1>
             <p class="text-gray-500 font-medium italic text-sm">Servicio Técnico Soluciones Integrales</p>
         </div>
         <div class="grid gap-4">
             <button onclick="showScreen('ingreso-screen')" class="bg-azul text-white p-6 rounded-2xl shadow-xl flex items-center justify-between active:scale-95 transition">
-                <div class="text-left"><span class="block text-xl font-bold">Ingreso de Equipo</span><span class="text-sm opacity-80">Nueva OT</span></div>
+                <div class="text-left"><span class="block text-xl font-bold">Ingreso de Equipo</span><span class="text-sm opacity-80 text-left">Nueva OT</span></div>
                 <i class="fa-solid fa-plus-circle text-3xl"></i>
             </button>
             <button onclick="cargarPendientes()" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition">
@@ -44,7 +43,7 @@
 
     <div id="config-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen">
         <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50">
-            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 transition active:scale-90"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
+            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
             <h2 class="text-2xl font-bold">Configuración</h2>
         </div>
         <div class="space-y-6">
@@ -74,12 +73,12 @@
                 <ul id="sugerencias-cliente" class="autocomplete-dropdown absolute w-full bg-white border border-blue-200 rounded-lg hidden mt-1"></ul>
                 <input type="text" id="rut" placeholder="RUT" class="w-full p-3 rounded-xl border">
                 <input type="tel" id="whatsapp" placeholder="WhatsApp" class="w-full p-3 rounded-xl border">
-                <input type="email" id="correo" placeholder="Email" class="w-full p-3 rounded-xl border shadow-sm">
+                <input type="email" id="correo" placeholder="Email" class="w-full p-3 rounded-xl border">
             </div>
-            <div class="bg-gray-50 p-4 rounded-2xl space-y-3 border border-gray-100 shadow-sm">
+            <div class="bg-gray-50 p-4 rounded-2xl space-y-3 border border-gray-100">
                 <input type="text" id="marca" placeholder="Marca" class="w-full p-3 rounded-xl border" required>
                 <input type="text" id="modelo" placeholder="Modelo" class="w-full p-3 rounded-xl border">
-                <input type="text" id="serie" placeholder="N° Serie" class="w-full p-3 rounded-xl border shadow-sm">
+                <input type="text" id="serie" placeholder="N° Serie" class="w-full p-3 rounded-xl border">
             </div>
             <div class="space-y-3">
                 <label class="font-bold text-gray-500 uppercase text-xs px-1">Falla Reportada</label>
@@ -88,7 +87,7 @@
                     <button type="button" onclick="iniciarDictado('falla')" class="absolute right-3 bottom-3 bg-azul text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition"><i class="fa-solid fa-microphone text-xl"></i></button>
                 </div>
             </div>
-            <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition">REGISTRAR INGRESO</button>
+            <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition tracking-widest">REGISTRAR INGRESO</button>
         </form>
     </div>
 
@@ -99,7 +98,7 @@
         </div>
         <div id="loading-pendientes" class="flex flex-col items-center justify-center py-20 hidden">
             <div class="loader rounded-full border-4 h-12 w-12 mb-4 border-t-azul"></div>
-            <p class="text-gray-500 font-medium">Conectando...</p>
+            <p class="text-gray-500 font-medium tracking-tight">Cargando...</p>
         </div>
         <div id="lista-pendientes" class="space-y-4 pb-10"></div>
     </div>
@@ -122,20 +121,18 @@
                     <textarea id="diagnostico" placeholder="Dicta los hallazgos técnicos..." class="w-full p-5 rounded-3xl border h-32 bg-gray-50 shadow-inner"></textarea>
                     <button type="button" onclick="iniciarDictado('diagnostico')" class="absolute right-3 bottom-3 bg-azul text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg active:scale-90 transition"><i class="fa-solid fa-microphone"></i></button>
                 </div>
-                <button type="button" id="btn-ia" onclick="mejorarDiagnosticoGroq()" class="w-full bg-orange-600 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition shadow-lg">
-                    <i class="fa-solid fa-wand-magic-sparkles text-xl"></i> OPTIMIZAR CON IA
+                <button type="button" id="btn-ia" onclick="mejorarDiagnosticoGroq()" class="w-full bg-orange-600 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition shadow-lg tracking-widest">
+                    OPTIMIZAR CON IA
                 </button>
             </div>
 
             <div class="space-y-3 bg-gray-50 p-4 rounded-3xl border border-gray-200 shadow-sm">
                 <label class="font-bold text-azul uppercase text-[10px] tracking-widest">Repuestos / Servicios</label>
                 <div class="flex gap-2 relative">
-                    <div class="relative flex-1">
-                        <input type="text" id="buscador-repuesto" onkeyup="buscarRepuesto(this.value)" placeholder="Buscar..." class="w-full p-3 rounded-xl border text-sm" autocomplete="off">
-                        <ul id="sugerencias-repuestos" class="autocomplete-dropdown absolute w-full bg-white border border-gray-300 rounded-lg hidden mt-1 shadow-2xl"></ul>
-                    </div>
-                    <input type="number" id="cantidad-repuesto" value="1" min="1" class="w-16 p-3 rounded-xl border text-center font-bold bg-white shadow-sm">
-                    <button onclick="agregarRepuestoLista()" class="bg-azul text-white px-4 rounded-xl shadow-md active:scale-90 transition"><i class="fa-solid fa-plus text-lg"></i></button>
+                    <input type="text" id="buscador-repuesto" onkeyup="buscarRepuesto(this.value)" placeholder="Buscar..." class="flex-1 p-3 rounded-xl border text-sm" autocomplete="off">
+                    <ul id="sugerencias-repuestos" class="autocomplete-dropdown absolute w-full bg-white border border-gray-300 rounded-lg hidden mt-1 shadow-2xl"></ul>
+                    <input type="number" id="cantidad-repuesto" value="1" min="1" class="w-16 p-3 rounded-xl border text-center font-bold bg-white">
+                    <button onclick="agregarRepuestoLista()" class="bg-azul text-white px-4 rounded-xl shadow-md active:scale-90 transition"><i class="fa-solid fa-plus"></i></button>
                 </div>
                 <ul id="lista-repuestos-seleccionados" class="space-y-2 mt-3"></ul>
             </div>
@@ -147,14 +144,13 @@
                 <input type="number" id="valor-neto" placeholder="Neto CLP" class="w-full p-4 rounded-xl border bg-gray-50 text-xl font-black shadow-sm">
             </div>
             
-            <button id="btn-enviar-presupuesto" onclick="enviarPresupuesto()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-xl shadow-xl active:scale-95 transition flex items-center justify-center gap-2">
-                <span>GENERAR COTIZACIÓN (PDF)</span><i class="fa-solid fa-file-invoice"></i>
+            <button id="btn-enviar-presupuesto" onclick="enviarPresupuesto()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-xl shadow-xl active:scale-95 transition flex items-center justify-center gap-2 tracking-tighter">
+                GENERAR COTIZACIÓN (PDF)
             </button>
         </div>
     </div>
 
     <script>
-        // --- LOGICA MAESTRA ---
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz2t1slR2Ymxqnw_hre-y7bDQgZFtLsYYqj7du-9U0bBpDjMSl0g4hHCyILTwSFkBc1/exec";
         let clientesDB = JSON.parse(localStorage.getItem('wm_clientes')) || [];
         let repuestosDB = JSON.parse(localStorage.getItem('wm_repuestos')) || [];
@@ -168,7 +164,7 @@
         function guardarAPIKey() { 
             const val = document.getElementById('api-key-input').value.trim();
             localStorage.setItem('wm_groq_key', val); 
-            alert("✅ IA Configurada correctamente."); 
+            alert("✅ Llave Groq guardada."); 
         }
 
         function buscarCliente(t) {
@@ -179,14 +175,7 @@
             ul.classList.remove('hidden');
             fil.forEach(c => {
                 const li = document.createElement('li'); li.className = "p-4 border-b hover:bg-blue-50 cursor-pointer text-sm font-semibold"; li.innerText = c.nombre;
-                li.onclick = () => { 
-                    document.getElementById('nombre').value = c.nombre; 
-                    document.getElementById('rut').value = c.rut || ''; 
-                    document.getElementById('direccion').value = c.direccion || ''; 
-                    document.getElementById('whatsapp').value = c.whatsapp || ''; 
-                    document.getElementById('correo').value = c.correo || ''; 
-                    ul.classList.add('hidden'); 
-                };
+                li.onclick = () => { document.getElementById('nombre').value = c.nombre; document.getElementById('rut').value = c.rut || ''; document.getElementById('direccion').value = c.direccion || ''; document.getElementById('whatsapp').value = c.whatsapp || ''; document.getElementById('correo').value = c.correo || ''; ul.classList.add('hidden'); };
                 ul.appendChild(li);
             });
         }
@@ -209,7 +198,7 @@
             const l = t.split('\n').map(x => x.trim()).filter(x => x !== ""); 
             repuestosDB = [...new Set([...repuestosDB, ...l])]; 
             localStorage.setItem('wm_repuestos', JSON.stringify(repuestosDB)); 
-            alert("✅ Base de datos actualizada."); 
+            alert("✅ Repuestos cargados."); 
             document.getElementById('import-repuestos').value = ""; 
         }
         
@@ -236,7 +225,7 @@
             rec.onresult = (e) => { document.getElementById(id).value = e.results[0][0].transcript; }; 
         }
 
-        // --- MOTOR GROQ V11.2 (SÓLO GROQ) ---
+        // --- MOTOR GROQ V11.5 (LLAMA 3.1 8B INSTANT) ---
         async function mejorarDiagnosticoGroq() {
             const key = localStorage.getItem('wm_groq_key');
             const diagInput = document.getElementById('diagnostico').value;
@@ -245,10 +234,10 @@
 
             const btn = document.getElementById('btn-ia'); 
             btn.disabled = true; 
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> CONECTANDO CON IA...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ANALIZANDO...';
 
             const url = "https://api.groq.com/openai/v1/chat/completions";
-            const prompt = `Actúa como ingeniero metalúrgico experto. Profesionaliza este diagnóstico técnico: "${diagInput}". Responde ÚNICAMENTE un objeto JSON: {"diagnostico_profesional": "texto formal mejorado", "repuestos_sugeridos": ["rep1"]}`;
+            const prompt = `Actúa como ingeniero metalúrgico experto. Profesionaliza este diagnóstico técnico para una soldadora: "${diagInput}". Responde ÚNICAMENTE un objeto JSON: {"diagnostico_profesional": "texto formal mejorado", "repuestos_sugeridos": ["rep1"]}`;
 
             try {
                 const response = await fetch(url, {
@@ -258,14 +247,14 @@
                         'Authorization': `Bearer ${key}` 
                     },
                     body: JSON.stringify({
-                        model: "llama3-8b-8192",
+                        model: "llama-3.1-8b-instant",
                         messages: [{ role: "user", content: prompt }]
                     })
                 });
 
                 const data = await response.json();
                 
-                if(!data.choices) throw new Error(data.error.message || "Error de llave");
+                if(!data.choices) throw new Error(data.error.message || "Error de conexión");
 
                 let content = data.choices[0].message.content;
                 content = content.replace(/```json/g, "").replace(/```/g, "").trim();
@@ -279,7 +268,7 @@
                 btn.innerHTML = 'REINTENTAR'; 
             }
             setTimeout(() => { 
-                btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-xl"></i> OPTIMIZAR CON IA'; 
+                btn.innerHTML = 'OPTIMIZAR CON IA'; 
                 btn.disabled = false; 
             }, 2500);
         }
@@ -292,11 +281,11 @@
                 const res = await fetch(WEB_APP_URL); 
                 const data = await res.json(); 
                 document.getElementById('loading-pendientes').style.display = 'none';
-                if(data.length === 0) { document.getElementById('lista-pendientes').innerHTML = '<p class="text-center py-20 text-gray-400 font-bold">Todo al día.</p>'; return; }
+                if(data.length === 0) { document.getElementById('lista-pendientes').innerHTML = '<p class="text-center py-20 text-gray-400 font-bold tracking-tighter">Sin equipos pendientes.</p>'; return; }
                 data.forEach(p => {
                     const div = document.createElement('div'); div.className = "bg-white p-5 rounded-2xl shadow-md border-l-8 border-azul active:scale-95 transition cursor-pointer mb-4";
                     div.onclick = () => { otActiva = p; document.getElementById('ot-numero').innerText = p.ot; document.getElementById('det-cliente').innerText = p.nombre; document.getElementById('det-equipo').innerText = p.marca + " " + p.modelo; document.getElementById('det-falla').innerText = '"' + p.falla + '"'; repuestosActuales = []; renderRep(); showScreen('presupuesto-detail-screen'); };
-                    div.innerHTML = `<div class="flex justify-between items-center"><div><span class="text-[10px] font-bold text-azul uppercase">OT-${p.ot}</span><h3 class="font-bold text-gray-900">${p.nombre}</h3><p class="text-xs text-gray-400 font-medium">${p.marca} ${p.modelo}</p></div><i class="fa-solid fa-chevron-right text-gray-200"></i></div>`;
+                    div.innerHTML = `<div class="flex justify-between items-center"><div><span class="text-[10px] font-bold text-azul uppercase">OT-${p.ot}</span><h3 class="font-bold text-gray-900">${p.nombre}</h3><p class="text-xs text-gray-400 font-medium">${p.marca} ${p.modelo}</p></div><i class="fa-solid fa-chevron-right text-gray-300"></i></div>`;
                     document.getElementById('lista-pendientes').appendChild(div);
                 });
             } catch (e) { alert("Error Excel."); }
@@ -307,7 +296,7 @@
             if(!diag || !val) return alert("⚠️ Faltan datos.");
             const btn = document.getElementById('btn-enviar-presupuesto'); btn.disabled = true; btn.innerHTML = 'GUARDANDO...';
             const payload = { action: "update_presupuesto", fila: otActiva.fila, diagnostico: diag, valor: val };
-            try { await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) }); await generarPDFCotizacion(otActiva, diag, repuestosActuales, document.getElementById('plazo').value, val); alert("✅ Guardado y PDF generado."); location.reload(); } catch (e) { alert("Error al guardar."); btn.disabled = false; }
+            try { await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) }); await generarPDFCotizacion(otActiva, diag, repuestosActuales, document.getElementById('plazo').value, val); alert("✅ Guardado y PDF generado."); location.reload(); } catch (e) { alert("Error."); btn.disabled = false; }
         }
 
         async function generarPDFCotizacion(ot, diagnostico, arrRepuestos, plazo, valorNeto) {
