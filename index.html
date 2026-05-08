@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Manager Pro V18.9 - Master</title>
+    <title>Welding Manager Pro V19.1 - Master</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -23,7 +23,7 @@
 <body class="bg-gray-100 font-sans pb-10 text-gray-800">
 
     <div id="home-screen" class="p-6 max-w-md mx-auto h-screen flex flex-col justify-center relative">
-        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v18.9</span>
+        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v19.1</span>
         <button onclick="showScreen('config-screen')" class="absolute top-6 right-6 text-gray-400 p-2"><i class="fa-solid fa-gear text-3xl"></i></button>
         
         <div class="text-center mb-10 text-gray-900">
@@ -41,14 +41,14 @@
                 <div><span class="block text-xl font-bold text-gray-900">Presupuesto</span><span class="text-sm opacity-50">Generar Cotización</span></div>
                 <i class="fa-solid fa-file-invoice-dollar text-2xl text-azul"></i>
             </button>
-            <button onclick="abrirInformes()" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left">
-                <span class="text-xl font-bold text-gray-900">Gestión de Taller</span><i class="fa-solid fa-chart-line text-2xl text-azul"></i>
+            <button onclick="abrirInformes()" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left text-gray-900">
+                <span class="text-xl font-bold">Gestión de Taller</span><i class="fa-solid fa-chart-line text-2xl text-azul"></i>
             </button>
         </div>
     </div>
 
     <div id="informes-screen" class="hidden p-0 max-w-md mx-auto bg-white min-h-screen text-gray-900">
-        <div class="p-4 border-b sticky top-0 bg-white z-50 flex items-center justify-between">
+        <div class="p-4 border-b sticky top-0 bg-white z-50 flex items-center justify-between text-gray-900">
             <div class="flex items-center">
                 <button onclick="showScreen('home-screen')" class="text-gray-600 mr-3 p-1"><i class="fa-solid fa-arrow-left text-xl"></i></button>
                 <h2 class="text-xl font-bold">Gestión de Taller</h2>
@@ -76,7 +76,7 @@
             <h2 class="text-2xl font-bold">Registro de Ingreso</h2>
         </div>
         <form id="ingreso-form" class="space-y-6 pb-20 px-1">
-            <div class="bg-blue-50 p-4 rounded-2xl space-y-3 border border-blue-100 relative">
+            <div class="bg-blue-50 p-4 rounded-2xl space-y-3 border border-blue-100 relative text-gray-900">
                 <input type="text" id="nombre" onkeyup="buscarCliente(this.value)" placeholder="Nombre Cliente / Empresa" class="w-full p-3 rounded-xl border text-gray-900" required autocomplete="off">
                 <ul id="sugerencias-cliente" class="autocomplete-dropdown absolute w-full bg-white border hidden mt-1 left-0"></ul>
                 <input type="text" id="rut" placeholder="RUT" class="w-full p-3 rounded-xl border text-gray-900">
@@ -115,7 +115,7 @@
                 <textarea id="falla" placeholder="Dicta o escribe la falla..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 mt-1 shadow-inner text-gray-900"></textarea>
                 <button type="button" onclick="iniciarDictado('falla')" class="absolute right-3 bottom-3 bg-azul text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center"><i class="fa-solid fa-microphone text-xl text-white"></i></button>
             </div>
-            <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition uppercase tracking-widest">Registrar Ingreso</button>
+            <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition uppercase tracking-widest text-white">Registrar Ingreso</button>
         </form>
     </div>
 
@@ -164,7 +164,7 @@
                     <input type="number" id="cantidad-repuesto" value="1" min="1" class="w-16 p-3 rounded-xl border text-center font-bold text-gray-900">
                     <button onclick="agregarRepuestoLista()" class="bg-azul text-white px-4 rounded-xl shadow-md"><i class="fa-solid fa-plus text-white"></i></button>
                 </div>
-                <ul id="lista-repuestos-seleccionados" class="space-y-2 mt-3"></ul>
+                <ul id="lista-repuestos-seleccionados" class="space-y-2 mt-3 text-gray-900"></ul>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
@@ -191,22 +191,22 @@
     <div id="config-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen text-gray-900">
         <div class="flex items-center mb-6 border-b pb-4">
             <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-bold">Configuración</h2>
+            <h2 class="text-2xl font-bold text-gray-900">Configuración</h2>
         </div>
         <div class="space-y-8 pb-10">
             <div class="bg-orange-50 p-4 rounded-2xl border border-orange-200">
                 <label class="font-bold text-orange-700 uppercase text-xs">Llave IA (Groq gsk_...)</label>
                 <div class="flex gap-2 mt-2">
                     <input type="password" id="ia-key-input" placeholder="Pega tu llave aquí..." class="flex-1 p-3 rounded-xl border bg-white">
-                    <button onclick="guardarIAKey()" class="bg-orange-600 text-white px-4 rounded-xl shadow-md"><i class="fa-solid fa-save text-white"></i></button>
+                    <button onclick="guardarIAKey()" class="bg-orange-600 text-white px-4 rounded-xl shadow-md text-white"><i class="fa-solid fa-save text-white"></i></button>
                 </div>
             </div>
-            <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200">
-                <label class="font-bold text-azul uppercase text-xs">Repuestos Maestros</label>
+            <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 shadow-inner">
+                <label class="font-bold text-azul uppercase text-xs">Cargar Repuestos Maestros</label>
                 <textarea id="import-repuestos" class="w-full p-3 rounded-xl border h-40 text-sm mt-2 text-gray-900" placeholder="Uno por línea..."></textarea>
-                <button onclick="importarRepuestosMasivo()" class="w-full bg-azul text-white py-3 rounded-xl font-bold mt-2 shadow-md text-white">Actualizar Base</button>
+                <button onclick="importarRepuestosMasivo()" class="w-full bg-azul text-white py-3 rounded-xl font-bold mt-2 shadow-md active:scale-95 text-white">Actualizar Base</button>
             </div>
-            <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200">
+            <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200 shadow-inner">
                 <label class="font-bold text-blue-700 uppercase text-xs">Cargar Clientes Habituales</label>
                 <textarea id="import-clientes" class="w-full p-3 rounded-xl border h-40 text-sm mt-2 text-gray-900" placeholder="Nombre, RUT, Dirección, WhatsApp..."></textarea>
                 <button onclick="importarClientesMasivo()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-2 text-white">Actualizar Clientes</button>
@@ -227,7 +227,14 @@
             sincronizarBase();
         };
 
-        // --- MOTOR DE SINCRONIZACIÓN V18.9 ---
+        // --- FUNCIÓN DE RASTREO DE COLUMNAS V19.1 ---
+        function obtenerValorSeguro(obj, keyBuscada) {
+            if (!obj) return "";
+            const llaves = Object.keys(obj);
+            const encontrada = llaves.find(k => k.trim().toUpperCase() === keyBuscada.toUpperCase());
+            return encontrada ? obj[encontrada] : "";
+        }
+
         async function sincronizarBase() {
             try { 
                 const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime()); 
@@ -244,17 +251,22 @@
             const ul = document.getElementById('sugerencias-cliente'); ul.innerHTML = '';
             if(t.length < 2) { ul.classList.add('hidden'); return; }
             const baseCombinada = [...dbFull, ...clientesLocales];
-            const fil = baseCombinada.filter(c => c.NOMBRE && c.NOMBRE.toString().toLowerCase().includes(t.toLowerCase()));
+            const fil = baseCombinada.filter(c => {
+                const nom = obtenerValorSeguro(c, 'NOMBRE');
+                return nom.toString().toLowerCase().includes(t.toLowerCase());
+            });
             if(fil.length === 0) { ul.classList.add('hidden'); return; }
             ul.classList.remove('hidden');
             fil.forEach(c => {
-                const li = document.createElement('li'); li.className = "p-4 border-b hover:bg-blue-50 cursor-pointer font-semibold text-sm text-gray-900"; li.innerText = c.NOMBRE;
+                const li = document.createElement('li'); li.className = "p-4 border-b hover:bg-blue-50 cursor-pointer font-semibold text-sm text-gray-900"; 
+                const nom = obtenerValorSeguro(c, 'NOMBRE');
+                li.innerText = nom;
                 li.onclick = () => { 
-                    document.getElementById('nombre').value = c.NOMBRE; 
-                    document.getElementById('rut').value = c.RUT || ''; 
-                    document.getElementById('direccion').value = c.DIRECCION || ''; 
-                    document.getElementById('whatsapp').value = c.WHATSAPP || ''; 
-                    document.getElementById('correo').value = c.CORREO || '';
+                    document.getElementById('nombre').value = nom; 
+                    document.getElementById('rut').value = obtenerValorSeguro(c, 'RUT'); 
+                    document.getElementById('direccion').value = obtenerValorSeguro(c, 'DIRECCION'); 
+                    document.getElementById('whatsapp').value = obtenerValorSeguro(c, 'WHATSAPP'); 
+                    document.getElementById('correo').value = obtenerValorSeguro(c, 'CORREO');
                     ul.classList.add('hidden'); 
                 };
                 ul.appendChild(li);
@@ -288,7 +300,7 @@
         function agregarRepuestoLista() { const name = document.getElementById('buscador-repuesto').value; const cant = document.getElementById('cantidad-repuesto').value; if(!name) return; repuestosActuales.push({ nombre: name, cantidad: parseInt(cant) }); renderRep(); document.getElementById('buscador-repuesto').value = ''; }
         function renderRep() { document.getElementById('lista-repuestos-seleccionados').innerHTML = repuestosActuales.map((r, i) => `<li class="flex justify-between bg-white p-2 border rounded-xl text-xs shadow-sm font-medium text-gray-900"><span>${r.nombre} <b>x${r.cantidad}</b></span><button onclick="repuestosActuales.splice(${i},1);renderRep()" class="text-red-400 px-2"><i class="fa-solid fa-trash text-red-500"></i></button></li>`).join(''); }
 
-        // --- GESTIÓN DE INFORMES V18.9 ---
+        // --- GESTIÓN DE INFORMES V19.1 (LÓGICA DE EVIDENCIA) ---
         async function abrirInformes() {
             showScreen('informes-screen');
             document.getElementById('loading-informes').classList.remove('hidden');
@@ -305,17 +317,23 @@
             if(estadoFiltro === 'LISTO PARA ENTREGA') document.getElementById('tab-listo').classList.add('active');
             if(estadoFiltro === 'RECHAZADO') document.getElementById('tab-rech').classList.add('active');
 
-            const filtrados = dbFull.filter(x => {
-                const s = (x.ESTADO || "").toString().trim().toUpperCase();
-                if(estadoFiltro === 'PRESUPUESTADO') return s === 'PRESUPUESTADO' || s === 'ESPERANDO APROBACION';
-                return s === estadoFiltro.toUpperCase();
+            const filtrados = dbFull.filter(item => {
+                const diagnosticoVal = obtenerValorSeguro(item, 'DIAGNOSTICO').toString().trim();
+                const estadoVal = obtenerValorSeguro(item, 'ESTADO').toString().trim().toUpperCase();
+
+                // LÓGICA MAESTRA: Si hay diagnóstico, es que se presupuestó
+                if(estadoFiltro === 'PRESUPUESTADO') {
+                    // Aparece aquí si hay diagnóstico PERO todavía no ha pasado a reparación o listo
+                    return diagnosticoVal !== "" && (estadoVal === 'PRESUPUESTADO' || estadoVal === 'ESPERANDO APROBACION' || estadoVal === 'INGRESADO');
+                }
+                return estadoVal === estadoFiltro.toUpperCase();
             });
 
             const container = document.getElementById('lista-informes');
-            container.innerHTML = filtrados.length === 0 ? '<p class="text-center text-gray-400 py-10">Sin equipos en este estado.</p>' : '';
+            container.innerHTML = filtrados.length === 0 ? '<p class="text-center text-gray-400 py-10">Sin equipos en esta etapa.</p>' : '';
             
             filtrados.forEach(item => {
-                const diasTranscurridos = calcularDias(item.FECHA_ESTADO || item.FECHA);
+                const diasTranscurridos = calcularDias(obtenerValorSeguro(item, 'FECHA_ESTADO') || obtenerValorSeguro(item, 'FECHA'));
                 const card = document.createElement('div');
                 card.className = "bg-white p-5 rounded-2xl shadow-sm border border-gray-100 space-y-3 text-gray-900";
                 let acciones = ''; let infoTiempo = '';
@@ -332,7 +350,7 @@
                     acciones = `<button onclick="cambiarEstado(${item.fila}, 'ENTREGADO')" class="w-full bg-gray-900 text-white py-3 rounded-xl text-xs font-bold uppercase mt-2 text-white">Equipo Retirado (Cerrar OT)</button>`;
                 }
 
-                card.innerHTML = `<div class="flex justify-between items-start text-gray-900"><div><span class="status-pill bg-gray-100 text-gray-500">OT-${item.ot}</span><h4 class="font-black text-lg text-gray-900">${item.NOMBRE}</h4><p class="text-xs text-gray-500">${item.MARCA} ${item.MODELO}</p><p class="text-[10px] text-azul font-bold">GUIA: ${item.GUIA || 'S/G'}</p></div><a href="https://wa.me/${item.WHATSAPP}" class="bg-green-100 text-green-600 w-10 h-10 rounded-full flex items-center justify-center text-green-600"><i class="fa-brands fa-whatsapp text-xl"></i></a></div><div class="flex justify-between py-2 border-t border-b border-gray-50 text-[11px] text-gray-900">${infoTiempo}</div>${acciones}`;
+                card.innerHTML = `<div class="flex justify-between items-start text-gray-900"><div><span class="status-pill bg-gray-100 text-gray-500">OT-${item.ot}</span><h4 class="font-black text-lg text-gray-900">${obtenerValorSeguro(item, 'NOMBRE')}</h4><p class="text-xs text-gray-500">${obtenerValorSeguro(item, 'MARCA')} ${obtenerValorSeguro(item, 'MODELO')}</p><p class="text-[10px] text-azul font-bold">GUIA: ${obtenerValorSeguro(item, 'GUIA') || 'S/G'}</p></div><a href="https://wa.me/${obtenerValorSeguro(item, 'WHATSAPP')}" class="bg-green-100 text-green-600 w-10 h-10 rounded-full flex items-center justify-center text-green-600"><i class="fa-brands fa-whatsapp text-xl"></i></a></div><div class="flex justify-between py-2 border-t border-b border-gray-50 text-[11px] text-gray-900">${infoTiempo}</div>${acciones}`;
                 container.appendChild(card);
             });
         }
@@ -353,39 +371,58 @@
             try { 
                 await sincronizarBase(); 
                 document.getElementById('loading-pendientes').classList.add('hidden'); 
-                dbFull.filter(p => !p.DIAGNOSTICO && (p.ESTADO || "").toString().toUpperCase() !== 'ENTREGADO').forEach(p => { const div = document.createElement('div'); div.className = "bg-white p-5 rounded-2xl shadow-sm border-l-8 border-azul active:scale-95 transition cursor-pointer mb-4 card-pendientes text-gray-900"; div.onclick = () => { otActiva = p; document.getElementById('ot-numero').innerText = p.ot; document.getElementById('det-cliente').innerText = p.NOMBRE; document.getElementById('det-equipo').innerText = p.MARCA + " " + p.MODELO; document.getElementById('det-guia').innerText = "N° GUIA CLIENTE: " + (p.GUIA || 'S/G'); document.getElementById('det-falla').innerText = p.FALLA; repuestosActuales = []; renderRep(); showScreen('presupuesto-detail-screen'); }; div.innerHTML = `<div class="flex justify-between items-center text-gray-900"><div><span class="text-[10px] font-bold text-azul uppercase text-gray-900">OT-${p.ot}</span><h3 class="font-bold text-gray-800 text-gray-900">${p.NOMBRE}</h3><p class="text-xs text-gray-500 font-medium">${p.MARCA} ${p.MODELO}</p></div><i class="fa-solid fa-chevron-right text-gray-200 text-gray-200"></i></div>`; document.getElementById('lista-pendientes').appendChild(div); });
+                dbFull.filter(p => !obtenerValorSeguro(p, 'DIAGNOSTICO') && obtenerValorSeguro(p, 'ESTADO').toString().toUpperCase() !== 'ENTREGADO').forEach(p => { 
+                    const div = document.createElement('div'); 
+                    div.className = "bg-white p-5 rounded-2xl shadow-sm border-l-8 border-azul active:scale-95 transition cursor-pointer mb-4 card-pendientes text-gray-900"; 
+                    div.onclick = () => { 
+                        otActiva = p; 
+                        document.getElementById('ot-numero').innerText = p.ot; 
+                        document.getElementById('det-cliente').innerText = obtenerValorSeguro(p, 'NOMBRE'); 
+                        document.getElementById('det-equipo').innerText = obtenerValorSeguro(p, 'MARCA') + " " + obtenerValorSeguro(p, 'MODELO'); 
+                        document.getElementById('det-guia').innerText = "N° GUIA CLIENTE: " + (obtenerValorSeguro(p, 'GUIA') || 'S/G'); 
+                        document.getElementById('det-falla').innerText = obtenerValorSeguro(p, 'FALLA'); 
+                        repuestosActuales = []; renderRep(); showScreen('presupuesto-detail-screen'); 
+                    }; 
+                    div.innerHTML = `<div class="flex justify-between items-center text-gray-900"><div><span class="text-[10px] font-bold text-azul uppercase">OT-${p.ot}</span><h3 class="font-bold text-gray-800">${obtenerValorSeguro(p, 'NOMBRE')}</h3><p class="text-xs text-gray-500 font-medium">${obtenerValorSeguro(p, 'MARCA')} ${obtenerValorSeguro(p, 'MODELO')}</p></div><i class="fa-solid fa-chevron-right text-gray-200"></i></div>`; 
+                    document.getElementById('lista-pendientes').appendChild(div); 
+                });
             } catch (e) { alert("Error."); }
         }
 
-        // --- MOTOR PDF V18.9 (TOTALMENTE SINCRONIZADO) ---
+        // --- MOTOR PDF V19.1 (SINCRONIZADO) ---
         function generarPDFGlobal(tipo, ot, datos) {
             const { jsPDF } = window.jspdf; const doc = new jsPDF(); const r = 0, g = 112, b = 243; const fmt = new Intl.NumberFormat("es-CL");
             doc.setFillColor(r, g, b); doc.rect(0, 0, 210, 52, 'F');
             doc.setTextColor(255, 255, 255); doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 15);
             doc.setFontSize(26); doc.text(tipo === 'OT' ? "ORDEN DE INGRESO" : "COTIZACIÓN TÉCNICA", 10, 30);
             doc.setFontSize(9); doc.setFont("helvetica", "normal"); doc.text(`RUT: 76.349.984-7 | amsetecsi@gmail.com`, 10, 40);
-            doc.text(`Fono: +56 9 95412322 | Santiago, Felix Margoz 225 Cerrillos`, 10, 45);
+            doc.text(`Fono: +56 9 95412322 | Santiago, Cerrillos`, 10, 45);
             doc.setDrawColor(255); doc.setLineWidth(0.5); doc.rect(165, 8, 35, 35); doc.setFontSize(7); doc.text("LOGO AQUÍ", 175, 27);
             let cursorY = 65;
+            
+            const NOMBRE = obtenerValorSeguro(ot, 'NOMBRE');
+            const MARCA = obtenerValorSeguro(ot, 'MARCA');
+            const MODELO = obtenerValorSeguro(ot, 'MODELO');
+
             if(tipo === 'OT') {
                 doc.setTextColor(r,g,b); doc.setFontSize(32); doc.setFont("helvetica", "bold"); doc.text(`OT: ${ot.ot}`, 130, 75);
                 doc.setTextColor(40, 40, 40); doc.setFontSize(10); doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 130, 82);
                 doc.setFontSize(15); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("I. DATOS DEL CLIENTE", 10, cursorY); cursorY += 10;
                 doc.setFontSize(13); doc.setFont("helvetica", "normal"); doc.setTextColor(40);
-                doc.text(`Nombre / Empresa: ${ot.NOMBRE}`, 12, cursorY); cursorY += 9;
-                doc.text(`RUT: ${ot.RUT || 'N/A'}`, 12, cursorY); cursorY += 9;
-                doc.text(`WhatsApp: ${ot.WHATSAPP || 'N/A'}`, 12, cursorY); cursorY += 9;
-                doc.text(`Correo: ${ot.CORREO || 'No registrado'}`, 12, cursorY); cursorY += 9;
-                doc.text(`Dirección: ${ot.DIRECCION || 'No registrada'}`, 12, cursorY); cursorY += 15;
+                doc.text(`Nombre / Empresa: ${NOMBRE}`, 12, cursorY); cursorY += 9;
+                doc.text(`RUT: ${obtenerValorSeguro(ot, 'RUT') || 'N/A'}`, 12, cursorY); cursorY += 9;
+                doc.text(`WhatsApp: ${obtenerValorSeguro(ot, 'WHATSAPP') || 'N/A'}`, 12, cursorY); cursorY += 9;
+                doc.text(`Correo: ${obtenerValorSeguro(ot, 'CORREO') || 'No registrado'}`, 12, cursorY); cursorY += 9;
+                doc.text(`Dirección: ${obtenerValorSeguro(ot, 'DIRECCION') || 'No registrada'}`, 12, cursorY); cursorY += 15;
                 doc.setFontSize(15); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("II. DETALLES DEL EQUIPO", 10, cursorY); cursorY += 10;
                 doc.setFontSize(13); doc.setFont("helvetica", "normal"); doc.setTextColor(40);
-                doc.text(`Marca / Modelo: ${ot.MARCA} ${ot.MODELO}`, 12, cursorY); cursorY += 9;
-                doc.text(`N° Serie: ${ot.SERIE || 'S/N'}`, 12, cursorY); cursorY += 9;
-                doc.text(`N° Guía Cliente: ${ot.GUIA || 'No presenta'}`, 12, cursorY); cursorY += 10;
-                const accText = `Accesorios: ${ot.ACCESORIOS || 'Ninguno'}`;
+                doc.text(`Marca / Modelo: ${MARCA} ${MODELO}`, 12, cursorY); cursorY += 9;
+                doc.text(`N° Serie: ${obtenerValorSeguro(ot, 'SERIE') || 'S/N'}`, 12, cursorY); cursorY += 9;
+                doc.text(`N° Guía Cliente: ${obtenerValorSeguro(ot, 'GUIA') || 'No presenta'}`, 12, cursorY); cursorY += 10;
+                const accText = `Accesorios: ${obtenerValorSeguro(ot, 'ACCESORIOS') || 'Ninguno'}`;
                 const accLines = doc.splitTextToSize(accText, 180); doc.text(accLines, 12, cursorY); cursorY += (accLines.length * 8) + 8;
                 doc.setFontSize(15); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("III. FALLA REPORTADA", 10, cursorY); cursorY += 8;
-                const fallaLines = doc.splitTextToSize(ot.FALLA, 185); doc.setFillColor(248, 249, 250); doc.roundedRect(10, cursorY, 190, (fallaLines.length * 8) + 8, 1, 1, 'F');
+                const fallaLines = doc.splitTextToSize(obtenerValorSeguro(ot, 'FALLA'), 185); doc.setFillColor(248, 249, 250); doc.roundedRect(10, cursorY, 190, (fallaLines.length * 8) + 8, 1, 1, 'F');
                 doc.setFontSize(13); doc.text(fallaLines, 15, cursorY + 8);
                 cursorY = 230; doc.setFontSize(9); doc.setTextColor(100); doc.setFont("helvetica", "bold"); doc.text("TÉRMINOS Y CONDICIONES:", 10, cursorY);
                 doc.setFontSize(8.5); doc.setFont("helvetica", "normal");
@@ -396,14 +433,14 @@
                 doc.setTextColor(40, 40, 40); doc.setFontSize(10); doc.text(`OT N°: ${ot.ot}`, 165, 62); doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 165, 68);
                 doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("DATOS DEL CLIENTE", 10, 62);
                 doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(40);
-                doc.text(`Nombre: ${ot.NOMBRE}`, 10, 68); doc.text(`RUT: ${ot.RUT || 'N/A'}`, 10, 73); doc.text(`Guía Cliente: ${ot.GUIA || 'S/G'}`, 10, 78); doc.text(`Email: ${ot.CORREO}`, 10, 83); doc.text(`WhatsApp: ${ot.WHATSAPP}`, 10, 88);
+                doc.text(`Nombre: ${NOMBRE}`, 10, 68); doc.text(`RUT: ${obtenerValorSeguro(ot, 'RUT') || 'N/A'}`, 10, 73); doc.text(`Guía Cliente: ${obtenerValorSeguro(ot, 'GUIA') || 'S/G'}`, 10, 78); doc.text(`Email: ${obtenerValorSeguro(ot, 'CORREO')}`, 10, 83); doc.text(`WhatsApp: ${obtenerValorSeguro(ot, 'WHATSAPP')}`, 10, 88);
                 doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("DETALLES DEL EQUIPO", 110, 62);
                 doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(40);
-                doc.text(`Equipo: ${ot.MARCA} ${ot.MODELO}`, 110, 68); doc.text(`Serie: ${ot.SERIE}`, 110, 73);
-                const accCOT = `Accesorios: ${ot.ACCESORIOS}`; const accLinesCOT = doc.splitTextToSize(accCOT, 90); doc.text(accLinesCOT, 110, 78);
+                doc.text(`Equipo: ${MARCA} ${MODELO}`, 110, 68); doc.text(`Serie: ${obtenerValorSeguro(ot, 'SERIE')}`, 110, 73);
+                const accCOT = `Accesorios: ${obtenerValorSeguro(ot, 'ACCESORIOS')}`; const accLinesCOT = doc.splitTextToSize(accCOT, 90); doc.text(accLinesCOT, 110, 78);
                 cursorY = 105;
                 doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("FALLA REPORTADA:", 10, cursorY); cursorY += 5;
-                doc.setFont("helvetica", "italic"); doc.setTextColor(80); doc.text(`"${ot.FALLA}"`, 12, cursorY); cursorY += 12;
+                doc.setFont("helvetica", "italic"); doc.setTextColor(80); doc.text(`"${obtenerValorSeguro(ot, 'FALLA')}"`, 12, cursorY); cursorY += 12;
                 doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("DIAGNÓSTICO TÉCNICO", 10, cursorY); cursorY += 5;
                 const diagLines = doc.splitTextToSize(datos.diagnostico, 190); const hDiag = (diagLines.length * 6) + 4;
                 doc.setFillColor(248, 249, 250); doc.roundedRect(10, cursorY, 190, hDiag, 1, 1, 'F');
@@ -424,19 +461,20 @@
                 const normasCOT = [`- Plazo: ${datos.plazo}.`, "- Validez: 7 días hábiles.", "- Bodegaje (día 8): 0,07 UF diario.", "- Pago: Débito, Crédito, Transferencia o Efectivo."];
                 normasCOT.forEach((n, i) => { doc.text(n, 10, cursorY + 6 + (i * 4.5)); });
             }
-            doc.save(`${tipo}_OT${ot.ot}_${ot.NOMBRE}.pdf`);
+            doc.save(`${tipo}_OT${ot.ot}_${NOMBRE}.pdf`);
         }
 
         async function enviarPresupuesto() {
             const diag = document.getElementById('diagnostico').value; const val = document.getElementById('valor-neto').value;
-            if(!diag || !val) return alert("⚠️ Completa los datos.");
+            if(!diag || !val) return alert("⚠️ Datos incompletos.");
             const btn = document.getElementById('btn-enviar-presupuesto'); btn.disabled = true; btn.innerHTML = 'CONECTANDO...';
-            const payload = { action: "update_presupuesto", fila: otActiva.fila, diagnostico: diag, valor: val, estado: 'PRESUPUESTADO' };
+            // Escribimos estado PRESUPUESTADO pero lo que importa es que llenamos la columna P (DIAGNOSTICO)
+            const payload = { action: "update_presupuesto", fila: otActiva.fila, DIAGNOSTICO: diag, NETO: val, ESTADO: 'PRESUPUESTADO' };
             try { 
                 await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) }); 
                 generarPDFGlobal('COT', otActiva, { diagnostico: diag, repuestos: repuestosActuales, plazo: document.getElementById('plazo').value, valorNeto: val }); 
-                const msg = `Estimado(a) *${otActiva.NOMBRE}*, le saluda el Servicio Técnico de Soluciones Integrales. 👋%0A%0AAdjuntamos la *Cotización Técnica* para su equipo *${otActiva.MARCA} ${otActiva.MODELO}* correspondiente a la *OT ${otActiva.ot}* y su guía *${otActiva.GUIA || 'S/G'}*.%0A%0AQuedamos atentos a su confirmación.%0A%0A*Saludos.*`;
-                window.open(`https://wa.me/${otActiva.WHATSAPP}?text=${msg}`, '_blank');
+                const msg = `Estimado(a) *${obtenerValorSeguro(otActiva, 'NOMBRE')}*, le saluda el Servicio Técnico de Soluciones Integrales. 👋%0A%0AAdjuntamos la *Cotización Técnica* para su equipo *${obtenerValorSeguro(otActiva, 'MARCA')} ${obtenerValorSeguro(otActiva, 'MODELO')}* correspondiente a la *OT ${otActiva.ot}* y su guía *${obtenerValorSeguro(otActiva, 'GUIA') || 'S/G'}*.%0A%0AQuedamos atentos a su confirmación.%0A%0A*Saludos.*`;
+                window.open(`https://wa.me/${obtenerValorSeguro(otActiva, 'WHATSAPP')}?text=${msg}`, '_blank');
                 setTimeout(() => location.reload(), 1500); 
             } catch (e) { alert("Error."); btn.disabled = false; }
         }
