@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Manager Pro V11.5</title>
+    <title>Welding Manager Pro V13 - Estructura Final</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -20,22 +20,22 @@
 <body class="bg-gray-100 font-sans pb-10 text-gray-800">
 
     <div id="home-screen" class="p-6 max-w-md mx-auto h-screen flex flex-col justify-center relative">
-        <button onclick="showScreen('config-screen')" class="absolute top-6 right-6 text-gray-400 p-2"><i class="fa-solid fa-gear text-3xl"></i></button>
+        <button onclick="showScreen('config-screen')" class="absolute top-6 right-6 text-gray-400 p-2 transition"><i class="fa-solid fa-gear text-3xl"></i></button>
         <div class="text-center mb-10">
             <i class="fa-solid fa-bolt-lightning text-azul text-6xl mb-4"></i>
-            <h1 class="text-3xl font-bold uppercase tracking-tight">Welding Manager</h1>
+            <h1 class="text-3xl font-bold uppercase tracking-tight text-gray-900">Welding Manager</h1>
             <p class="text-gray-500 font-medium italic text-sm">Servicio Técnico Soluciones Integrales</p>
         </div>
         <div class="grid gap-4">
             <button onclick="showScreen('ingreso-screen')" class="bg-azul text-white p-6 rounded-2xl shadow-xl flex items-center justify-between active:scale-95 transition">
-                <div class="text-left"><span class="block text-xl font-bold">Ingreso de Equipo</span><span class="text-sm opacity-80 text-left">Nueva OT</span></div>
+                <div class="text-left"><span class="block text-xl font-bold">Ingreso de Equipo</span><span class="text-sm opacity-80">Nueva OT</span></div>
                 <i class="fa-solid fa-plus-circle text-3xl"></i>
             </button>
             <button onclick="cargarPendientes()" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition">
                 <div class="text-left"><span class="block text-xl font-bold">Presupuesto</span><span class="text-sm opacity-50 text-left">Equipos por revisar</span></div>
                 <i class="fa-solid fa-file-invoice-dollar text-2xl text-azul"></i>
             </button>
-            <button class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition">
+            <button onclick="alert('Módulo de Informes en Desarrollo')" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition">
                 <span class="text-xl font-bold">Informes</span><i class="fa-solid fa-chart-line text-2xl text-azul"></i>
             </button>
         </div>
@@ -43,110 +43,100 @@
 
     <div id="config-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen">
         <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50">
-            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
+            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 transition active:scale-90"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
             <h2 class="text-2xl font-bold">Configuración</h2>
         </div>
         <div class="space-y-6">
-            <div class="bg-orange-50 p-4 rounded-2xl border border-orange-200">
-                <label class="font-bold text-orange-700 uppercase text-xs">Llave Groq (gsk_...)</label>
-                <div class="flex gap-2 mt-2">
-                    <input type="password" id="api-key-input" placeholder="Pega gsk_ aquí..." class="flex-1 p-3 rounded-xl border">
-                    <button onclick="guardarAPIKey()" class="bg-orange-600 text-white px-4 rounded-xl shadow-md"><i class="fa-solid fa-save"></i></button>
-                </div>
-            </div>
             <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200">
-                <label class="font-bold text-azul uppercase text-xs">Repuestos Maestros</label>
-                <textarea id="import-repuestos" class="w-full p-3 rounded-xl border h-40 text-sm mt-2" placeholder="Uno por línea..."></textarea>
-                <button onclick="importarRepuestosMasivo()" class="w-full bg-azul text-white py-3 rounded-xl font-bold mt-2 shadow-md">Cargar Lista</button>
+                <label class="font-bold text-azul uppercase text-xs">Cargar Repuestos Maestros</label>
+                <textarea id="import-repuestos" class="w-full p-3 rounded-xl border h-40 text-sm mt-2" placeholder="Corta y pega tu lista aquí..."></textarea>
+                <button onclick="importarRepuestosMasivo()" class="w-full bg-azul text-white py-3 rounded-xl font-bold mt-2 shadow-md">Actualizar Base</button>
             </div>
+            <p class="text-center text-xs text-gray-400">IA Desactivada Temporalmente</p>
         </div>
     </div>
 
     <div id="ingreso-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen shadow-2xl">
         <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50">
             <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-bold text-gray-800 tracking-tight">Nuevo Ingreso</h2>
+            <h2 class="text-2xl font-bold text-gray-800">Nueva Orden (OT)</h2>
         </div>
         <form id="ingreso-form" class="space-y-6 pb-10">
             <div class="bg-blue-50 p-4 rounded-2xl space-y-3 relative shadow-sm border border-blue-100">
-                <input type="text" id="nombre" onkeyup="buscarCliente(this.value)" placeholder="Cliente o Empresa" class="w-full p-3 rounded-xl border" required autocomplete="off">
+                <input type="text" id="nombre" onkeyup="buscarCliente(this.value)" placeholder="Nombre Cliente o Empresa" class="w-full p-3 rounded-xl border" required autocomplete="off">
                 <ul id="sugerencias-cliente" class="autocomplete-dropdown absolute w-full bg-white border border-blue-200 rounded-lg hidden mt-1"></ul>
                 <input type="text" id="rut" placeholder="RUT" class="w-full p-3 rounded-xl border">
                 <input type="tel" id="whatsapp" placeholder="WhatsApp" class="w-full p-3 rounded-xl border">
-                <input type="email" id="correo" placeholder="Email" class="w-full p-3 rounded-xl border">
             </div>
             <div class="bg-gray-50 p-4 rounded-2xl space-y-3 border border-gray-100">
-                <input type="text" id="marca" placeholder="Marca" class="w-full p-3 rounded-xl border" required>
+                <input type="text" id="marca" placeholder="Marca del Equipo" class="w-full p-3 rounded-xl border" required>
                 <input type="text" id="modelo" placeholder="Modelo" class="w-full p-3 rounded-xl border">
-                <input type="text" id="serie" placeholder="N° Serie" class="w-full p-3 rounded-xl border">
+                <input type="text" id="serie" placeholder="N° de Serie" class="w-full p-3 rounded-xl border">
             </div>
-            <div class="space-y-3">
+            <div class="space-y-2">
                 <label class="font-bold text-gray-500 uppercase text-xs px-1">Falla Reportada</label>
                 <div class="relative">
-                    <textarea id="falla" placeholder="Escribe o dicta la falla..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 shadow-inner"></textarea>
-                    <button type="button" onclick="iniciarDictado('falla')" class="absolute right-3 bottom-3 bg-azul text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition"><i class="fa-solid fa-microphone text-xl"></i></button>
+                    <textarea id="falla" placeholder="Dicta o escribe..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 shadow-inner"></textarea>
+                    <button type="button" onclick="iniciarDictado('falla')" class="absolute right-3 bottom-3 bg-azul text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
                 </div>
             </div>
-            <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition tracking-widest">REGISTRAR INGRESO</button>
+            <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition">REGISTRAR INGRESO</button>
         </form>
     </div>
 
     <div id="presupuesto-list-screen" class="hidden p-4 max-w-md mx-auto bg-gray-50 min-h-screen">
         <div class="flex items-center mb-6 sticky top-0 bg-gray-50 py-2 border-b z-50">
             <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-bold text-gray-800 tracking-tight">Equipos en Taller</h2>
+            <h2 class="text-2xl font-bold">Equipos en Taller</h2>
         </div>
         <div id="loading-pendientes" class="flex flex-col items-center justify-center py-20 hidden">
-            <div class="loader rounded-full border-4 h-12 w-12 mb-4 border-t-azul"></div>
-            <p class="text-gray-500 font-medium tracking-tight">Cargando...</p>
+            <div class="loader rounded-full border-4 h-12 w-12 mb-4"></div>
+            <p class="text-gray-500">Cargando desde Excel...</p>
         </div>
         <div id="lista-pendientes" class="space-y-4 pb-10"></div>
     </div>
 
     <div id="presupuesto-detail-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen shadow-2xl pb-10">
         <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50">
-            <button onclick="showScreen('presupuesto-list-screen')" class="text-gray-600 mr-4 p-2 transition active:scale-90"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
+            <button onclick="showScreen('presupuesto-list-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
             <h2 class="text-2xl font-bold">OT: <span id="ot-numero" class="text-azul font-black"></span></h2>
         </div>
         <div class="space-y-6">
             <div class="bg-gray-100 p-4 rounded-2xl border-l-8 border-azul shadow-sm">
                 <p id="det-cliente" class="text-lg font-bold text-gray-900"></p>
                 <p id="det-equipo" class="text-gray-600 text-sm font-semibold"></p>
-                <p id="det-falla" class="mt-2 text-sm text-red-700 italic border-t border-gray-200 pt-2"></p>
+                <p id="det-falla" class="mt-2 text-sm text-red-700 italic border-t pt-2"></p>
             </div>
             
             <div class="space-y-3">
-                <label class="font-bold text-azul uppercase text-[10px] tracking-widest flex items-center gap-1"><i class="fa-solid fa-stethoscope"></i> Diagnóstico Técnico</label>
+                <label class="font-bold text-azul uppercase text-[10px] tracking-widest flex items-center gap-1">Diagnóstico Técnico</label>
                 <div class="relative">
-                    <textarea id="diagnostico" placeholder="Dicta los hallazgos técnicos..." class="w-full p-5 rounded-3xl border h-32 bg-gray-50 shadow-inner"></textarea>
-                    <button type="button" onclick="iniciarDictado('diagnostico')" class="absolute right-3 bottom-3 bg-azul text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg active:scale-90 transition"><i class="fa-solid fa-microphone"></i></button>
+                    <textarea id="diagnostico" placeholder="Describe los hallazgos técnicos..." class="w-full p-5 rounded-3xl border h-32 bg-gray-50 shadow-inner"></textarea>
+                    <button type="button" onclick="iniciarDictado('diagnostico')" class="absolute right-3 bottom-3 bg-azul text-white w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
                 </div>
-                <button type="button" id="btn-ia" onclick="mejorarDiagnosticoGroq()" class="w-full bg-orange-600 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition shadow-lg tracking-widest">
-                    OPTIMIZAR CON IA
-                </button>
             </div>
 
-            <div class="space-y-3 bg-gray-50 p-4 rounded-3xl border border-gray-200 shadow-sm">
+            <div class="space-y-3 bg-gray-50 p-4 rounded-3xl border border-gray-200">
                 <label class="font-bold text-azul uppercase text-[10px] tracking-widest">Repuestos / Servicios</label>
                 <div class="flex gap-2 relative">
-                    <input type="text" id="buscador-repuesto" onkeyup="buscarRepuesto(this.value)" placeholder="Buscar..." class="flex-1 p-3 rounded-xl border text-sm" autocomplete="off">
-                    <ul id="sugerencias-repuestos" class="autocomplete-dropdown absolute w-full bg-white border border-gray-300 rounded-lg hidden mt-1 shadow-2xl"></ul>
-                    <input type="number" id="cantidad-repuesto" value="1" min="1" class="w-16 p-3 rounded-xl border text-center font-bold bg-white">
-                    <button onclick="agregarRepuestoLista()" class="bg-azul text-white px-4 rounded-xl shadow-md active:scale-90 transition"><i class="fa-solid fa-plus"></i></button>
+                    <div class="relative flex-1">
+                        <input type="text" id="buscador-repuesto" onkeyup="buscarRepuesto(this.value)" placeholder="Buscar..." class="w-full p-3 rounded-xl border text-sm" autocomplete="off">
+                        <ul id="sugerencias-repuestos" class="autocomplete-dropdown absolute w-full bg-white border border-gray-300 rounded-lg hidden mt-1 shadow-2xl"></ul>
+                    </div>
+                    <input type="number" id="cantidad-repuesto" value="1" min="1" class="w-16 p-3 rounded-xl border text-center font-bold">
+                    <button onclick="agregarRepuestoLista()" class="bg-azul text-white px-4 rounded-xl shadow-md"><i class="fa-solid fa-plus"></i></button>
                 </div>
                 <ul id="lista-repuestos-seleccionados" class="space-y-2 mt-3"></ul>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
-                <select id="plazo" class="w-full p-4 rounded-xl border bg-gray-50 font-bold text-sm text-gray-700 shadow-sm">
+                <select id="plazo" class="w-full p-4 rounded-xl border bg-gray-50 font-bold text-sm shadow-sm">
                     <option value="3 días">3 días</option><option value="5 días">5 días</option><option value="15 días">15 días</option>
                 </select>
                 <input type="number" id="valor-neto" placeholder="Neto CLP" class="w-full p-4 rounded-xl border bg-gray-50 text-xl font-black shadow-sm">
             </div>
             
-            <button id="btn-enviar-presupuesto" onclick="enviarPresupuesto()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-xl shadow-xl active:scale-95 transition flex items-center justify-center gap-2 tracking-tighter">
-                GENERAR COTIZACIÓN (PDF)
-            </button>
+            <button id="btn-enviar-presupuesto" onclick="enviarPresupuesto()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-xl shadow-xl active:scale-95 transition">GENERAR COTIZACIÓN (PDF)</button>
         </div>
     </div>
 
@@ -156,17 +146,6 @@
         let repuestosDB = JSON.parse(localStorage.getItem('wm_repuestos')) || [];
         let otActiva = null; let repuestosActuales = []; 
 
-        window.onload = () => { 
-            const k = localStorage.getItem('wm_groq_key'); 
-            if(k) document.getElementById('api-key-input').value = k; 
-        };
-        
-        function guardarAPIKey() { 
-            const val = document.getElementById('api-key-input').value.trim();
-            localStorage.setItem('wm_groq_key', val); 
-            alert("✅ Llave Groq guardada."); 
-        }
-
         function buscarCliente(t) {
             const ul = document.getElementById('sugerencias-cliente'); ul.innerHTML = '';
             if(t.length < 2) { ul.classList.add('hidden'); return; }
@@ -174,8 +153,8 @@
             if(fil.length === 0) { ul.classList.add('hidden'); return; }
             ul.classList.remove('hidden');
             fil.forEach(c => {
-                const li = document.createElement('li'); li.className = "p-4 border-b hover:bg-blue-50 cursor-pointer text-sm font-semibold"; li.innerText = c.nombre;
-                li.onclick = () => { document.getElementById('nombre').value = c.nombre; document.getElementById('rut').value = c.rut || ''; document.getElementById('direccion').value = c.direccion || ''; document.getElementById('whatsapp').value = c.whatsapp || ''; document.getElementById('correo').value = c.correo || ''; ul.classList.add('hidden'); };
+                const li = document.createElement('li'); li.className = "p-4 border-b hover:bg-blue-50 cursor-pointer font-semibold"; li.innerText = c.nombre;
+                li.onclick = () => { document.getElementById('nombre').value = c.nombre; document.getElementById('rut').value = c.rut || ''; ul.classList.add('hidden'); };
                 ul.appendChild(li);
             });
         }
@@ -187,7 +166,7 @@
             if(fil.length === 0) { ul.classList.add('hidden'); return; }
             ul.classList.remove('hidden');
             fil.forEach(r => {
-                const li = document.createElement('li'); li.className = "p-4 border-b hover:bg-gray-100 cursor-pointer text-sm font-semibold text-gray-700"; li.innerText = r;
+                const li = document.createElement('li'); li.className = "p-4 border-b hover:bg-gray-100 cursor-pointer text-sm font-semibold"; li.innerText = r;
                 li.onclick = () => { document.getElementById('buscador-repuesto').value = r; ul.classList.add('hidden'); };
                 ul.appendChild(li);
             });
@@ -198,15 +177,14 @@
             const l = t.split('\n').map(x => x.trim()).filter(x => x !== ""); 
             repuestosDB = [...new Set([...repuestosDB, ...l])]; 
             localStorage.setItem('wm_repuestos', JSON.stringify(repuestosDB)); 
-            alert("✅ Repuestos cargados."); 
-            document.getElementById('import-repuestos').value = ""; 
+            alert("✅ Base de repuestos actualizada."); 
         }
         
-        function agregarRepuestoLista(n=null, c=1) {
-            const name = n || document.getElementById('buscador-repuesto').value; 
-            const cant = n ? c : document.getElementById('cantidad-repuesto').value;
+        function agregarRepuestoLista() {
+            const name = document.getElementById('buscador-repuesto').value; 
+            const cant = document.getElementById('cantidad-repuesto').value;
             if(!name) return; repuestosActuales.push({ nombre: name, cantidad: parseInt(cant) }); renderRep();
-            document.getElementById('buscador-repuesto').value = ''; document.getElementById('cantidad-repuesto').value = '1';
+            document.getElementById('buscador-repuesto').value = ''; 
         }
 
         function renderRep() { 
@@ -225,54 +203,6 @@
             rec.onresult = (e) => { document.getElementById(id).value = e.results[0][0].transcript; }; 
         }
 
-        // --- MOTOR GROQ V11.5 (LLAMA 3.1 8B INSTANT) ---
-        async function mejorarDiagnosticoGroq() {
-            const key = localStorage.getItem('wm_groq_key');
-            const diagInput = document.getElementById('diagnostico').value;
-            if(!key || key === "") return alert("⚠️ Ingresa la clave GSK de Groq en la Tuerca.");
-            if(diagInput.length < 5) return alert("⚠️ Escribe o dicta algo primero.");
-
-            const btn = document.getElementById('btn-ia'); 
-            btn.disabled = true; 
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ANALIZANDO...';
-
-            const url = "https://api.groq.com/openai/v1/chat/completions";
-            const prompt = `Actúa como ingeniero metalúrgico experto. Profesionaliza este diagnóstico técnico para una soldadora: "${diagInput}". Responde ÚNICAMENTE un objeto JSON: {"diagnostico_profesional": "texto formal mejorado", "repuestos_sugeridos": ["rep1"]}`;
-
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json', 
-                        'Authorization': `Bearer ${key}` 
-                    },
-                    body: JSON.stringify({
-                        model: "llama-3.1-8b-instant",
-                        messages: [{ role: "user", content: prompt }]
-                    })
-                });
-
-                const data = await response.json();
-                
-                if(!data.choices) throw new Error(data.error.message || "Error de conexión");
-
-                let content = data.choices[0].message.content;
-                content = content.replace(/```json/g, "").replace(/```/g, "").trim();
-                const json = JSON.parse(content);
-                
-                document.getElementById('diagnostico').value = json.diagnostico_profesional;
-                if(json.repuestos_sugeridos) json.repuestos_sugeridos.forEach(r => agregarRepuestoLista(r, 1));
-                btn.innerHTML = '✨ ¡LISTO!';
-            } catch (e) { 
-                alert("❌ Error: " + e.message); 
-                btn.innerHTML = 'REINTENTAR'; 
-            }
-            setTimeout(() => { 
-                btn.innerHTML = 'OPTIMIZAR CON IA'; 
-                btn.disabled = false; 
-            }, 2500);
-        }
-
         async function cargarPendientes() {
             showScreen('presupuesto-list-screen'); 
             document.getElementById('lista-pendientes').innerHTML = ''; 
@@ -281,22 +211,21 @@
                 const res = await fetch(WEB_APP_URL); 
                 const data = await res.json(); 
                 document.getElementById('loading-pendientes').style.display = 'none';
-                if(data.length === 0) { document.getElementById('lista-pendientes').innerHTML = '<p class="text-center py-20 text-gray-400 font-bold tracking-tighter">Sin equipos pendientes.</p>'; return; }
                 data.forEach(p => {
                     const div = document.createElement('div'); div.className = "bg-white p-5 rounded-2xl shadow-md border-l-8 border-azul active:scale-95 transition cursor-pointer mb-4";
                     div.onclick = () => { otActiva = p; document.getElementById('ot-numero').innerText = p.ot; document.getElementById('det-cliente').innerText = p.nombre; document.getElementById('det-equipo').innerText = p.marca + " " + p.modelo; document.getElementById('det-falla').innerText = '"' + p.falla + '"'; repuestosActuales = []; renderRep(); showScreen('presupuesto-detail-screen'); };
                     div.innerHTML = `<div class="flex justify-between items-center"><div><span class="text-[10px] font-bold text-azul uppercase">OT-${p.ot}</span><h3 class="font-bold text-gray-900">${p.nombre}</h3><p class="text-xs text-gray-400 font-medium">${p.marca} ${p.modelo}</p></div><i class="fa-solid fa-chevron-right text-gray-300"></i></div>`;
                     document.getElementById('lista-pendientes').appendChild(div);
                 });
-            } catch (e) { alert("Error Excel."); }
+            } catch (e) { alert("Error al conectar con la planilla."); }
         }
 
         async function enviarPresupuesto() {
             const diag = document.getElementById('diagnostico').value; const val = document.getElementById('valor-neto').value;
-            if(!diag || !val) return alert("⚠️ Faltan datos.");
+            if(!diag || !val) return alert("⚠️ Faltan datos técnicos o valores.");
             const btn = document.getElementById('btn-enviar-presupuesto'); btn.disabled = true; btn.innerHTML = 'GUARDANDO...';
             const payload = { action: "update_presupuesto", fila: otActiva.fila, diagnostico: diag, valor: val };
-            try { await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) }); await generarPDFCotizacion(otActiva, diag, repuestosActuales, document.getElementById('plazo').value, val); alert("✅ Guardado y PDF generado."); location.reload(); } catch (e) { alert("Error."); btn.disabled = false; }
+            try { await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) }); await generarPDFCotizacion(otActiva, diag, repuestosActuales, document.getElementById('plazo').value, val); alert("✅ Guardado en Excel y PDF generado."); location.reload(); } catch (e) { alert("Error al guardar."); btn.disabled = false; }
         }
 
         async function generarPDFCotizacion(ot, diagnostico, arrRepuestos, plazo, valorNeto) {
@@ -306,17 +235,17 @@
             doc.setTextColor(40, 40, 40); doc.text(`OT N°: ${ot.ot}`, 160, 62); doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 160, 68);
             let cursorY = 75; doc.setFontSize(12); doc.setTextColor(r,g,b); doc.setFont("helvetica", "bold"); doc.text("DIAGNÓSTICO TÉCNICO", 15, cursorY); cursorY += 8;
             doc.setTextColor(40,40,40); doc.setFont("helvetica", "normal"); doc.setFontSize(10);
-            const diagLines = doc.splitTextToSize(diagnostico, 175); doc.setFillColor(250); doc.setDrawColor(230); doc.roundedRect(15, cursorY, 180, (diagLines.length * 6) + 4, 2, 2, 'FD'); doc.text(diagLines, 20, cursorY + 6); cursorY += (diagLines.length * 6) + 15;
+            const diagLines = doc.splitTextToSize(diagnostico, 175); doc.setFillColor(250); doc.roundedRect(15, cursorY, 180, (diagLines.length * 6) + 4, 2, 2, 'F'); doc.text(diagLines, 20, cursorY + 6); cursorY += (diagLines.length * 6) + 15;
             doc.setTextColor(r,g,b); doc.setFont("helvetica", "bold"); doc.text("REPUESTOS Y SERVICIOS", 15, cursorY); cursorY += 8;
-            doc.setTextColor(40,40,40); const repT = arrRepuestos.map(r => `• ${r.nombre} (x${r.cantidad})`).join('\n') || "Servicios incluidos."; const repLines = doc.splitTextToSize(repT, 175); doc.roundedRect(15, cursorY, 180, (repLines.length * 6) + 4, 2, 2, 'FD'); doc.text(repLines, 20, cursorY + 6); cursorY += (repLines.length * 6) + 15;
+            doc.setTextColor(40,40,40); const repT = arrRepuestos.map(r => `• ${r.nombre} (x${r.cantidad})`).join('\n') || "Servicios incluidos."; const repLines = doc.splitTextToSize(repT, 175); doc.roundedRect(15, cursorY, 180, (repLines.length * 6) + 4, 2, 2, 'F'); doc.text(repLines, 20, cursorY + 6); cursorY += (repLines.length * 6) + 15;
             const total = Math.round(parseInt(valorNeto) * 1.19); doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.text(`TOTAL A PAGAR (IVA INC): $${new Intl.NumberFormat("es-CL").format(total)} CLP`, 15, cursorY);
             doc.save(`Cotizacion_OT${ot.ot}.pdf`);
         }
 
         document.getElementById('ingreso-form').addEventListener('submit', async (e) => {
             e.preventDefault(); const btn = document.getElementById('btn-submit'); btn.disabled = true; btn.innerHTML = 'REGISTRANDO...';
-            const d = { nombre: document.getElementById('nombre').value, rut: document.getElementById('rut').value, whatsapp: document.getElementById('whatsapp').value, direccion: document.getElementById('direccion').value, correo: document.getElementById('correo').value, marca: document.getElementById('marca').value, modelo: document.getElementById('modelo').value, serie: document.getElementById('serie').value, falla: document.getElementById('falla').value };
-            try { await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(d) }); alert("✅ OT Registrada en Excel."); location.reload(); } catch (e) { alert("Error."); btn.disabled = false; }
+            const d = { nombre: document.getElementById('nombre').value, rut: document.getElementById('rut').value, marca: document.getElementById('marca').value, modelo: document.getElementById('modelo').value, serie: document.getElementById('serie').value, falla: document.getElementById('falla').value };
+            try { await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(d) }); alert("✅ OT Registrada con éxito."); location.reload(); } catch (e) { alert("Error al registrar."); btn.disabled = false; }
         });
     </script>
 </body>
