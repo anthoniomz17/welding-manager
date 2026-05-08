@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Manager Pro V18.0 - Master</title>
+    <title>Welding Manager Pro V18.1 - Master</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -22,14 +22,14 @@
 <body class="bg-gray-100 font-sans pb-10 text-gray-800">
 
     <div id="home-screen" class="p-6 max-w-md mx-auto h-screen flex flex-col justify-center relative">
-        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v18.0</span>
+        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v18.1</span>
         
         <button onclick="showScreen('config-screen')" class="absolute top-6 right-6 text-gray-400 p-2 transition"><i class="fa-solid fa-gear text-3xl"></i></button>
         
         <div class="text-center mb-10">
             <i class="fa-solid fa-bolt-lightning text-azul text-6xl mb-2"></i>
             <h1 class="text-3xl font-bold uppercase tracking-tighter text-gray-900">Welding Manager</h1>
-            <p class="text-gray-500 text-sm italic text-center">Servicio Técnico Soluciones Integrales</p>
+            <p class="text-gray-500 text-sm italic text-center text-gray-900">Servicio Técnico Soluciones Integrales</p>
         </div>
 
         <div class="grid gap-4">
@@ -47,10 +47,10 @@
         </div>
     </div>
 
-    <div id="ingreso-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen text-gray-900">
-        <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50 text-gray-900">
+    <div id="ingreso-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen">
+        <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50">
             <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 text-gray-900"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-bold text-gray-900">Registro de Ingreso</h2>
+            <h2 class="text-2xl font-bold text-gray-900 text-gray-900">Registro de Ingreso</h2>
         </div>
         <form id="ingreso-form" class="space-y-6 pb-20 px-1">
             <div class="bg-blue-50 p-4 rounded-2xl space-y-3 border border-blue-100 shadow-sm relative">
@@ -92,15 +92,15 @@
     </div>
 
     <div id="presupuesto-list-screen" class="hidden p-4 max-w-md mx-auto bg-gray-50 min-h-screen text-gray-900">
-        <div class="flex items-center mb-6 sticky top-0 bg-gray-50 py-2 border-b z-50 text-gray-900">
+        <div class="flex items-center mb-6 sticky top-0 bg-gray-50 py-2 border-b z-50">
             <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 text-gray-900"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
             <h2 class="text-2xl font-bold text-gray-900">Equipos en Taller</h2>
         </div>
         <div id="loading-pendientes" class="flex flex-col items-center justify-center py-20 hidden text-gray-900">
             <div class="loader rounded-full border-4 h-12 w-12 mb-4 border-t-azul"></div>
-            <p>Conectando con base de datos...</p>
+            <p>Conectando...</p>
         </div>
-        <div id="lista-pendientes" class="space-y-4 pb-10"></div>
+        <div id="lista-pendientes" class="space-y-4 pb-10 text-gray-900"></div>
     </div>
 
     <div id="presupuesto-detail-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen pb-20 shadow-2xl text-gray-900">
@@ -117,18 +117,18 @@
             </div>
             
             <div class="relative">
-                <div class="flex justify-between items-center mb-1">
+                <div class="flex justify-between items-center mb-1 text-gray-900">
                     <label class="font-bold text-azul uppercase text-[10px] tracking-widest flex items-center gap-1"><i class="fa-solid fa-stethoscope"></i> Diagnóstico Técnico</label>
                     <button onclick="document.getElementById('foto-input').click()" class="text-azul p-1"><i class="fa-solid fa-camera text-xl"></i></button>
                     <input type="file" id="foto-input" accept="image/*" capture="environment" class="hidden" onchange="previewImagen(this)">
                 </div>
                 <textarea id="diagnostico" placeholder="Describe los hallazgos técnicos..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 shadow-inner text-gray-900"></textarea>
                 <button type="button" onclick="iniciarDictado('diagnostico')" class="absolute right-3 bottom-3 bg-azul text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition"><i class="fa-solid fa-microphone text-lg text-white"></i></button>
-                <div id="preview-container" class="flex gap-2 mt-2 overflow-x-auto"></div>
+                <div id="preview-container" class="flex gap-2 mt-2 overflow-x-auto text-gray-900"></div>
             </div>
 
             <div class="bg-gray-50 p-4 rounded-3xl border border-gray-200 shadow-sm text-gray-900">
-                <label class="font-bold text-azul uppercase text-[10px] tracking-widest">Repuestos / Servicios</label>
+                <label class="font-bold text-azul uppercase text-[10px] tracking-widest text-gray-900">Repuestos / Servicios</label>
                 <div class="flex gap-2 mt-1 relative text-gray-900">
                     <input type="text" id="buscador-repuesto" onkeyup="buscarRepuesto(this.value)" placeholder="Buscar repuesto..." class="flex-1 p-3 rounded-xl border text-sm text-gray-900" autocomplete="off">
                     <ul id="sugerencias-repuestos" class="autocomplete-dropdown absolute w-full bg-white border hidden z-50 shadow-xl mt-12 text-gray-900"></ul>
@@ -160,30 +160,55 @@
     </div>
 
     <div id="config-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen text-gray-900">
-        <div class="flex items-center mb-6">
-            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 transition active:scale-90 text-gray-900"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
+        <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50">
+            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 transition active:scale-90"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
             <h2 class="text-2xl font-bold text-gray-900">Configuración</h2>
         </div>
-        <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 shadow-inner text-gray-900">
-            <label class="font-bold text-azul uppercase text-xs">Cargar Repuestos Maestros</label>
-            <textarea id="import-repuestos" class="w-full p-3 rounded-xl border h-40 text-sm mt-2 text-gray-900" placeholder="Uno por línea..."></textarea>
-            <button onclick="importarRepuestosMasivo()" class="w-full bg-azul text-white py-3 rounded-xl font-bold mt-2 shadow-md active:scale-95">Actualizar Base</button>
+        <div class="space-y-8 pb-10">
+            <div class="bg-orange-50 p-4 rounded-2xl border border-orange-200">
+                <label class="font-bold text-orange-700 uppercase text-xs">Llave IA (Groq gsk_...)</label>
+                <div class="flex gap-2 mt-2">
+                    <input type="password" id="ia-key-input" placeholder="Pega tu llave aquí..." class="flex-1 p-3 rounded-xl border bg-white">
+                    <button onclick="guardarIAKey()" class="bg-orange-600 text-white px-4 rounded-xl shadow-md"><i class="fa-solid fa-save"></i></button>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 shadow-inner text-gray-900">
+                <label class="font-bold text-azul uppercase text-xs">Cargar Repuestos Maestros</label>
+                <textarea id="import-repuestos" class="w-full p-3 rounded-xl border h-32 text-sm mt-2 text-gray-900" placeholder="Uno por línea..."></textarea>
+                <button onclick="importarRepuestosMasivo()" class="w-full bg-azul text-white py-3 rounded-xl font-bold mt-2 shadow-md active:scale-95">Actualizar Repuestos</button>
+            </div>
+
+            <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200 shadow-inner text-gray-900">
+                <label class="font-bold text-blue-700 uppercase text-xs">Cargar Clientes Habituales</label>
+                <textarea id="import-clientes" class="w-full p-3 rounded-xl border h-32 text-sm mt-2 text-gray-900" placeholder="Ejemplo: Nombre Cliente, RUT, Dirección, Celular, Correo (uno por línea)..."></textarea>
+                <button onclick="importarClientesMasivo()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-2 shadow-md active:scale-95">Actualizar Clientes</button>
+            </div>
         </div>
     </div>
 
     <script>
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz2t1slR2Ymxqnw_hre-y7bDQgZFtLsYYqj7du-9U0bBpDjMSl0g4hHCyILTwSFkBc1/exec";
         let clientesDB = [];
+        let clientesLocales = JSON.parse(localStorage.getItem('wm_clientes_locales')) || [];
         let repuestosDB = JSON.parse(localStorage.getItem('wm_repuestos')) || [];
         let otActiva = null; let repuestosActuales = []; let fotosCapturadas = [];
 
+        window.onload = () => {
+            const iaK = localStorage.getItem('wm_ia_key');
+            if(iaK) document.getElementById('ia-key-input').value = iaK;
+        };
+
         function showScreen(id) { document.querySelectorAll('div[id$="-screen"]').forEach(s => s.style.display = 'none'); document.getElementById(id).style.display = (id === 'home-screen') ? 'flex' : 'block'; window.scrollTo(0,0); }
         function iniciarDictado(id) { const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); rec.lang = 'es-ES'; rec.start(); rec.onresult = (e) => { document.getElementById(id).value = e.results[0][0].transcript; }; }
+        function guardarIAKey() { localStorage.setItem('wm_ia_key', document.getElementById('ia-key-input').value.trim()); alert("✅ Llave IA Guardada."); }
 
         function buscarCliente(t) {
             const ul = document.getElementById('sugerencias-cliente'); ul.innerHTML = '';
             if(t.length < 2) { ul.classList.add('hidden'); return; }
-            const fil = clientesDB.filter(c => c.nombre.toLowerCase().includes(t.toLowerCase()));
+            // Combinar base de Sheets con base Local
+            const baseCombinada = [...clientesDB, ...clientesLocales];
+            const fil = baseCombinada.filter(c => c.nombre.toLowerCase().includes(t.toLowerCase()));
             if(fil.length === 0) { ul.classList.add('hidden'); return; }
             ul.classList.remove('hidden');
             fil.forEach(c => {
@@ -217,7 +242,18 @@
             const t = document.getElementById('import-repuestos').value; if(!t.trim()) return; 
             const l = t.split('\n').map(x => x.trim()).filter(x => x !== ""); 
             repuestosDB = [...new Set([...repuestosDB, ...l])]; 
-            localStorage.setItem('wm_repuestos', JSON.stringify(repuestosDB)); alert("✅ Base actualizada."); 
+            localStorage.setItem('wm_repuestos', JSON.stringify(repuestosDB)); alert("✅ Repuestos cargados."); 
+        }
+
+        function importarClientesMasivo() {
+            const t = document.getElementById('import-clientes').value; if(!t.trim()) return;
+            const l = t.split('\n').map(x => {
+                const parts = x.split(',').map(p => p.trim());
+                return { nombre: parts[0], rut: parts[1] || '', direccion: parts[2] || '', whatsapp: parts[3] || '', correo: parts[4] || '' };
+            }).filter(x => x.nombre);
+            clientesLocales = l;
+            localStorage.setItem('wm_clientes_locales', JSON.stringify(clientesLocales));
+            alert("✅ Base de clientes actualizada.");
         }
 
         function previewImagen(input) {
@@ -228,7 +264,7 @@
             }
         }
 
-        function agregarRepuestoLista() { const name = document.getElementById('buscador-repuesto').value; const cant = document.getElementById('cantidad-repuesto').value; if(!name) return; repuestosActuales.push({ nombre: name, Fits: parseInt(cant) }); renderRep(); document.getElementById('buscador-repuesto').value = ''; }
+        function agregarRepuestoLista() { const name = document.getElementById('buscador-repuesto').value; const cant = document.getElementById('cantidad-repuesto').value; if(!name) return; repuestosActuales.push({ nombre: name, cantidad: parseInt(cant) }); renderRep(); document.getElementById('buscador-repuesto').value = ''; }
         function renderRep() { document.getElementById('lista-repuestos-seleccionados').innerHTML = repuestosActuales.map((r, i) => `<li class="flex justify-between bg-white p-2 border rounded-xl text-xs shadow-sm font-medium text-gray-900"><span>${r.nombre} <b>x${r.cantidad}</b></span><button onclick="repuestosActuales.splice(${i},1);renderRep()" class="text-red-400 px-2"><i class="fa-solid fa-trash"></i></button></li>`).join(''); }
 
         async function cargarPendientes() {
@@ -236,12 +272,11 @@
             try { const res = await fetch(WEB_APP_URL); const data = await res.json(); document.getElementById('loading-pendientes').classList.add('hidden'); clientesDB = data; data.filter(p => !p.diagnostico).forEach(p => { const div = document.createElement('div'); div.className = "bg-white p-5 rounded-2xl shadow-sm border-l-8 border-azul active:scale-95 transition cursor-pointer mb-4 card-pendientes text-gray-900"; div.onclick = () => { otActiva = p; document.getElementById('ot-numero').innerText = p.ot; document.getElementById('det-cliente').innerText = p.nombre; document.getElementById('det-equipo').innerText = p.marca + " " + p.modelo; document.getElementById('det-falla').innerText = p.falla; repuestosActuales = []; renderRep(); showScreen('presupuesto-detail-screen'); }; div.innerHTML = `<div class="flex justify-between items-center text-gray-900"><div><span class="text-[10px] font-bold text-azul uppercase">OT-${p.ot}</span><h3 class="font-bold text-gray-800">${p.nombre}</h3><p class="text-xs text-gray-500 font-medium">${p.marca} ${p.modelo}</p></div><i class="fa-solid fa-chevron-right text-gray-200"></i></div>`; document.getElementById('lista-pendientes').appendChild(div); }); } catch (e) { alert("Error de conexión."); }
         }
 
-        // --- MOTOR PDF PROFESIONAL V18.0 (RECONSTRUCCIÓN DE DATOS COMPLETA) ---
+        // --- MOTOR PDF PROFESIONAL V18.1 ---
         function generarPDFGlobal(tipo, ot, datos) {
             const { jsPDF } = window.jspdf; const doc = new jsPDF(); const r = 0, g = 112, b = 243; 
             const fmt = new Intl.NumberFormat("es-CL");
             
-            // Encabezado Maestro (Azul Íntegro)
             doc.setFillColor(r, g, b); doc.rect(0, 0, 210, 52, 'F');
             doc.setTextColor(255, 255, 255); doc.setFontSize(14); doc.setFont("helvetica", "bold"); 
             doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 15);
@@ -250,17 +285,14 @@
             doc.text(`RUT: 76.349.984-7 | amsetecsi@gmail.com`, 10, 40);
             doc.text(`Fono: +56 9 95412322 | Santiago, Felix Margoz 225 Cerrillos`, 10, 45);
             
-            // Espacio de LOGO (Esquina superior derecha en blanco)
             doc.setDrawColor(255); doc.setLineWidth(0.5); doc.rect(165, 8, 35, 35);
             doc.setFontSize(7); doc.text("LOGO AQUÍ", 175, 27);
 
             let cursorY = 65;
 
-            // --- DISEÑO A: COMPROBANTE DE INGRESO (GRANDE Y LEGIBLE) ---
             if(tipo === 'OT') {
                 doc.setTextColor(r,g,b); doc.setFontSize(32); doc.setFont("helvetica", "bold");
                 doc.text(`OT: ${ot.ot}`, 130, 75);
-                
                 doc.setTextColor(40, 40, 40); doc.setFontSize(10);
                 doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 130, 82);
 
@@ -306,12 +338,10 @@
                 doc.line(30, 275, 80, 275); doc.text("Firma Cliente", 45, 280);
                 doc.line(130, 275, 180, 275); doc.text("Firma Recepción", 145, 280);
 
-            // --- DISEÑO B: COTIZACIÓN TÉCNICA (CON TODOS LOS DATOS RECUPERADOS) ---
             } else {
                 doc.setTextColor(40, 40, 40); doc.setFontSize(10);
                 doc.text(`OT N°: ${ot.ot}`, 165, 62); doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 165, 68);
                 
-                // Bloque Cliente (Izquierda)
                 doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b);
                 doc.text("DATOS DEL CLIENTE", 10, 62);
                 doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(40);
@@ -321,7 +351,6 @@
                 doc.text(`Email: ${ot.correo || 'N/A'}`, 10, 83);
                 doc.text(`WhatsApp: ${ot.whatsapp || 'N/A'}`, 10, 88);
 
-                // Bloque Equipo (Derecha)
                 doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b);
                 doc.text("DETALLES DEL EQUIPO", 110, 62);
                 doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(40);
@@ -332,7 +361,6 @@
                 doc.text(accLinesCOT, 110, 78);
 
                 cursorY = 105;
-                // Falla reportada como referencia
                 doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b);
                 doc.text("FALLA REPORTADA POR CLIENTE:", 10, cursorY);
                 cursorY += 5;
@@ -340,7 +368,6 @@
                 doc.text(`"${ot.falla}"`, 12, cursorY);
                 cursorY += 12;
 
-                // Diagnóstico con RECUADRO DINÁMICO
                 doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b);
                 doc.text("DIAGNÓSTICO TÉCNICO", 10, cursorY);
                 cursorY += 5;
@@ -351,11 +378,10 @@
                 doc.text(diagLines, 14, cursorY + 6);
                 cursorY += hDiag + 10;
 
-                // Repuestos con RECUADRO DINÁMICO
                 doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b);
                 doc.text("REPUESTOS Y SERVICIOS", 10, cursorY);
                 cursorY += 5;
-                const repT = datos.repuestos.map(r => `• ${r.nombre} (x${r.cantidad})`).join('\n') || "Mano de obra y servicios integrales.";
+                const repT = datos.repuestos.map(r => `• ${r.nombre} (x${r.cantidad})`).join('\n') || "Servicios de mano de obra y revisión.";
                 const repLines = doc.splitTextToSize(repT, 190);
                 const hRep = (repLines.length * 6) + 4;
                 doc.setFillColor(242, 244, 245); doc.roundedRect(10, cursorY, 190, hRep, 1, 1, 'F');
@@ -364,7 +390,6 @@
 
                 if(cursorY > 200) { doc.addPage(); cursorY = 20; }
                 const neto = parseInt(datos.valorNeto); const iva = Math.round(neto * 0.19); const total = neto + iva;
-                
                 doc.setFillColor(250); doc.setDrawColor(200); doc.rect(120, cursorY, 80, 28);
                 doc.setFontSize(10); doc.setFont("helvetica", "bold");
                 doc.text("VALOR NETO:", 125, cursorY + 8); doc.setFont("helvetica", "normal"); doc.text(`$${fmt.format(neto)}`, 195, cursorY + 8, {align: 'right'});
@@ -378,7 +403,7 @@
                 const normasCOT = [
                     `- Plazo estimado de reparación: ${datos.plazo || '3 días hábiles'}.`,
                     "- Validez del presupuesto: 7 días hábiles. Rechazo genera cobro de 0,05 UF.",
-                    "- Si no hay respuesta en 7 días hábiles tras el aviso, se cobrará bodegaje diario de 0,07 UF.",
+                    "- Si no hay respuesta tras el aviso, se cobrará bodegaje diario de 0,07 UF.",
                     "- Formas de pago: Débito, Crédito, Transferencia electrónica o Efectivo."
                 ];
                 normasCOT.forEach((n, i) => { doc.text(n, 10, cursorY + 6 + (i * 4.5)); });
