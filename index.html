@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Manager Pro V20.5 - Gestión de Tiempos Real</title>
+    <title>Welding Manager Pro V20.6 - Triple Identidad Corporativa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -24,46 +24,66 @@
         .tabla-entregados th { background: #f3f4f6; padding: 10px; text-align: left; text-transform: uppercase; }
         .tabla-entregados td { padding: 10px; border-bottom: 1px solid #eee; }
         
-        /* SEMÁFORO DE SOMBRAS DINÁMICAS (DÍAS HÁBILES CHILE) */
+        /* SOMBRAS DINÁMICAS (DÍAS HÁBILES) */
         .sh-dia-1 { box-shadow: 0 15px 30px -5px rgba(34, 197, 94, 0.4); border: 1px solid rgba(34, 197, 94, 0.2); }
         .sh-dia-2 { box-shadow: 0 15px 30px -5px rgba(234, 179, 8, 0.4); border: 1px solid rgba(234, 179, 8, 0.2); }
         .sh-dia-3 { box-shadow: 0 15px 30px -5px rgba(239, 68, 68, 0.5); border: 1px solid rgba(239, 68, 68, 0.3); }
         .sh-abandono { box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.5); border: 2px solid #000; }
+        
+        /* ESTILO PARA HEADERS CON BANNER */
+        .app-header-bg { position: relative; background-color: var(--azul); color: white; overflow: hidden; }
+        .app-header-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%); z-index: 1; }
+        .app-header-content { position: relative; z-index: 2; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body class="bg-gray-100 font-sans pb-10 text-gray-800">
 
-    <div id="home-screen" class="p-6 max-w-md mx-auto h-screen flex flex-col justify-center relative">
-        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v20.5 Premium</span>
-        <button onclick="showScreen('config-screen')" class="absolute top-6 right-6 text-gray-400 p-2 transition"><i class="fa-solid fa-gear text-3xl"></i></button>
-        
-        <div class="text-center mb-10">
-            <i class="fa-solid fa-bolt-lightning text-azul text-6xl mb-2"></i>
-            <h1 class="text-3xl font-black uppercase tracking-tighter text-gray-900">Welding Manager</h1>
-            <p class="text-gray-500 text-sm italic text-center">Servicio Técnico Soluciones Integrales</p>
+    <div id="home-screen" class="max-w-md mx-auto h-screen flex flex-col relative bg-white">
+        <div class="app-header-bg h-48 rounded-b-3xl shadow-lg flex flex-col justify-between p-6">
+            <div class="app-header-overlay hidden banner-overlay"></div>
+            <div class="app-header-content flex justify-between items-start">
+                <div class="app-logo-container"></div>
+                <button onclick="showScreen('config-screen')" class="text-white p-2 transition active:scale-90"><i class="fa-solid fa-gear text-2xl"></i></button>
+            </div>
+            <div class="app-header-content">
+                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v20.6 Premium</span>
+                <h1 class="text-3xl font-black uppercase tracking-tighter mt-1">Welding Manager</h1>
+                <p class="text-sm italic">Soluciones Integrales</p>
+            </div>
         </div>
 
-        <div class="grid gap-4">
-            <button onclick="showScreen('ingreso-screen')" class="bg-azul text-white p-6 rounded-2xl shadow-xl flex items-center justify-between active:scale-95 transition text-left">
-                <div><span class="block text-xl font-bold">Ingreso de Equipo</span><span class="text-sm opacity-80">Nueva OT y Registro</span></div>
-                <i class="fa-solid fa-plus-circle text-3xl text-white"></i>
-            </button>
-            <button onclick="cargarPendientes()" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left">
-                <div><span class="block text-xl font-bold text-gray-900">Presupuesto</span><span class="text-sm text-gray-500">Generar Cotización</span></div>
-                <i class="fa-solid fa-file-invoice-dollar text-2xl text-azul"></i>
-            </button>
-            <button onclick="showScreen('menu-gestion-screen')" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left">
-                <span class="text-xl font-bold text-gray-900">Gestión de Taller</span><i class="fa-solid fa-layer-group text-2xl text-azul"></i>
-            </button>
+        <div class="flex-1 px-6 pt-10 pb-6 flex flex-col justify-center">
+            <div class="text-center mb-8">
+                <div id="home-main-img-container" class="mb-4">
+                    <i class="fa-solid fa-bolt-lightning text-azul text-7xl mb-2 drop-shadow-md"></i>
+                </div>
+            </div>
+
+            <div class="grid gap-4">
+                <button onclick="showScreen('ingreso-screen')" class="bg-azul text-white p-6 rounded-2xl shadow-xl flex items-center justify-between active:scale-95 transition text-left">
+                    <div><span class="block text-xl font-bold">Ingreso de Equipo</span><span class="text-sm opacity-80">Nueva OT y Registro</span></div>
+                    <i class="fa-solid fa-plus-circle text-3xl text-white"></i>
+                </button>
+                <button onclick="cargarPendientes()" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left border-y border-r border-gray-100">
+                    <div><span class="block text-xl font-bold text-gray-900">Presupuesto</span><span class="text-sm text-gray-500">Generar Cotización</span></div>
+                    <i class="fa-solid fa-file-invoice-dollar text-2xl text-azul"></i>
+                </button>
+                <button onclick="showScreen('menu-gestion-screen')" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left border-y border-r border-gray-100">
+                    <span class="text-xl font-bold text-gray-900">Gestión de Taller</span><i class="fa-solid fa-layer-group text-2xl text-azul"></i>
+                </button>
+            </div>
         </div>
     </div>
 
-    <div id="menu-gestion-screen" class="hidden p-6 max-w-md mx-auto bg-white min-h-screen text-gray-900">
-        <div class="flex items-center mb-6 border-b pb-4">
-            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 transition"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-black uppercase tracking-tighter">Panel de Gestión</h2>
+    <div id="menu-gestion-screen" class="hidden max-w-md mx-auto bg-white min-h-screen">
+        <div class="app-header-bg p-5 shadow-md flex items-center mb-6 sticky top-0 z-50">
+            <div class="app-header-overlay hidden banner-overlay"></div>
+            <div class="app-header-content flex items-center w-full">
+                <button onclick="showScreen('home-screen')" class="text-white mr-4 p-2 transition active:scale-90"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
+                <h2 class="text-2xl font-black uppercase tracking-tighter">Panel de Gestión</h2>
+            </div>
         </div>
-        <div class="grid gap-3">
+        <div class="grid gap-3 px-6">
             <button onclick="abrirListaGestion('PRESUPUESTADO')" class="btn-menu-gestion bg-gray-50 p-4 rounded-2xl border-l-8 border-blue-500 shadow-sm flex items-center justify-between">
                 <div class="text-left"><span class="block text-md font-black uppercase text-gray-900">Presupuestos</span><span class="text-[9px] text-gray-400 italic">Esperando aprobación</span></div>
                 <i class="fa-solid fa-clock-rotate-left text-xl text-blue-500"></i>
@@ -91,24 +111,29 @@
         </div>
     </div>
 
-    <div id="lista-gestion-screen" class="hidden p-0 max-w-md mx-auto bg-white min-h-screen text-gray-900">
-        <div class="p-4 border-b sticky top-0 bg-white z-50 flex items-center justify-between">
-            <div class="flex items-center">
-                <button onclick="showScreen('menu-gestion-screen')" class="text-gray-600 mr-3 p-1"><i class="fa-solid fa-arrow-left text-xl"></i></button>
-                <h2 id="titulo-lista-gestion" class="text-xl font-black uppercase tracking-tighter text-gray-900">LISTA</h2>
+    <div id="lista-gestion-screen" class="hidden p-0 max-w-md mx-auto bg-gray-50 min-h-screen text-gray-900">
+        <div class="app-header-bg p-4 sticky top-0 z-50 flex items-center justify-between shadow-md">
+            <div class="app-header-overlay hidden banner-overlay"></div>
+            <div class="app-header-content flex items-center w-full">
+                <button onclick="showScreen('menu-gestion-screen')" class="text-white mr-3 p-2 active:scale-90 transition"><i class="fa-solid fa-arrow-left text-xl"></i></button>
+                <h2 id="titulo-lista-gestion" class="text-xl font-black uppercase tracking-tighter">LISTA</h2>
             </div>
         </div>
         <div id="contenedor-items-gestion" class="p-4 space-y-4"></div>
     </div>
 
-    <div id="ingreso-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen text-gray-900">
-        <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50">
-            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-bold text-gray-900">Registro de Ingreso</h2>
+    <div id="ingreso-screen" class="hidden max-w-md mx-auto bg-white min-h-screen">
+        <div class="app-header-bg p-5 shadow-md flex items-center mb-6 sticky top-0 z-50">
+            <div class="app-header-overlay hidden banner-overlay"></div>
+            <div class="app-header-content flex items-center w-full">
+                <button onclick="showScreen('home-screen')" class="text-white mr-4 p-2 transition active:scale-90"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
+                <h2 class="text-2xl font-black uppercase tracking-tighter">Nuevo Ingreso</h2>
+            </div>
         </div>
-        <form id="ingreso-form" class="space-y-6 pb-20 px-1">
+        
+        <form id="ingreso-form" class="space-y-6 pb-20 px-4">
             <div class="bg-blue-50 p-4 rounded-2xl space-y-3 border border-blue-100 relative">
-                <input type="text" id="nombre" onkeyup="buscarCliente(this.value)" placeholder="Nombre del Cliente / Empresa" class="w-full p-3 rounded-xl border text-gray-900" required autocomplete="off">
+                <input type="text" id="nombre" onkeyup="buscarCliente(this.value)" placeholder="Nombre del Cliente / Empresa" class="w-full p-3 rounded-xl border text-gray-900 font-bold" required autocomplete="off">
                 <ul id="sugerencias-cliente" class="autocomplete-dropdown absolute w-full bg-white border hidden mt-1 left-0 z-50"></ul>
                 <input type="text" id="rut" placeholder="RUT (Ej: 12.345.678-9)" class="w-full p-3 rounded-xl border text-gray-900">
                 <input type="tel" id="whatsapp" placeholder="WhatsApp (Ej: +569...)" class="w-full p-3 rounded-xl border text-gray-900">
@@ -118,7 +143,7 @@
             
             <div class="bg-gray-50 p-4 rounded-2xl space-y-3 border border-gray-100">
                 <div class="grid grid-cols-2 gap-2 text-gray-900">
-                    <input type="text" id="marca" placeholder="Marca" class="w-full p-3 rounded-xl border text-gray-900" required>
+                    <input type="text" id="marca" placeholder="Marca" class="w-full p-3 rounded-xl border text-gray-900 font-bold" required>
                     <input type="text" id="modelo" placeholder="Modelo" class="w-full p-3 rounded-xl border text-gray-900">
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-gray-900">
@@ -152,25 +177,32 @@
         </form>
     </div>
 
-    <div id="presupuesto-list-screen" class="hidden p-4 max-w-md mx-auto bg-gray-50 min-h-screen text-gray-900">
-        <div class="flex items-center mb-6 sticky top-0 bg-gray-50 py-2 border-b z-50">
-            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-black uppercase tracking-tighter text-gray-900">Por Presupuestar</h2>
+    <div id="presupuesto-list-screen" class="hidden max-w-md mx-auto bg-gray-50 min-h-screen text-gray-900">
+        <div class="app-header-bg p-5 shadow-md flex items-center mb-6 sticky top-0 z-50">
+            <div class="app-header-overlay hidden banner-overlay"></div>
+            <div class="app-header-content flex items-center w-full">
+                <button onclick="showScreen('home-screen')" class="text-white mr-4 p-2 transition active:scale-90"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
+                <h2 class="text-2xl font-black uppercase tracking-tighter">Por Presupuestar</h2>
+            </div>
         </div>
+        
         <div id="loading-pendientes" class="flex flex-col items-center justify-center py-20 hidden">
             <div class="loader rounded-full border-4 h-12 w-12 mb-4 border-t-azul"></div>
             <p class="font-bold text-gray-400">Sincronizando con la nube...</p>
         </div>
-        <div id="lista-pendientes" class="space-y-6 pb-10"></div>
+        <div id="lista-pendientes" class="space-y-6 pb-10 px-4"></div>
     </div>
 
-    <div id="presupuesto-detail-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen pb-20 shadow-2xl text-gray-900">
-        <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50">
-            <button onclick="showScreen('presupuesto-list-screen')" class="text-gray-600 mr-4 p-2 transition"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-bold text-gray-900">OT: <span id="ot-numero" class="text-azul font-black"></span></h2>
+    <div id="presupuesto-detail-screen" class="hidden max-w-md mx-auto bg-white min-h-screen pb-20 shadow-2xl">
+        <div class="app-header-bg p-5 shadow-md flex items-center mb-6 sticky top-0 z-50">
+            <div class="app-header-overlay hidden banner-overlay"></div>
+            <div class="app-header-content flex items-center w-full">
+                <button onclick="showScreen('presupuesto-list-screen')" class="text-white mr-4 p-2 transition active:scale-90"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
+                <h2 class="text-2xl font-black uppercase tracking-tighter">COTIZAR OT-<span id="ot-numero"></span></h2>
+            </div>
         </div>
         
-        <div class="space-y-5 px-1">
+        <div class="space-y-5 px-5">
             <div class="p-2">
                 <p id="det-cliente" class="text-lg font-black text-gray-900"></p>
                 <p id="det-equipo" class="text-gray-500 font-bold"></p>
@@ -223,11 +255,46 @@
     </div>
 
     <div id="config-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen text-gray-900">
-        <div class="flex items-center mb-6 border-b pb-4">
+        <div class="flex items-center mb-6 border-b pb-4 mt-2">
             <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 transition active:scale-90"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-bold text-gray-900">Ajustes del Sistema</h2>
+            <h2 class="text-2xl font-black uppercase tracking-tighter text-gray-900">Ajustes del Sistema</h2>
         </div>
-        <div class="space-y-8 pb-10">
+        
+        <div class="space-y-6 pb-10">
+            <div class="bg-purple-50 p-4 rounded-2xl border border-purple-200 shadow-sm space-y-5">
+                <h3 class="font-black text-purple-800 uppercase text-sm border-b border-purple-200 pb-2"><i class="fa-solid fa-image"></i> Triple Identidad Visual</h3>
+                
+                <div>
+                    <label class="font-bold text-purple-700 uppercase text-[10px]">1. Logotipo Corporativo (Esquina PDF y App)</label>
+                    <p class="text-[9px] text-purple-500 mb-1 leading-tight">Usa un archivo PNG con fondo transparente para un resultado profesional.</p>
+                    <div class="flex gap-2">
+                        <input type="file" id="logo-input" accept="image/png, image/jpeg" class="flex-1 p-2 rounded-lg border bg-white text-[10px]">
+                        <button onclick="guardarImagen('logo-input', 'wm_logo')" class="bg-purple-600 text-white px-3 rounded-lg shadow-sm font-bold text-xs">Subir</button>
+                        <button onclick="borrarImagen('wm_logo')" class="bg-red-500 text-white px-3 rounded-lg shadow-sm font-bold text-xs"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="font-bold text-purple-700 uppercase text-[10px]">2. Imagen Central (Pantalla de Inicio)</label>
+                    <p class="text-[9px] text-purple-500 mb-1 leading-tight">Reemplaza el ícono del rayo azul en la pantalla principal.</p>
+                    <div class="flex gap-2">
+                        <input type="file" id="main-img-input" accept="image/png, image/jpeg" class="flex-1 p-2 rounded-lg border bg-white text-[10px]">
+                        <button onclick="guardarImagen('main-img-input', 'wm_main_img')" class="bg-purple-600 text-white px-3 rounded-lg shadow-sm font-bold text-xs">Subir</button>
+                        <button onclick="borrarImagen('wm_main_img')" class="bg-red-500 text-white px-3 rounded-lg shadow-sm font-bold text-xs"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="font-bold text-purple-700 uppercase text-[10px]">3. Banner de Encabezado (Panorámico 16:9)</label>
+                    <p class="text-[9px] text-purple-500 mb-1 leading-tight">Reemplaza la franja azul superior en toda la App y en los PDFs.</p>
+                    <div class="flex gap-2">
+                        <input type="file" id="banner-input" accept="image/png, image/jpeg" class="flex-1 p-2 rounded-lg border bg-white text-[10px]">
+                        <button onclick="guardarImagen('banner-input', 'wm_banner')" class="bg-purple-600 text-white px-3 rounded-lg shadow-sm font-bold text-xs">Subir</button>
+                        <button onclick="borrarImagen('wm_banner')" class="bg-red-500 text-white px-3 rounded-lg shadow-sm font-bold text-xs"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+
             <div class="bg-orange-50 p-4 rounded-2xl border border-orange-200">
                 <label class="font-bold text-orange-700 uppercase text-xs">Llave IA API (Groq)</label>
                 <div class="flex gap-2 mt-2">
@@ -261,10 +328,66 @@
         window.onload = () => {
             const iaK = localStorage.getItem('wm_ia_key');
             if(iaK) document.getElementById('ia-key-input').value = iaK;
+            cargarImagenesVisuales(); // Carga las 3 imágenes en la interfaz V20.6
             sincronizarBaseAlInicio();
         };
 
-        // NORMALIZADOR DE DATOS: Asegura encontrar la columna sin importar si el Excel tiene mayúsculas o espacios.
+        // --- SISTEMA TRIPLE IDENTIDAD VISUAL V20.6 ---
+        function guardarImagen(inputId, storageKey) {
+            const file = document.getElementById(inputId).files[0];
+            if (!file) return alert("⚠️ Selecciona una imagen primero en el recuadro.");
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                localStorage.setItem(storageKey, e.target.result);
+                cargarImagenesVisuales();
+                alert("✅ Imagen guardada correctamente en la memoria del sistema.");
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function borrarImagen(storageKey) {
+            localStorage.removeItem(storageKey);
+            cargarImagenesVisuales();
+            alert("🗑️ Imagen eliminada. Se ha restaurado el diseño por defecto.");
+        }
+
+        function cargarImagenesVisuales() {
+            const logoData = localStorage.getItem('wm_logo');
+            const mainImgData = localStorage.getItem('wm_main_img');
+            const bannerData = localStorage.getItem('wm_banner');
+
+            // 1. Aplicar Logo a las esquinas
+            const logoContainers = document.querySelectorAll('.app-logo-container');
+            logoContainers.forEach(c => {
+                if(logoData) c.innerHTML = `<img src="${logoData}" class="h-10 w-auto object-contain drop-shadow-md bg-white p-1 rounded">`;
+                else c.innerHTML = ``; 
+            });
+
+            // 2. Aplicar Imagen Central
+            const mainImgContainer = document.getElementById('home-main-img-container');
+            if (mainImgData) {
+                mainImgContainer.innerHTML = `<img src="${mainImgData}" class="h-40 mx-auto object-contain drop-shadow-xl rounded-2xl">`;
+            } else {
+                mainImgContainer.innerHTML = `<i class="fa-solid fa-bolt-lightning text-azul text-7xl mb-2 drop-shadow-md"></i>`;
+            }
+
+            // 3. Aplicar Banner a los Encabezados
+            const headerContainers = document.querySelectorAll('.app-header-bg');
+            const overlays = document.querySelectorAll('.banner-overlay');
+            headerContainers.forEach((c, index) => {
+                if(bannerData) {
+                    c.style.backgroundImage = `url(${bannerData})`;
+                    c.style.backgroundSize = 'cover';
+                    c.style.backgroundPosition = 'center';
+                    if(overlays[index]) overlays[index].classList.remove('hidden'); // Activa capa negra translúcida para leer texto
+                } else {
+                    c.style.backgroundImage = 'none';
+                    if(overlays[index]) overlays[index].classList.add('hidden');
+                }
+            });
+        }
+
+        // NORMALIZADOR DE DATOS: Asegura encontrar la columna sin importar mayúsculas/espacios.
         function gV(obj, k) {
             if (!obj) return "";
             const keys = Object.keys(obj);
@@ -299,10 +422,9 @@
             alert("✅ Llave IA Guardada."); 
         }
 
-        // --- MOTOR DE TIEMPOS V20.5 ---
+        // --- MOTOR DE TIEMPOS V20.6 ---
         function obtenerDiasCorridos(fecha) {
             if(!fecha) return 0;
-            // Normalizar el formato de fecha para que sea compatible con todos los navegadores
             const fechaValida = fecha.replace(" ", "T");
             const diff = new Date() - new Date(fechaValida);
             return Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -323,7 +445,7 @@
             return count;
         }
 
-        // --- GESTIÓN NUBE DIRECTA V20.5 ---
+        // --- GESTIÓN NUBE DIRECTA V20.6 ---
         function abrirListaGestion(f) {
             showScreen('lista-gestion-screen');
             document.getElementById('titulo-lista-gestion').innerText = f + "S";
@@ -337,8 +459,6 @@
             await sincronizarBaseAlInicio();
             
             // FILTRO DE ABANDONO LEGAL (180 DÍAS CORRIDOS DESDE ÚLTIMO MOVIMIENTO)
-            // Se asume que la columna en el excel donde guardas la fecha de movimiento se llama 'FECHA_MOVIMIENTO'
-            // Si no está, el sistema usará 'FECHA' o 'FECHA_INGRESO' como respaldo
             const abandonados = dbFull.filter(p => {
                 const fEvaluar = gV(p, 'FECHA_MOVIMIENTO') || gV(p, 'FECHA') || gV(p, 'FECHA_INGRESO');
                 return obtenerDiasCorridos(fEvaluar) > 180 && gV(p, 'ESTADO') !== 'ENTREGADO';
@@ -349,9 +469,7 @@
             if(filtro === 'ABANDONADO') {
                 filtrados = abandonados;
             } else {
-                // Filtramos equipos normales (que NO estén en la lista de abandono legal)
                 filtrados = dbFull.filter(p => !abandonados.includes(p) && gV(p, 'ESTADO') === filtro);
-                
                 // REGLA 90 DÍAS PARA ENTREGADOS
                 if(filtro === 'ENTREGADO') {
                     filtrados = filtrados.filter(p => {
@@ -384,13 +502,13 @@
                 let btns = '';
                 if(filtro === 'PRESUPUESTADO') {
                     btns = `<div class="grid grid-cols-2 gap-2 mt-4">
-                        <button onclick="cambiarEstadoNube('${otN}', 'APROBADO')" class="bg-green-600 text-white py-3 rounded-xl text-[10px] font-black uppercase">Aceptar</button>
-                        <button onclick="cambiarEstadoNube('${otN}', 'RECHAZADO')" class="bg-red-500 text-white py-3 rounded-xl text-[10px] font-black uppercase">Rechazar</button>
+                        <button onclick="cambiarEstadoNube('${otN}', 'APROBADO')" class="bg-green-600 text-white py-3 rounded-xl text-[10px] font-black uppercase shadow-md">Aceptar</button>
+                        <button onclick="cambiarEstadoNube('${otN}', 'RECHAZADO')" class="bg-red-500 text-white py-3 rounded-xl text-[10px] font-black uppercase shadow-md">Rechazar</button>
                     </div>`;
                 } else if(filtro === 'APROBADO') {
-                    btns = `<button onclick="cambiarEstadoNube('${otN}', 'REPARADO')" class="w-full bg-azul text-white py-4 rounded-xl text-[11px] font-black uppercase mt-4">Equipo Reparado</button>`;
+                    btns = `<button onclick="cambiarEstadoNube('${otN}', 'REPARADO')" class="w-full bg-azul text-white py-4 rounded-xl text-[11px] font-black uppercase mt-4 shadow-md">Equipo Reparado</button>`;
                 } else if(filtro === 'REPARADO' || filtro === 'RECHAZADO') {
-                    btns = `<button onclick="cambiarEstadoNube('${otN}', 'ENTREGADO')" class="w-full bg-gray-900 text-white py-4 rounded-xl text-[11px] font-black uppercase mt-4">Marcar Entregado</button>`;
+                    btns = `<button onclick="cambiarEstadoNube('${otN}', 'ENTREGADO')" class="w-full bg-gray-900 text-white py-4 rounded-xl text-[11px] font-black uppercase mt-4 shadow-md">Marcar Entregado</button>`;
                 }
 
                 return `
@@ -413,7 +531,6 @@
 
         async function cambiarEstadoNube(ot, nE) {
             try {
-                // Notificamos al servidor del nuevo estado. Esto dispara la actualización de la FECHA_MOVIMIENTO en el Excel.
                 await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "update_status", ot: ot, estado: nE }) });
                 const fActual = document.getElementById('titulo-lista-gestion').innerText.replace("S", "");
                 renderizarListaGestion(fActual);
@@ -422,18 +539,43 @@
             }
         }
 
-        // --- MOTOR PDF GIGANTE V20.5 (FORMATO CORPORATIVO TOTAL) ---
+        // --- MOTOR PDF GIGANTE V20.6 (CORPORATIVO CON TRIPLE IMAGEN) ---
         function generarPDFGlobal(tipo, ot, datos) {
             const { jsPDF } = window.jspdf; const doc = new jsPDF(); const r = 0, g = 112, b = 243; const fmt = new Intl.NumberFormat("es-CL");
-            doc.setFillColor(r, g, b); doc.rect(0, 0, 210, 52, 'F');
+            
+            // INYECCIÓN BANNER PANORÁMICO
+            const bannerData = localStorage.getItem('wm_banner');
+            if(bannerData) {
+                try {
+                    const formatB = bannerData.includes("image/png") ? "PNG" : "JPEG";
+                    doc.addImage(bannerData, formatB, 0, 0, 210, 52);
+                    // Capa oscurecedora para garantizar legibilidad del texto
+                    doc.setFillColor(0, 0, 0); doc.setGState(new doc.GState({opacity: 0.6}));
+                    doc.rect(0, 0, 210, 52, 'F'); doc.setGState(new doc.GState({opacity: 1}));
+                } catch(e) { doc.setFillColor(r, g, b); doc.rect(0, 0, 210, 52, 'F'); }
+            } else {
+                doc.setFillColor(r, g, b); doc.rect(0, 0, 210, 52, 'F');
+            }
+
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 15);
             doc.setFontSize(26); doc.text(tipo === 'OT' ? "ORDEN DE INGRESO" : "COTIZACIÓN TÉCNICA", 10, 30);
             doc.setFontSize(9); doc.setFont("helvetica", "normal"); doc.text(`RUT: 76.349.984-7 | amsetecsi@gmail.com`, 10, 40);
             doc.text(`Fono: +56 9 95412322 | Santiago, Chile`, 10, 45);
-            doc.setDrawColor(255); doc.rect(165, 8, 35, 35); doc.setFontSize(7); doc.text("LOGO AQUÍ", 175, 27);
+            
+            // INYECCIÓN DEL LOGO CUADRADO
+            const logoData = localStorage.getItem('wm_logo');
+            if (logoData) {
+                try {
+                    // Fondo blanco protector para el logo
+                    doc.setFillColor(255, 255, 255); doc.roundedRect(163, 6, 39, 39, 2, 2, 'F');
+                    const formatL = logoData.includes("image/png") ? "PNG" : "JPEG";
+                    doc.addImage(logoData, formatL, 165, 8, 35, 35);
+                } catch(e) { doc.setDrawColor(255); doc.rect(165, 8, 35, 35); doc.setFontSize(7); doc.text("LOGO ERROR", 175, 27); }
+            } else {
+                doc.setDrawColor(255); doc.rect(165, 8, 35, 35); doc.setFontSize(7); doc.text("LOGO AQUÍ", 175, 27);
+            }
             
             let cY = 65;
-            
             const N = ot.NOMBRE || ot.nombre || "Cliente no registrado";
             const RT = ot.RUT || ot.rut || "No registrado";
             const W = ot.WHATSAPP || ot.whatsapp || "No registrado";
@@ -525,13 +667,11 @@
                 nC.forEach((n, i) => { doc.text(n, 10, cY+6+(i*4.5)); });
             }
             
-            // Envío en Segundo Plano a Drive
+            // Envío a Drive
             try {
                 const blob = doc.output('blob');
                 subirArchivoANube(ot.ot, blob, `${tipo}_OT${ot.ot}_${N}.pdf`, 'application/pdf');
-            } catch(e) { 
-                console.log("Omitiendo subida a Drive."); 
-            }
+            } catch(e) { console.log("Omitiendo subida a Drive."); }
             
             doc.save(`${tipo}_OT${ot.ot}_${N}.pdf`);
         }
@@ -552,9 +692,7 @@
             const v = document.getElementById('valor-neto').value;
             const p = document.getElementById('plazo').value; 
             
-            if(!d || !v) {
-                return alert("⚠️ Complete el Diagnóstico y el Valor Neto.");
-            }
+            if(!d || !v) return alert("⚠️ Complete el Diagnóstico y el Valor Neto.");
             
             const btn = document.getElementById('btn-enviar-presupuesto'); 
             btn.disabled = true;
@@ -569,9 +707,7 @@
                 window.open(`https://wa.me/${whatsAviso}?text=${msg}`, '_blank');
                 
                 setTimeout(() => location.reload(), 1500); 
-            } catch (e) { 
-                btn.disabled = false; 
-            }
+            } catch (e) { btn.disabled = false; }
         }
 
         document.getElementById('ingreso-form').addEventListener('submit', async (e) => {
@@ -615,7 +751,6 @@
             document.getElementById('loading-pendientes').classList.remove('hidden');
             
             try {
-                // Obtención de datos fresca desde Google
                 const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime(), { cache: "no-store" }); 
                 const dataCruda = await res.json();
                 document.getElementById('loading-pendientes').classList.add('hidden');
@@ -644,41 +779,28 @@
                         if(dias >= 3) sh = "sh-dia-3";
                         
                         const div = document.createElement('div');
-                        div.className = `bg-white p-5 rounded-2xl border-l-8 border-azul transition active:scale-95 cursor-pointer ${sh}`;
+                        div.className = `bg-white p-5 rounded-2xl border-l-8 border-azul transition active:scale-95 cursor-pointer shadow-sm ${sh}`;
                         
                         div.onclick = () => { 
                             otActiva = {
-                                fila: p.fila,
-                                ot: otNum,
-                                NOMBRE: nmb,
-                                RUT: gV(p, 'RUT') || '',
-                                WHATSAPP: gV(p, 'WHATSAPP') || gV(p, 'CELULAR') || '',
-                                CORREO: gV(p, 'CORREO') || gV(p, 'EMAIL') || '',
-                                DIRECCION: gV(p, 'DIRECCION') || '',
-                                MARCA: mrc,
-                                MODELO: mdl,
-                                SERIE: gV(p, 'SERIE') || 'S/S',
-                                GUIA: gu,
-                                ACCESORIOS: gV(p, 'ACCESORIOS') || 'Ninguno',
-                                FALLA: fa
+                                fila: p.fila, ot: otNum, NOMBRE: nmb, RUT: gV(p, 'RUT') || '',
+                                WHATSAPP: gV(p, 'WHATSAPP') || gV(p, 'CELULAR') || '', CORREO: gV(p, 'CORREO') || gV(p, 'EMAIL') || '',
+                                DIRECCION: gV(p, 'DIRECCION') || '', MARCA: mrc, MODELO: mdl, SERIE: gV(p, 'SERIE') || 'S/S',
+                                GUIA: gu, ACCESORIOS: gV(p, 'ACCESORIOS') || 'Ninguno', FALLA: fa
                             }; 
                             document.getElementById('ot-numero').innerText = otNum;
                             document.getElementById('det-cliente').innerText = nmb;
                             document.getElementById('det-equipo').innerText = mrc + " " + mdl;
                             document.getElementById('det-guia-ref').innerText = gu;
                             document.getElementById('det-falla').innerText = fa;
-                            repuestosActuales = []; 
-                            renderRep(); 
-                            showScreen('presupuesto-detail-screen');
+                            repuestosActuales = []; renderRep(); showScreen('presupuesto-detail-screen');
                         };
                         div.innerHTML = `<div><div class="flex justify-between items-center mb-1"><span class="text-[10px] font-black text-azul uppercase">OT-${otNum}</span><span class="text-[9px] font-black text-gray-400 uppercase tracking-tighter">${dias} DÍA(S) HÁBIL(ES)</span></div><h3 class="font-black text-gray-900 leading-tight">${nmb}</h3><p class="text-xs text-gray-500 font-black">${mrc} ${mdl}</p></div>`;
                         document.getElementById('lista-pendientes').appendChild(div);
                     }
                 });
 
-                if(conteo === 0) {
-                    document.getElementById('lista-pendientes').innerHTML = '<p class="text-center py-10 text-gray-400 font-bold">No hay equipos por presupuestar.</p>';
-                }
+                if(conteo === 0) document.getElementById('lista-pendientes').innerHTML = '<p class="text-center py-10 text-gray-400 font-bold">No hay equipos por presupuestar.</p>';
             } catch (e) { 
                 document.getElementById('loading-pendientes').classList.add('hidden');
                 alert("No se pudo conectar al servidor de Google."); 
@@ -687,40 +809,21 @@
 
         // --- BÚSQUEDAS Y CONFIGURACIÓN ---
         function buscarCliente(t) {
-            const ul = document.getElementById('sugerencias-cliente'); 
-            ul.innerHTML = '';
-            
-            if(t.length < 2) { 
-                ul.classList.add('hidden'); 
-                return; 
-            }
-            
+            const ul = document.getElementById('sugerencias-cliente'); ul.innerHTML = '';
+            if(t.length < 2) { ul.classList.add('hidden'); return; }
             const fil = [...dbFull, ...clientesLocales].filter(c => (gV(c, 'NOMBRE') || "").toString().toLowerCase().includes(t.toLowerCase()));
-            
-            if(fil.length === 0) { 
-                ul.classList.add('hidden'); 
-                return; 
-            }
-            
+            if(fil.length === 0) { ul.classList.add('hidden'); return; }
             ul.classList.remove('hidden');
             
             const unicos = [];
-            fil.forEach(c => { 
-                if(!unicos.find(u => gV(u, 'NOMBRE') === gV(c, 'NOMBRE'))) {
-                    unicos.push(c); 
-                }
-            });
+            fil.forEach(c => { if(!unicos.find(u => gV(u, 'NOMBRE') === gV(c, 'NOMBRE'))) unicos.push(c); });
 
             unicos.forEach(c => {
-                const li = document.createElement('li'); 
-                li.className = "p-4 border-b font-bold text-gray-900"; 
-                li.innerText = gV(c, 'NOMBRE');
+                const li = document.createElement('li'); li.className = "p-4 border-b font-bold text-gray-900"; li.innerText = gV(c, 'NOMBRE');
                 li.onclick = () => {
-                    document.getElementById('nombre').value = gV(c, 'NOMBRE');
-                    document.getElementById('rut').value = gV(c, 'RUT');
+                    document.getElementById('nombre').value = gV(c, 'NOMBRE'); document.getElementById('rut').value = gV(c, 'RUT');
                     document.getElementById('whatsapp').value = gV(c, 'WHATSAPP') || gV(c, 'CELULAR');
-                    document.getElementById('direccion').value = gV(c, 'DIRECCION');
-                    document.getElementById('correo').value = gV(c, 'CORREO') || gV(c, 'EMAIL');
+                    document.getElementById('direccion').value = gV(c, 'DIRECCION'); document.getElementById('correo').value = gV(c, 'CORREO') || gV(c, 'EMAIL');
                     ul.classList.add('hidden');
                 };
                 ul.appendChild(li);
@@ -728,71 +831,39 @@
         }
         
         function buscarRepuesto(t) {
-            const ul = document.getElementById('sugerencias-repuestos'); 
-            ul.innerHTML = '';
-            
-            if(t.length < 2) { 
-                ul.classList.add('hidden'); 
-                return; 
-            }
-            
+            const ul = document.getElementById('sugerencias-repuestos'); ul.innerHTML = '';
+            if(t.length < 2) { ul.classList.add('hidden'); return; }
             const fil = repuestosDB.filter(r => r.toLowerCase().includes(t.toLowerCase()));
-            
-            if(fil.length === 0) { 
-                ul.classList.add('hidden'); 
-                return; 
-            }
-            
+            if(fil.length === 0) { ul.classList.add('hidden'); return; }
             ul.classList.remove('hidden');
             fil.forEach(r => {
-                const li = document.createElement('li'); 
-                li.className = "p-3 border-b text-xs font-bold text-gray-900"; 
-                li.innerText = r;
-                li.onclick = () => { 
-                    document.getElementById('buscador-repuesto').value = r; 
-                    ul.classList.add('hidden'); 
-                };
+                const li = document.createElement('li'); li.className = "p-3 border-b text-xs font-bold text-gray-900"; li.innerText = r;
+                li.onclick = () => { document.getElementById('buscador-repuesto').value = r; ul.classList.add('hidden'); };
                 ul.appendChild(li);
             });
         }
         
         function agregarRepuestoLista() { 
-            const n = document.getElementById('buscador-repuesto').value; 
-            const c = document.getElementById('cantidad-repuesto').value; 
-            if(!n) return; 
-            repuestosActuales.push({ nombre: n, cantidad: parseInt(c) }); 
-            renderRep(); 
-            document.getElementById('buscador-repuesto').value = ''; 
+            const n = document.getElementById('buscador-repuesto').value; const c = document.getElementById('cantidad-repuesto').value; 
+            if(!n) return; repuestosActuales.push({ nombre: n, cantidad: parseInt(c) }); renderRep(); document.getElementById('buscador-repuesto').value = ''; 
         }
         
-        function renderRep() { 
-            document.getElementById('lista-repuestos-seleccionados').innerHTML = repuestosActuales.map((r, i) => `<li class="flex justify-between bg-white p-2 border rounded-xl text-xs font-bold text-gray-900 shadow-sm"><span>${r.nombre} <b>x${r.cantidad}</b></span><button onclick="repuestosActuales.splice(${i},1);renderRep()" class="text-red-500 px-2"><i class="fa-solid fa-trash"></i></button></li>`).join(''); 
-        }
+        function renderRep() { document.getElementById('lista-repuestos-seleccionados').innerHTML = repuestosActuales.map((r, i) => `<li class="flex justify-between bg-white p-2 border rounded-xl text-xs font-bold text-gray-900 shadow-sm"><span>${r.nombre} <b>x${r.cantidad}</b></span><button onclick="repuestosActuales.splice(${i},1);renderRep()" class="text-red-500 px-2"><i class="fa-solid fa-trash"></i></button></li>`).join(''); }
         
         function importarRepuestosMasivo() { 
-            const t = document.getElementById('import-repuestos').value; 
-            if(!t.trim()) return; 
+            const t = document.getElementById('import-repuestos').value; if(!t.trim()) return; 
             const l = t.split('\n').map(x => x.trim()).filter(x => x !== ""); 
-            repuestosDB = [...new Set([...repuestosDB, ...l])]; 
-            localStorage.setItem('wm_repuestos', JSON.stringify(repuestosDB)); 
+            repuestosDB = [...new Set([...repuestosDB, ...l])]; localStorage.setItem('wm_repuestos', JSON.stringify(repuestosDB)); 
             alert("✅ Repuestos listos y actualizados en la base de datos local."); 
         }
         
         function importarClientesMasivo() { 
-            const t = document.getElementById('import-clientes').value; 
-            if(!t.trim()) return;
+            const t = document.getElementById('import-clientes').value; if(!t.trim()) return;
             const l = t.split('\n').map(x => { 
                 const p = x.split(',').map(s => s.trim()); 
-                return { 
-                    NOMBRE: p[0], 
-                    RUT: p[1] || '', 
-                    WHATSAPP: p[2] || '', 
-                    DIRECCION: p[3] || '', 
-                    CORREO: p[4] || '' 
-                }; 
+                return { NOMBRE: p[0], RUT: p[1] || '', WHATSAPP: p[2] || '', DIRECCION: p[3] || '', CORREO: p[4] || '' }; 
             }).filter(x => x.NOMBRE);
-            clientesLocales = l; 
-            localStorage.setItem('wm_clientes_locales', JSON.stringify(l)); 
+            clientesLocales = l; localStorage.setItem('wm_clientes_locales', JSON.stringify(l)); 
             alert("✅ Clientes habituales listos y guardados en memoria.");
         }
     </script>
