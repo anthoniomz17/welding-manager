@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Servicio V20.7 - Edición Profesional Full</title>
+    <title>Welding Servicio V20.7 - Edición Profesional Completa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -13,12 +13,13 @@
         .bg-azul { background-color: var(--azul); }
         .text-azul { color: var(--azul); }
         
-        /* ESTILOS DE TRANSICIÓN Y UI */
-        .app-header-bg { position: relative; background-color: var(--azul); color: white; overflow: hidden; height: 160px; transition: 0.3s; }
+        /* ESTILOS DE CABECERA V20.7 */
+        .app-header-bg { position: relative; background-color: var(--azul); color: white; overflow: hidden; height: 170px; transition: 0.3s; }
         .app-header-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%); z-index: 1; }
         .app-header-content { position: relative; z-index: 2; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); height: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; }
         
-        .logo-box { width: 65px; height: 65px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; padding: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+        /* LOGO A LA DERECHA */
+        .logo-box { width: 75px; height: 75px; background: white; border-radius: 14px; display: flex; align-items: center; justify-content: center; padding: 5px; box-shadow: 0 8px 15px rgba(0,0,0,0.3); border: 2px solid var(--azul); }
         .logo-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
         
         .loader { border-top-color: var(--azul); animation: spinner 0.6s linear infinite; }
@@ -30,10 +31,13 @@
         .status-pill { font-size: 10px; padding: 2px 8px; border-radius: 99px; text-transform: uppercase; font-weight: 800; }
         .counter-pill { font-weight: 900; padding: 4px 10px; border-radius: 8px; font-size: 11px; display: inline-flex; align-items: center; gap: 4px; }
         
-        /* SHADOWS SEMÁFORO */
+        /* SEMÁFOROS */
+        .sh-dia-1 { box-shadow: 0 15px 30px -5px rgba(34, 197, 94, 0.4); border: 1px solid rgba(34, 197, 94, 0.2); }
+        .sh-dia-2 { box-shadow: 0 15px 30px -5px rgba(234, 179, 8, 0.4); border: 1px solid rgba(234, 179, 8, 0.2); }
+        .sh-dia-3 { box-shadow: 0 15px 30px -5px rgba(239, 68, 68, 0.5); border: 1px solid rgba(239, 68, 68, 0.3); }
         .sh-abandono { box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.5); border: 2px solid #000; }
         
-        input:focus, textarea:focus { outline: 2px solid var(--azul); border-color: transparent; }
+        input:focus, textarea:focus, select:focus { outline: 2px solid var(--azul); border-color: transparent; }
         .checkbox-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .autocomplete-dropdown { max-height: 200px; overflow-y: auto; z-index: 100; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
     </style>
@@ -44,21 +48,21 @@
         <div class="app-header-bg rounded-b-[40px] shadow-2xl">
             <div class="app-header-overlay hidden banner-overlay"></div>
             <div class="app-header-content">
-                <div class="flex flex-col -mt-2">
-                    <span class="text-[9px] font-black text-white bg-black bg-opacity-40 px-2 py-0.5 rounded-full w-fit mb-1 uppercase tracking-tighter">v20.7 Premium Full</span>
-                    <h1 class="text-3xl font-black uppercase tracking-tighter leading-none">Welding</h1>
-                    <h1 class="text-3xl font-black uppercase tracking-tighter leading-none text-blue-200">Servicio</h1>
-                    <div class="mt-1">
-                        <p class="text-[10px] font-bold opacity-90 leading-tight uppercase">Servicio Técnico</p>
-                        <p class="text-[10px] font-bold opacity-90 leading-tight uppercase">Soluciones Integrales</p>
+                <div class="flex flex-col -mt-4">
+                    <span class="text-[10px] font-black text-white bg-black bg-opacity-40 px-2 py-1 rounded-full w-fit mb-1 uppercase tracking-tighter">v20.7 Premium</span>
+                    <h1 class="text-4xl font-black uppercase tracking-tighter leading-none">Welding</h1>
+                    <h1 class="text-4xl font-black uppercase tracking-tighter leading-none text-blue-200">Servicio</h1>
+                    <div class="mt-2">
+                        <p class="text-[11px] font-bold opacity-90 leading-tight uppercase tracking-widest">Servicio Técnico</p>
+                        <p class="text-[11px] font-bold opacity-90 leading-tight uppercase tracking-widest">Soluciones Integrales</p>
                     </div>
                 </div>
-                <div class="flex flex-col items-end h-full py-4 justify-between">
-                    <button onclick="showScreen('config-screen')" class="text-white opacity-70 hover:opacity-100 transition -mt-1">
-                        <i class="fa-solid fa-gear text-2xl"></i>
+                <div class="flex flex-col items-end h-full py-6 justify-between">
+                    <button onclick="showScreen('config-screen')" class="text-white opacity-80 hover:opacity-100 transition -mt-2">
+                        <i class="fa-solid fa-gear text-3xl"></i>
                     </button>
                     <div id="header-logo-container" class="logo-box">
-                        <i class="fa-solid fa-shield-halved text-gray-300 text-2xl"></i>
+                        <i class="fa-solid fa-shield-halved text-gray-300 text-3xl"></i>
                     </div>
                 </div>
             </div>
@@ -70,14 +74,13 @@
                     <i class="fa-solid fa-bolt-lightning text-azul text-7xl mb-2 drop-shadow-md"></i>
                 </div>
             </div>
-
             <div class="grid gap-4">
                 <button onclick="showScreen('ingreso-screen')" class="bg-azul text-white p-6 rounded-2xl shadow-xl flex items-center justify-between active:scale-95 transition text-left">
-                    <div><span class="block text-xl font-bold">Ingreso de Equipo</span><span class="text-sm opacity-80 uppercase font-bold text-[10px]">Nueva OT Digital</span></div>
+                    <div><span class="block text-xl font-bold">Ingreso de Equipo</span><span class="text-sm opacity-80 uppercase font-bold text-[10px]">Generar Nueva OT</span></div>
                     <i class="fa-solid fa-plus-circle text-3xl"></i>
                 </button>
-                <button onclick="abrirPresupuestoDirecto()" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left border border-gray-100">
-                    <div><span class="block text-xl font-bold text-gray-900">Presupuesto</span><span class="text-sm text-gray-500 uppercase font-bold text-[10px]">Generar Cotización</span></div>
+                <button onclick="cargarPendientes()" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left border border-gray-100">
+                    <div><span class="block text-xl font-bold text-gray-900">Presupuesto</span><span class="text-sm text-gray-500 uppercase font-bold text-[10px]">Cotización Técnica</span></div>
                     <i class="fa-solid fa-file-invoice-dollar text-2xl text-azul"></i>
                 </button>
                 <button onclick="showScreen('menu-gestion-screen')" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left border border-gray-100">
@@ -88,49 +91,131 @@
     </div>
 
     <div id="ingreso-screen" class="hidden max-w-md mx-auto bg-white min-h-screen">
-        <div class="app-header-bg p-5 shadow-md flex items-center mb-6 sticky top-0 z-50 h-20">
+        <div class="app-header-bg p-5 shadow-md flex items-center mb-6 sticky top-0 z-50 h-24">
             <div class="app-header-overlay hidden banner-overlay"></div>
             <div class="app-header-content flex items-center w-full">
                 <button onclick="showScreen('home-screen')" class="text-white mr-4 p-2 transition active:scale-90"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-                <h2 class="text-2xl font-black uppercase tracking-tighter">Nuevo Ingreso</h2>
+                <h2 class="text-2xl font-black uppercase tracking-tighter">Registro de Ingreso</h2>
             </div>
         </div>
         <form id="ingreso-form" class="space-y-6 pb-20 px-4">
             <div class="bg-blue-50 p-4 rounded-2xl space-y-3 border border-blue-100 relative">
-                <input type="text" id="nombre" onkeyup="buscarCliente(this.value)" placeholder="Nombre del Cliente / Empresa" class="w-full p-3 rounded-xl border text-gray-900 font-bold" required autocomplete="off">
+                <input type="text" id="nombre" onkeyup="buscarCliente(this.value)" placeholder="Nombre del Cliente / Empresa" class="w-full p-3 rounded-xl border text-gray-900 font-bold shadow-sm" required autocomplete="off">
                 <ul id="sugerencias-cliente" class="autocomplete-dropdown absolute w-full bg-white border hidden mt-1 left-0 z-50"></ul>
-                <input type="text" id="rut" placeholder="RUT" class="w-full p-3 rounded-xl border text-gray-900">
-                <input type="tel" id="whatsapp" placeholder="WhatsApp (Ej: 569...)" class="w-full p-3 rounded-xl border text-gray-900">
+                <input type="text" id="rut" placeholder="RUT (Ej: 12.345.678-9)" class="w-full p-3 rounded-xl border text-gray-900">
+                <input type="tel" id="whatsapp" placeholder="WhatsApp (Ej: 56912345678)" class="w-full p-3 rounded-xl border text-gray-900">
                 <input type="text" id="direccion" placeholder="Dirección" class="w-full p-3 rounded-xl border text-gray-900">
                 <input type="email" id="correo" placeholder="Correo Electrónico" class="w-full p-3 rounded-xl border text-gray-900">
             </div>
+            
             <div class="bg-gray-50 p-4 rounded-2xl space-y-3 border border-gray-100">
                 <div class="grid grid-cols-2 gap-2 text-gray-900">
                     <input type="text" id="marca" placeholder="Marca" class="w-full p-3 rounded-xl border text-gray-900 font-bold" required>
                     <input type="text" id="modelo" placeholder="Modelo" class="w-full p-3 rounded-xl border text-gray-900">
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-gray-900">
-                    <input type="text" id="serie" placeholder="N° Serie" class="w-full p-3 rounded-xl border text-gray-900">
-                    <input type="text" id="guia" placeholder="N° Guía / Referencia" class="w-full p-3 rounded-xl border font-black bg-blue-50 text-gray-900">
+                    <input type="text" id="serie" placeholder="N° de Serie" class="w-full p-3 rounded-xl border text-gray-900">
+                    <input type="text" id="guia" placeholder="N° Guía / Ref" class="w-full p-3 rounded-xl border font-black bg-blue-50 text-gray-900 shadow-sm">
                 </div>
                 <div class="p-2 border-t mt-2">
-                    <p class="text-[10px] font-black text-gray-400 uppercase mb-2">Accesorios Incluidos:</p>
+                    <p class="text-[10px] font-black text-gray-400 uppercase mb-3">Accesorios:</p>
                     <div class="checkbox-grid text-xs font-bold text-gray-700">
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Pistola (MIG)"> Pistola (MIG)</label>
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Pistola (TIG)"> Pistola (TIG)</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Regulador"> Regulador</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Regulador Gas"> Regulador Gas</label>
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Grampa Tierra"> Grampa Tierra</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Porta Electrodo"> Porta Electrodo</label>
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Cable Alimentacion"> Cable Alim.</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Porta Electrodo"> Porta Elect.</label>
                     </div>
                 </div>
             </div>
+
             <div class="relative">
-                <textarea id="falla" placeholder="Describa la falla reportada..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 shadow-inner text-gray-900"></textarea>
-                <button type="button" onclick="iniciarDictado('falla')" class="absolute right-3 bottom-3 bg-azul text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-microphone"></i></button>
+                <textarea id="falla" placeholder="Falla reportada por el cliente..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 shadow-inner text-gray-900"></textarea>
+                <button type="button" onclick="iniciarDictado('falla')" class="absolute right-3 bottom-3 bg-azul text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition"><i class="fa-solid fa-microphone text-xl text-white"></i></button>
             </div>
-            <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg uppercase tracking-widest">Registrar e Imprimir OT</button>
+            <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition uppercase tracking-widest text-white">Registrar Ingreso</button>
         </form>
+    </div>
+
+    <div id="presupuesto-list-screen" class="hidden max-w-md mx-auto bg-gray-50 min-h-screen text-gray-900">
+        <div class="app-header-bg p-5 shadow-md flex items-center mb-6 sticky top-0 z-50 h-24">
+            <div class="app-header-overlay hidden banner-overlay"></div>
+            <div class="app-header-content flex items-center w-full">
+                <button onclick="showScreen('home-screen')" class="text-white mr-4 p-2 transition active:scale-90"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
+                <h2 class="text-2xl font-black uppercase tracking-tighter">Por Presupuestar</h2>
+            </div>
+        </div>
+        <div id="loading-pendientes" class="flex flex-col items-center justify-center py-20 hidden">
+            <div class="loader rounded-full border-4 h-12 w-12 mb-4 border-t-azul"></div>
+            <p class="font-bold text-gray-400">Sincronizando con Google Drive...</p>
+        </div>
+        <div id="lista-pendientes" class="space-y-6 pb-10 px-4"></div>
+    </div>
+
+    <div id="presupuesto-detail-screen" class="hidden max-w-md mx-auto bg-white min-h-screen pb-20 shadow-2xl">
+        <div class="app-header-bg p-5 shadow-md flex items-center mb-6 sticky top-0 z-50 h-24">
+            <div class="app-header-overlay hidden banner-overlay"></div>
+            <div class="app-header-content flex items-center w-full">
+                <button onclick="showScreen('presupuesto-list-screen')" class="text-white mr-4 p-2 transition active:scale-90"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
+                <h2 class="text-2xl font-black uppercase tracking-tighter text-white">OT: <span id="ot-numero"></span></h2>
+            </div>
+        </div>
+        
+        <div class="space-y-5 px-5">
+            <div class="bg-gray-50 p-4 rounded-2xl border-l-8 border-azul">
+                <p id="det-cliente" class="text-lg font-black text-gray-900"></p>
+                <p id="det-equipo" class="text-gray-500 font-bold"></p>
+                <div class="mt-2 text-azul font-black text-xs uppercase bg-blue-100 inline-block px-3 py-1 rounded-lg">GUÍA: <span id="det-guia-ref"></span></div>
+            </div>
+            
+            <div class="relative">
+                <label class="font-bold text-gray-400 uppercase text-[10px] px-1">Falla Reportada</label>
+                <div id="det-falla" class="mt-1 p-4 bg-red-50 rounded-2xl italic text-red-800 border-l-4 border-red-500 text-sm shadow-inner"></div>
+            </div>
+
+            <div class="relative mt-4">
+                <label class="font-bold text-azul uppercase text-[10px] tracking-widest px-1"><i class="fa-solid fa-stethoscope"></i> Diagnóstico Técnico</label>
+                <textarea id="diagnostico" placeholder="Escriba los hallazgos técnicos..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 shadow-inner mt-1 text-gray-900 font-medium"></textarea>
+                <button type="button" onclick="iniciarDictado('diagnostico')" class="absolute right-3 bottom-3 bg-azul text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition"><i class="fa-solid fa-microphone text-lg"></i></button>
+            </div>
+
+            <div class="bg-gray-100 p-5 rounded-3xl border border-gray-200 relative">
+                <label class="font-bold text-azul uppercase text-[10px] tracking-widest">Desglose de Repuestos y Mano de Obra</label>
+                <div class="flex gap-2 mt-3">
+                    <div class="flex-1 relative">
+                        <input type="text" id="buscador-repuesto" onkeyup="buscarRepuesto(this.value)" placeholder="Buscar o agregar item..." class="w-full p-3 rounded-xl border text-sm text-gray-900" autocomplete="off">
+                        <ul id="sugerencias-repuestos" class="autocomplete-dropdown absolute w-full bg-white border hidden z-50 shadow-xl mt-1"></ul>
+                    </div>
+                    <input type="number" id="cantidad-repuesto" value="1" min="1" class="w-16 p-3 rounded-xl border text-center font-bold text-gray-900 bg-white">
+                    <button onclick="agregarRepuestoLista()" class="bg-azul text-white px-5 rounded-xl shadow-md active:scale-90 transition"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <ul id="lista-repuestos-seleccionados" class="space-y-2 mt-4"></ul>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-gray-400 uppercase px-1">Plazo de Entrega</label>
+                    <select id="plazo" class="w-full p-4 rounded-xl border bg-gray-50 font-bold text-sm text-gray-700">
+                        <option value="3">3 días hábiles</option>
+                        <option value="5">5 días hábiles</option>
+                        <option value="8">8 días hábiles</option>
+                        <option value="15">15 días hábiles</option>
+                    </select>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-gray-400 uppercase px-1">Valor Neto (CLP)</label>
+                    <input type="number" id="valor-neto" placeholder="Neto" class="w-full p-4 rounded-xl border bg-gray-50 text-xl font-black text-gray-900 shadow-inner">
+                </div>
+            </div>
+            
+            <div class="bg-gray-900 text-white p-5 rounded-3xl flex justify-between items-center shadow-xl">
+                <div><p class="text-[10px] text-gray-400 font-bold uppercase">Total con IVA (19%)</p><p id="txt-total-iva" class="text-2xl font-black text-blue-400">$ 0</p></div>
+                <i class="fa-solid fa-calculator text-3xl opacity-30"></i>
+            </div>
+            
+            <button id="btn-enviar-presupuesto" onclick="enviarPresupuesto()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-xl shadow-xl active:scale-95 transition uppercase tracking-widest text-center">Guardar y Enviar PDF</button>
+        </div>
     </div>
 
     <div id="menu-gestion-screen" class="hidden max-w-md mx-auto bg-white min-h-screen">
@@ -143,23 +228,27 @@
         </div>
         <div class="grid gap-3 px-6">
             <button onclick="abrirListaGestion('PRESUPUESTADO')" class="btn-principal bg-gray-50 p-4 rounded-2xl border-l-8 border-blue-500 shadow-sm flex items-center justify-between">
-                <div class="text-left"><span class="block text-md font-black uppercase text-gray-900">Presupuestos</span><span class="text-[9px] text-gray-400 italic">Esperando aprobación del cliente</span></div>
+                <div class="text-left"><span class="block text-md font-black uppercase text-gray-900">Presupuestos</span><span class="text-[9px] text-gray-400 italic">Esperando aprobación</span></div>
                 <i class="fa-solid fa-clock-rotate-left text-xl text-blue-500"></i>
             </button>
             <button onclick="abrirListaGestion('APROBADO')" class="btn-principal bg-gray-50 p-4 rounded-2xl border-l-8 border-orange-500 shadow-sm flex items-center justify-between">
-                <div class="text-left"><span class="block text-md font-black uppercase text-gray-900">Aprobados</span><span class="text-[9px] text-gray-400 italic">Equipos en proceso de reparación</span></div>
+                <div class="text-left"><span class="block text-md font-black uppercase text-gray-900">Aprobados</span><span class="text-[9px] text-gray-400 italic">En reparación activa</span></div>
                 <i class="fa-solid fa-screwdriver-wrench text-xl text-orange-500"></i>
             </button>
             <button onclick="abrirListaGestion('REPARADO')" class="btn-principal bg-gray-50 p-4 rounded-2xl border-l-8 border-green-500 shadow-sm flex items-center justify-between">
-                <div class="text-left"><span class="block text-md font-black uppercase text-gray-900">Reparados</span><span class="text-[9px] text-gray-400 italic">Listos para ser entregados</span></div>
+                <div class="text-left"><span class="block text-md font-black uppercase text-gray-900">Reparados</span><span class="text-[9px] text-gray-400 italic">Listos para entrega</span></div>
                 <i class="fa-solid fa-circle-check text-xl text-green-500"></i>
             </button>
+            <button onclick="abrirListaGestion('RECHAZADO')" class="btn-principal bg-gray-50 p-4 rounded-2xl border-l-8 border-red-500 shadow-sm flex items-center justify-between">
+                <div class="text-left"><span class="block text-md font-black uppercase text-gray-900">Rechazados</span><span class="text-[9px] text-gray-400 italic">Esperando retiro</span></div>
+                <i class="fa-solid fa-ban text-xl text-red-500"></i>
+            </button>
             <button onclick="abrirListaGestion('ENTREGADO')" class="btn-principal bg-gray-50 p-4 rounded-2xl border-l-8 border-gray-400 shadow-sm flex items-center justify-between">
-                <div class="text-left"><span class="block text-md font-black uppercase text-gray-900">Entregados</span><span class="text-[9px] text-gray-400 italic">Historial reciente (90 Días)</span></div>
+                <div class="text-left"><span class="block text-md font-black uppercase text-gray-900">Entregados</span><span class="text-[9px] text-gray-400 italic">Historial (90 Días)</span></div>
                 <i class="fa-solid fa-box-open text-xl text-gray-400"></i>
             </button>
             <button onclick="abrirListaGestion('ABANDONADO')" class="btn-principal bg-black p-4 rounded-2xl border-l-8 border-yellow-500 shadow-sm flex items-center justify-between">
-                <div class="text-left"><span class="block text-md font-black uppercase text-white">Abandono Legal</span><span class="text-[9px] text-yellow-500 italic">Equipos con más de 6 meses</span></div>
+                <div class="text-left"><span class="block text-md font-black uppercase text-white">Nunca Retirados</span><span class="text-[9px] text-yellow-500 italic">Abandono Legal (>6 Meses)</span></div>
                 <i class="fa-solid fa-skull-crossbones text-xl text-yellow-500"></i>
             </button>
         </div>
@@ -176,78 +265,72 @@
         <div id="contenedor-items-gestion" class="p-4 space-y-4"></div>
     </div>
 
-    <div id="presupuesto-screen" class="hidden fixed inset-0 bg-white z-[100] overflow-y-auto">
-        <div class="p-4 bg-azul text-white flex justify-between items-center sticky top-0 shadow-lg">
-            <button onclick="cerrarPresupuesto()" class="p-2"><i class="fa-solid fa-xmark text-2xl"></i></button>
-            <h3 class="font-black uppercase tracking-tighter">Generar Presupuesto Digital</h3>
-            <div class="w-10"></div>
-        </div>
-        <div class="p-4 space-y-6 pb-24">
-            <div id="info-cliente-presupuesto" class="bg-gray-100 p-4 rounded-2xl border-l-8 border-azul">
-                </div>
-            
-            <div class="space-y-4">
-                <h4 class="font-black text-azul uppercase text-xs">Detalle de Repuestos y Mano de Obra</h4>
-                <div id="lista-items-presupuesto" class="space-y-2">
-                    </div>
-                <button onclick="agregarFilaPresupuesto()" class="w-full py-3 border-2 border-dashed border-azul text-azul font-bold rounded-xl active:bg-blue-50">+ Agregar Item</button>
-            </div>
-
-            <div class="bg-gray-900 text-white p-6 rounded-3xl shadow-xl space-y-2">
-                <div class="flex justify-between text-sm opacity-70"><span>Neto:</span><span id="txt-neto">$0</span></div>
-                <div class="flex justify-between text-sm opacity-70"><span>IVA (19%):</span><span id="txt-iva">$0</span></div>
-                <div class="flex justify-between text-2xl font-black border-t border-gray-700 pt-2"><span>TOTAL:</span><span id="txt-total" class="text-blue-400">$0</span></div>
-            </div>
-
-            <div class="space-y-2">
-                <label class="font-black text-[10px] text-gray-400 uppercase">Observaciones Técnicas / Diagnóstico</label>
-                <textarea id="obs-tecnica" class="w-full p-4 rounded-2xl bg-gray-50 border border-gray-200 h-24 text-gray-800" placeholder="Ej: Se requiere cambio de tarjeta de potencia..."></textarea>
-            </div>
-
-            <button onclick="generarPDFPresupuesto()" class="fixed bottom-6 left-6 right-6 bg-azul text-white py-5 rounded-2xl font-black text-xl shadow-2xl uppercase tracking-widest flex items-center justify-center gap-3">
-                <i class="fa-solid fa-file-pdf"></i> Generar y Enviar PDF
-            </button>
-        </div>
-    </div>
-
     <div id="config-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen text-gray-900">
         <div class="flex items-center mb-6 border-b pb-4 mt-2">
             <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 transition active:scale-90"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
             <h2 class="text-2xl font-black uppercase tracking-tighter">Ajustes del Sistema</h2>
         </div>
-        <div class="space-y-6 pb-10">
-            <div class="bg-purple-50 p-4 rounded-2xl border border-purple-200 space-y-4 shadow-sm">
-                <h3 class="font-black text-purple-800 uppercase text-xs border-b pb-2">Identidad Visual Premium</h3>
-                <div>
-                    <label class="font-bold text-[10px] text-purple-700 uppercase">Logo Cuadrado (Derecha)</label>
-                    <input type="file" id="logo-input" accept="image/*" class="w-full text-[10px] mt-1" onchange="guardarImagen('logo-input', 'wm_logo')">
+        
+        <div class="space-y-8 pb-10">
+            <div class="bg-purple-50 p-4 rounded-2xl border border-purple-200 shadow-sm space-y-4">
+                <label class="font-bold text-purple-700 uppercase text-xs">Identidad Corporativa</label>
+                <div class="space-y-3">
+                    <div>
+                        <span class="text-[10px] font-bold text-purple-600 block mb-1">LOGO CUADRADO (ESQUINA)</span>
+                        <input type="file" id="logo-input" onchange="guardarImagen('logo-input', 'wm_logo')" accept="image/*" class="w-full p-2 border bg-white rounded-lg text-xs">
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-bold text-purple-600 block mb-1">IMAGEN CENTRAL (INICIO)</span>
+                        <input type="file" id="main-img-input" onchange="guardarImagen('main-img-input', 'wm_main_img')" accept="image/*" class="w-full p-2 border bg-white rounded-lg text-xs">
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-bold text-purple-600 block mb-1">BANNER CABECERA (16:9)</span>
+                        <input type="file" id="banner-input" onchange="guardarImagen('banner-input', 'wm_banner')" accept="image/*" class="w-full p-2 border bg-white rounded-lg text-xs">
+                    </div>
                 </div>
-                <div>
-                    <label class="font-bold text-[10px] text-purple-700 uppercase">Imagen Central de Inicio</label>
-                    <input type="file" id="main-img-input" accept="image/*" class="w-full text-[10px] mt-1" onchange="guardarImagen('main-img-input', 'wm_main_img')">
-                </div>
-                <div>
-                    <label class="font-bold text-[10px] text-purple-700 uppercase">Banner Panorámico (Cabeceras)</label>
-                    <input type="file" id="banner-input" accept="image/*" class="w-full text-[10px] mt-1" onchange="guardarImagen('banner-input', 'wm_banner')">
+                <button onclick="borrarTodasImagenes()" class="w-full text-[10px] text-red-500 font-bold underline">Restaurar diseño original (Borrar todo)</button>
+            </div>
+
+            <div class="bg-orange-50 p-4 rounded-2xl border border-orange-200">
+                <label class="font-bold text-orange-700 uppercase text-xs">Llave IA API (Groq)</label>
+                <div class="flex gap-2 mt-2">
+                    <input type="password" id="ia-key-input" placeholder="gsk_..." class="flex-1 p-3 rounded-xl border bg-white text-gray-900">
+                    <button onclick="guardarIAKey()" class="bg-orange-600 text-white px-4 rounded-xl shadow-md"><i class="fa-solid fa-save"></i></button>
                 </div>
             </div>
+
+            <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 shadow-sm">
+                <label class="font-bold text-azul uppercase text-xs">Repuestos Maestros</label>
+                <textarea id="import-repuestos" class="w-full p-3 rounded-xl border h-32 text-sm mt-2 text-gray-900" placeholder="Escriba un repuesto por línea..."></textarea>
+                <button onclick="importarRepuestosMasivo()" class="w-full bg-azul text-white py-3 rounded-xl font-bold mt-2 shadow-md">Actualizar Base</button>
             </div>
+
+            <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200 shadow-sm">
+                <label class="font-bold text-blue-700 uppercase text-xs">Clientes Habituales (Excel)</label>
+                <textarea id="import-clientes" class="w-full p-3 rounded-xl border h-32 text-sm mt-2 text-gray-900" placeholder="NOMBRE, RUT, WHATSAPP, DIRECCION, CORREO"></textarea>
+                <button onclick="importarClientesMasivo()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-2 shadow-md">Sincronizar Clientes</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        // --- URL DE TU SISTEMA ---
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby5t4A_L0UqGvK7q59W_Yl7tX0C6Q5Q5Q5Q5Q5Q5Q5Q5Q5Q5Q5Q5Q5Q5Q/exec";
+        // PEGA AQUÍ TU URL DE IMPLEMENTACIÓN DE GOOGLE SCRIPT
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby5t4A_L0UqGvK7q59W_Yl7tX0C6Q5Q5Q5Q5Q5Q5Q5Q5Q5Q5Q5Q5Q5Q5Q/exec"; 
         
         let dbFull = [];
-        let itemPresupuestoCount = 0;
-        let otSeleccionada = null;
+        let clientesLocales = JSON.parse(localStorage.getItem('wm_clientes_locales')) || [];
+        let repuestosDB = JSON.parse(localStorage.getItem('wm_repuestos')) || [];
+        let otActiva = null; 
+        let repuestosActuales = [];
 
         window.onload = () => {
+            const iaK = localStorage.getItem('wm_ia_key');
+            if(iaK) document.getElementById('ia-key-input').value = iaK;
             cargarImagenesVisuales();
             sincronizarBaseAlInicio();
         };
 
-        // --- SISTEMA DE IMAGENES V20.7 ---
+        // --- SISTEMA DE IDENTIDAD VISUAL V20.7 ---
         function guardarImagen(inputId, storageKey) {
             const file = document.getElementById(inputId).files[0];
             if (!file) return;
@@ -255,9 +338,16 @@
             reader.onload = (e) => {
                 localStorage.setItem(storageKey, e.target.result);
                 cargarImagenesVisuales();
-                alert("Imagen actualizada.");
+                alert("✅ Imagen cargada correctamente.");
             };
             reader.readAsDataURL(file);
+        }
+
+        function borrarTodasImagenes() {
+            if(confirm("¿Borrar todas las imágenes corporativas?")) {
+                localStorage.removeItem('wm_logo'); localStorage.removeItem('wm_main_img'); localStorage.removeItem('wm_banner');
+                location.reload();
+            }
         }
 
         function cargarImagenesVisuales() {
@@ -265,9 +355,17 @@
             const main = localStorage.getItem('wm_main_img');
             const banner = localStorage.getItem('wm_banner');
 
-            if(logo) document.getElementById('header-logo-container').innerHTML = `<img src="${logo}">`;
-            if(main) document.getElementById('home-main-img-container').innerHTML = `<img src="${main}" class="h-44 mx-auto object-contain rounded-2xl shadow-xl">`;
-            
+            // Logo en la esquina derecha
+            const logoBox = document.getElementById('header-logo-container');
+            if(logo) logoBox.innerHTML = `<img src="${logo}">`;
+            else logoBox.innerHTML = `<i class="fa-solid fa-shield-halved text-gray-300 text-3xl"></i>`;
+
+            // Imagen Central de Inicio
+            const mainImgContainer = document.getElementById('home-main-img-container');
+            if (main) mainImgContainer.innerHTML = `<img src="${main}" class="h-44 mx-auto object-contain rounded-2xl shadow-xl">`;
+            else mainImgContainer.innerHTML = `<i class="fa-solid fa-bolt-lightning text-azul text-7xl mb-2 drop-shadow-md"></i>`;
+
+            // Banner en las cabeceras
             if(banner) {
                 document.querySelectorAll('.app-header-bg').forEach(bg => {
                     bg.style.backgroundImage = `url(${banner})`;
@@ -279,18 +377,12 @@
             }
         }
 
-        // --- GESTIÓN DE DATOS ---
-        async function sincronizarBaseAlInicio() {
-            try {
-                const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime());
-                dbFull = await res.json();
-            } catch(e) { console.error("Error de sincronización", e); }
-        }
-
-        function showScreen(id) {
-            document.querySelectorAll('div[id$="-screen"]').forEach(s => s.style.display = 'none');
-            document.getElementById(id).style.display = (id === 'home-screen') ? 'flex' : 'block';
-            window.scrollTo(0,0);
+        // --- GESTIÓN DE DATOS NUBE ---
+        async function sincronizarBaseAlInicio() { 
+            try { 
+                const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime()); 
+                dbFull = await res.json(); 
+            } catch(e) {} 
         }
 
         function gV(obj, k) {
@@ -300,145 +392,27 @@
             return f ? obj[f] : "";
         }
 
-        // --- MOTOR DE PRESUPUESTO (EL CÓDIGO PESADO) ---
-        function abrirPresupuestoDirecto() {
-            // Buscamos equipos que estén en estado "INGRESADO" o "EN REVISIÓN"
-            const pendientes = dbFull.filter(p => gV(p, 'ESTADO') === 'INGRESADO');
-            if(pendientes.length === 0) return alert("No hay equipos nuevos esperando presupuesto.");
-            abrirModalPresupuesto(pendientes[0]);
+        function showScreen(id) { 
+            document.querySelectorAll('div[id$="-screen"]').forEach(s => s.style.display = 'none'); 
+            document.getElementById(id).style.display = (id === 'home-screen') ? 'flex' : 'block'; 
+            window.scrollTo(0,0); 
         }
 
-        function abrirModalPresupuesto(item) {
-            otSeleccionada = item;
-            document.getElementById('presupuesto-screen').style.display = 'block';
-            const info = document.getElementById('info-cliente-presupuesto');
-            info.innerHTML = `
-                <p class="text-[10px] font-black text-azul uppercase">OT #${gV(item, 'OT') || gV(item, 'N° OT')}</p>
-                <h2 class="text-xl font-black text-gray-900">${gV(item, 'NOMBRE')}</h2>
-                <p class="text-xs font-bold text-gray-500">${gV(item, 'MARCA')} ${gV(item, 'MODELO')} - Serie: ${gV(item, 'SERIE')}</p>
-            `;
-            document.getElementById('lista-items-presupuesto').innerHTML = '';
-            itemPresupuestoCount = 0;
-            agregarFilaPresupuesto();
+        // --- MOTOR DE TIEMPOS V20.7 ---
+        function obtenerDiasCorridos(fecha) {
+            if(!fecha) return 0;
+            const diff = new Date() - new Date(fecha.replace(" ", "T"));
+            return Math.floor(diff / (1000 * 60 * 60 * 24));
         }
 
-        function agregarFilaPresupuesto() {
-            itemPresupuestoCount++;
-            const div = document.createElement('div');
-            div.className = "flex gap-2 items-center bg-white p-2 rounded-xl shadow-sm border border-gray-100";
-            div.innerHTML = `
-                <input type="text" placeholder="Descripción" class="flex-1 p-2 text-sm border rounded-lg item-desc">
-                <input type="number" placeholder="$" class="w-24 p-2 text-sm border rounded-lg item-precio text-right" onchange="calcularTotalesPresupuesto()">
-                <button onclick="this.parentElement.remove(); calcularTotalesPresupuesto();" class="text-red-400 p-2"><i class="fa-solid fa-trash"></i></button>
-            `;
-            document.getElementById('lista-items-presupuesto').appendChild(div);
+        function calcularDiasHabiles(fechaInicio) {
+            if (!fechaInicio) return 0;
+            let start = new Date(fechaInicio.replace(" ", "T")), end = new Date(), count = 0, current = new Date(start);
+            while (current <= end) { if (current.getDay() !== 0 && current.getDay() !== 6) count++; current.setDate(current.getDate() + 1); }
+            return count;
         }
 
-        function calcularTotalesPresupuesto() {
-            let neto = 0;
-            document.querySelectorAll('.item-precio').forEach(input => {
-                neto += Number(input.value) || 0;
-            });
-            const iva = Math.round(neto * 0.19);
-            const total = neto + iva;
-            document.getElementById('txt-neto').innerText = "$" + neto.toLocaleString('es-CL');
-            document.getElementById('txt-iva').innerText = "$" + iva.toLocaleString('es-CL');
-            document.getElementById('txt-total').innerText = "$" + total.toLocaleString('es-CL');
-        }
-
-        function cerrarPresupuesto() {
-            document.getElementById('presupuesto-screen').style.display = 'none';
-        }
-
-        // --- GENERADOR DE PDF PROFESIONAL ---
-        async function generarPDFPresupuesto() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            const logoBase64 = localStorage.getItem('wm_logo');
-            const otNum = gV(otSeleccionada, 'OT') || gV(otSeleccionada, 'N° OT');
-            const fechaActual = new Date().toLocaleDateString('es-CL');
-
-            // --- ENCABEZADO ---
-            if(logoBase64) doc.addImage(logoBase64, 'PNG', 15, 15, 30, 30);
-            
-            doc.setFontSize(22); doc.setFont("helvetica", "bold");
-            doc.text("PRESUPUESTO TÉCNICO", 50, 25);
-            doc.setFontSize(10); doc.setFont("helvetica", "normal");
-            doc.text("WELDING SERVICIO - SERVICIO TÉCNICO ESPECIALIZADO", 50, 32);
-            doc.text("SANTIAGO, CHILE", 50, 37);
-
-            doc.setFillColor(0, 112, 243); doc.rect(150, 15, 45, 25, 'F');
-            doc.setTextColor(255, 255, 255); doc.setFontSize(14);
-            doc.text("OT #" + otNum, 172.5, 28, { align: "center" });
-            doc.setFontSize(8); doc.text(fechaActual, 172.5, 35, { align: "center" });
-
-            // --- CUADRO CLIENTE ---
-            doc.setTextColor(0,0,0); doc.setFontSize(10); doc.setFont("helvetica", "bold");
-            doc.text("DATOS DEL CLIENTE / EQUIPO:", 15, 55);
-            doc.line(15, 57, 195, 57);
-            
-            doc.setFont("helvetica", "normal");
-            doc.text("Cliente: " + gV(otSeleccionada, 'NOMBRE'), 15, 65);
-            doc.text("RUT: " + gV(otSeleccionada, 'RUT'), 15, 70);
-            doc.text("Equipo: " + gV(otSeleccionada, 'MARCA') + " " + gV(otSeleccionada, 'MODELO'), 120, 65);
-            doc.text("N° Serie: " + gV(otSeleccionada, 'SERIE'), 120, 70);
-
-            // --- TABLA DE ITEMS ---
-            const items = [];
-            document.querySelectorAll('#lista-items-presupuesto > div').forEach(div => {
-                const d = div.querySelector('.item-desc').value;
-                const p = Number(div.querySelector('.item-precio').value) || 0;
-                if(d) items.push([d, "$" + p.toLocaleString('es-CL')]);
-            });
-
-            doc.autoTable({
-                startY: 80,
-                head: [['DESCRIPCIÓN DE TRABAJOS / REPUESTOS', 'SUBTOTAL']],
-                body: items,
-                headStyles: { fillColor: [0, 112, 243] },
-                columnStyles: { 1: { halign: 'right', cellWidth: 40 } }
-            });
-
-            const finalY = doc.lastAutoTable.finalY + 10;
-
-            // --- TOTALES ---
-            const neto = document.getElementById('txt-neto').innerText;
-            const iva = document.getElementById('txt-iva').innerText;
-            const total = document.getElementById('txt-total').innerText;
-
-            doc.setFont("helvetica", "bold");
-            doc.text("NETO:", 140, finalY); doc.text(neto, 195, finalY, { align: "right" });
-            doc.text("IVA (19%):", 140, finalY + 7); doc.text(iva, 195, finalY + 7, { align: "right" });
-            doc.setFontSize(14); doc.setTextColor(0, 112, 243);
-            doc.text("TOTAL:", 140, finalY + 16); doc.text(total, 195, finalY + 16, { align: "right" });
-
-            // --- DIAGNÓSTICO Y LEGALES ---
-            doc.setTextColor(0,0,0); doc.setFontSize(9);
-            doc.setFont("helvetica", "bold"); doc.text("DIAGNÓSTICO TÉCNICO:", 15, finalY + 30);
-            doc.setFont("helvetica", "normal");
-            const obs = document.getElementById('obs-tecnica').value || "No se especifican observaciones adicionales.";
-            doc.text(doc.splitTextToSize(obs, 180), 15, finalY + 35);
-
-            doc.setFontSize(7); doc.setTextColor(100, 100, 100);
-            const legal = "CONDICIONES: Presupuesto válido por 5 días. Toda reparación cuenta con 30 días de garantía sobre la falla reparada. Repuestos eléctricos no tienen garantía una vez instalados. El no retiro del equipo después de 6 meses faculta al taller para su remate según ley vigente.";
-            doc.text(doc.splitTextToSize(legal, 180), 15, 275);
-
-            // --- GUARDAR Y ENVIAR ---
-            const pdfBlob = doc.output('blob');
-            const fileName = `PRESUPUESTO_OT_${otNum}.pdf`;
-            
-            // Subida opcional a Google Drive vía POST si lo deseas (acción "upload_pdf")
-            alert("Generando PDF... Se abrirá el archivo para compartir.");
-            const pdfUrl = URL.createObjectURL(pdfBlob);
-            window.open(pdfUrl);
-
-            // Actualizar estado en la nube a PRESUPUESTADO
-            await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "update_status", ot: otNum, estado: "PRESUPUESTADO" }) });
-            location.reload();
-        }
-
-        // --- SISTEMA DE GESTIÓN SEMÁFORO ---
+        // --- GESTIÓN TALLER SEMÁFORO ---
         function abrirListaGestion(f) {
             showScreen('lista-gestion-screen');
             document.getElementById('titulo-lista-gestion').innerText = f + "S";
@@ -447,70 +421,174 @@
 
         async function renderizarListaGestion(filtro) {
             const container = document.getElementById('contenedor-items-gestion');
-            container.innerHTML = '<div class="text-center py-20"><div class="loader rounded-full border-4 h-10 w-10 mx-auto"></div><p class="mt-4 font-bold text-gray-400">Sincronizando Taller...</p></div>';
-            
+            container.innerHTML = '<div class="text-center py-20"><div class="loader rounded-full border-4 h-10 w-10 mx-auto"></div><p class="text-xs font-bold mt-2 text-gray-400">Sincronizando Taller...</p></div>';
             await sincronizarBaseAlInicio();
             
-            const hoy = new Date();
             const abandonados = dbFull.filter(p => {
                 const fBase = gV(p, 'FECHA_MOVIMIENTO') || gV(p, 'FECHA');
-                if(!fBase) return false;
-                const dias = Math.floor((hoy - new Date(fBase.replace(" ", "T"))) / (1000*60*60*24));
-                return dias > 180 && gV(p, 'ESTADO') !== 'ENTREGADO';
+                return obtenerDiasCorridos(fBase) > 180 && gV(p, 'ESTADO') !== 'ENTREGADO';
             });
-
+            
             let filtrados = [];
             if(filtro === 'ABANDONADO') filtrados = abandonados;
             else {
                 filtrados = dbFull.filter(p => !abandonados.includes(p) && gV(p, 'ESTADO') === filtro);
+                if(filtro === 'ENTREGADO') filtrados = filtrados.filter(p => obtenerDiasCorridos(gV(p, 'FECHA_MOVIMIENTO')) <= 90);
             }
 
-            if(filtrados.length === 0) {
-                container.innerHTML = `<div class="text-center py-20 text-gray-400"><i class="fa-solid fa-folder-open text-5xl mb-4"></i><p class="font-bold">No hay equipos en esta sección</p></div>`;
-                return;
-            }
+            if (filtrados.length === 0) { container.innerHTML = '<p class="text-center py-20 text-gray-400 font-bold uppercase">Lista vacía</p>'; return; }
 
-            container.innerHTML = filtrados.map(item => `
-                <div class="bg-white p-5 rounded-3xl shadow-md border border-gray-100 ${filtro === 'ABANDONADO' ? 'sh-abandono' : ''}">
+            container.innerHTML = filtrados.map(item => {
+                const fBase = gV(item, 'FECHA_MOVIMIENTO') || gV(item, 'FECHA');
+                const dM = obtenerDiasCorridos(fBase); const dH = calcularDiasHabiles(fBase); const otN = gV(item, 'OT') || gV(item, 'N° OT');
+                const nmb = gV(item, 'NOMBRE') || 'Sin Nombre';
+                let color = "bg-blue-100 text-blue-600";
+                if(filtro === 'PRESUPUESTADO' && dH >= 3) color = "bg-red-100 text-red-600";
+                
+                return `
+                <div class="bg-white p-5 rounded-3xl shadow-md border border-gray-100">
                     <div class="flex justify-between items-start">
                         <div>
-                            <span class="status-pill bg-gray-100 text-gray-500">OT-${gV(item, 'OT') || gV(item, 'N° OT')}</span>
-                            <h4 class="font-black text-lg text-gray-900 leading-tight mt-1">${gV(item, 'NOMBRE')}</h4>
-                            <p class="text-[11px] font-bold text-gray-400 uppercase">${gV(item, 'MARCA')} ${gV(item, 'MODELO')}</p>
+                            <span class="status-pill bg-gray-100 text-gray-500 font-black">OT-${otN}</span>
+                            <h4 class="font-black text-lg text-gray-900 mt-1 leading-tight">${nmb}</h4>
+                            <p class="text-xs font-bold text-gray-500">${gV(item, 'MARCA')} ${gV(item, 'MODELO')}</p>
                         </div>
-                        <button onclick="abrirModalPresupuesto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="bg-blue-50 text-azul p-3 rounded-xl"><i class="fa-solid fa-file-pen text-xl"></i></button>
+                        <a href="https://wa.me/${gV(item, 'WHATSAPP')}" class="bg-green-100 text-green-600 w-11 h-11 rounded-full flex items-center justify-center"><i class="fa-brands fa-whatsapp text-2xl"></i></a>
                     </div>
-                </div>
-            `).join('');
+                    <div class="mt-4 pt-3 border-t flex justify-between items-center">
+                        <span class="counter-pill ${color} uppercase"><i class="fa-regular fa-clock"></i> ${filtro === 'ENTREGADO' || filtro === 'ABANDONADO' ? dM + ' DÍAS' : dH + ' DÍAS HÁBILES'}</span>
+                        <button onclick="cambiarEstadoDirecto('${otN}', '${obtenerSiguienteEstado(filtro)}')" class="bg-gray-900 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase">Siguiente Paso</button>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
-        // --- RECONOCIMIENTO DE VOZ ---
-        function iniciarDictado(id) {
-            const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-            rec.lang = 'es-ES';
-            rec.start();
-            rec.onresult = (e) => { document.getElementById(id).value = e.results[0][0].transcript; };
+        function obtenerSiguienteEstado(actual) {
+            const flujo = { 'PRESUPUESTADO': 'APROBADO', 'APROBADO': 'REPARADO', 'REPARADO': 'ENTREGADO', 'RECHAZADO': 'ENTREGADO' };
+            return flujo[actual] || 'INGRESADO';
         }
 
-        async function buscarCliente(t) {
-            const ul = document.getElementById('sugerencias-cliente');
-            if(t.length < 3) { ul.classList.add('hidden'); return; }
-            const fil = dbFull.filter(c => gV(c, 'NOMBRE').toLowerCase().includes(t.toLowerCase()));
-            if(fil.length === 0) return;
-            ul.classList.remove('hidden'); ul.innerHTML = '';
-            fil.forEach(c => {
-                const li = document.createElement('li');
-                li.className = "p-3 border-b hover:bg-gray-50 font-bold text-sm";
-                li.innerText = gV(c, 'NOMBRE');
-                li.onclick = () => {
-                    document.getElementById('nombre').value = gV(c, 'NOMBRE');
-                    document.getElementById('rut').value = gV(c, 'RUT');
-                    document.getElementById('whatsapp').value = gV(c, 'WHATSAPP');
-                    ul.classList.add('hidden');
+        async function cambiarEstadoDirecto(ot, nE) {
+            await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "update_status", ot: ot, estado: nE }) });
+            location.reload();
+        }
+
+        // --- MOTOR DE PRESUPUESTO Y PDF (EL CÓDIGO PESADO) ---
+        async function cargarPendientes() {
+            showScreen('presupuesto-list-screen'); 
+            document.getElementById('lista-pendientes').innerHTML = ''; 
+            document.getElementById('loading-pendientes').classList.remove('hidden');
+            await sincronizarBaseAlInicio();
+            document.getElementById('loading-pendientes').classList.add('hidden');
+            
+            dbFull.filter(p => !gV(p, 'DIAGNOSTICO') && gV(p, 'ESTADO') !== 'ENTREGADO').forEach(p => {
+                const otNum = gV(p, 'OT') || gV(p, 'N° OT');
+                const dias = calcularDiasHabiles(gV(p, 'FECHA'));
+                let sh = "sh-dia-1"; if(dias === 2) sh = "sh-dia-2"; if(dias >= 3) sh = "sh-dia-3";
+                
+                const div = document.createElement('div');
+                div.className = `bg-white p-5 rounded-2xl border-l-8 border-azul transition active:scale-95 cursor-pointer shadow-sm ${sh}`;
+                div.onclick = () => {
+                    otActiva = { ot: otNum, NOMBRE: gV(p, 'NOMBRE'), RUT: gV(p, 'RUT'), WHATSAPP: gV(p, 'WHATSAPP'), MARCA: gV(p, 'MARCA'), MODELO: gV(p, 'MODELO'), SERIE: gV(p, 'SERIE'), GUIA: gV(p, 'GUIA'), FALLA: gV(p, 'FALLA'), ACCESORIOS: gV(p, 'ACCESORIOS') };
+                    document.getElementById('ot-numero').innerText = otNum;
+                    document.getElementById('det-cliente').innerText = otActiva.NOMBRE;
+                    document.getElementById('det-equipo').innerText = otActiva.MARCA + " " + otActiva.MODELO;
+                    document.getElementById('det-guia-ref').innerText = otActiva.GUIA;
+                    document.getElementById('det-falla').innerText = otActiva.FALLA;
+                    repuestosActuales = []; renderRepuestosPresupuesto();
+                    showScreen('presupuesto-detail-screen');
                 };
-                ul.appendChild(li);
+                div.innerHTML = `<div class="flex justify-between items-center mb-1"><span class="text-[10px] font-black text-azul uppercase">OT-${otNum}</span><span class="text-[9px] font-black text-gray-400 uppercase">${dias} DÍAS HÁBILES</span></div><h3 class="font-black text-gray-900 leading-tight">${gV(p, 'NOMBRE')}</h3><p class="text-xs text-gray-500 font-bold">${gV(p, 'MARCA')} ${gV(p, 'MODELO')}</p>`;
+                document.getElementById('lista-pendientes').appendChild(div);
             });
         }
+
+        async function enviarPresupuesto() {
+            const diag = document.getElementById('diagnostico').value;
+            const neto = document.getElementById('valor-neto').value;
+            if(!diag || !neto) return alert("⚠️ Complete diagnóstico y valor neto.");
+            
+            const btn = document.getElementById('btn-enviar-presupuesto'); btn.disabled = true;
+            try {
+                await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "update_presupuesto", ot: otActiva.ot, DIAGNOSTICO: diag, NETO: neto, estado: 'PRESUPUESTADO' }) });
+                generarPDFGlobal('COT', otActiva, { diagnostico: diag, valorNeto: neto, plazo: document.getElementById('plazo').value });
+                alert("✅ Cotización Generada. Enviando WhatsApp...");
+                window.open(`https://wa.me/${otActiva.WHATSAPP}?text=Estimado(a) ${otActiva.NOMBRE}, adjuntamos cotización de OT ${otActiva.ot}.`, '_blank');
+                location.reload();
+            } catch(e) { btn.disabled = false; }
+        }
+
+        // --- MOTOR PDF GLOBAL (COMPLETO) ---
+        function generarPDFGlobal(tipo, ot, datos) {
+            const { jsPDF } = window.jspdf; const doc = new jsPDF(); const fmt = new Intl.NumberFormat("es-CL");
+            const logo = localStorage.getItem('wm_logo');
+            
+            // Franja Superior
+            doc.setFillColor(0, 112, 243); doc.rect(0, 0, 210, 52, 'F');
+            doc.setTextColor(255); doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 15);
+            doc.setFontSize(26); doc.text(tipo === 'OT' ? "ORDEN DE INGRESO" : "COTIZACIÓN TÉCNICA", 10, 30);
+            doc.setFontSize(9); doc.setFont("helvetica", "normal"); doc.text(`RUT: 76.349.984-7 | amsetecsi@gmail.com | Santiago, Chile`, 10, 42);
+            
+            if(logo) doc.addImage(logo, 'PNG', 165, 8, 35, 35);
+            
+            let cY = 65;
+            doc.setTextColor(0); doc.setFontSize(12); doc.setFont("helvetica", "bold"); doc.text(`OT N°: ${ot.ot}`, 160, 65);
+            
+            if(tipo === 'OT') {
+                doc.text("I. DATOS DEL CLIENTE", 10, cY); cY += 10;
+                doc.setFont("helvetica", "normal"); doc.setFontSize(11);
+                doc.text(`Nombre: ${ot.NOMBRE}`, 12, cY); cY += 8;
+                doc.text(`RUT: ${ot.RUT} | WhatsApp: ${ot.WHATSAPP}`, 12, cY); cY += 14;
+                doc.setFont("helvetica", "bold"); doc.text("II. DETALLES DEL EQUIPO", 10, cY); cY += 10;
+                doc.setFont("helvetica", "normal");
+                doc.text(`Equipo: ${ot.MARCA} ${ot.MODELO} | Serie: ${ot.SERIE}`, 12, cY); cY += 8;
+                doc.text(`Accesorios: ${ot.ACCESORIOS}`, 12, cY); cY += 14;
+                doc.setFont("helvetica", "bold"); doc.text("III. FALLA REPORTADA", 10, cY); cY += 8;
+                doc.setFont("helvetica", "normal"); doc.text(doc.splitTextToSize(ot.FALLA, 180), 12, cY);
+                cY = 240; doc.setFontSize(8); doc.text("1. Plazo diagnóstico: 3 días. 2. Equipos abandonados tras 6 meses pasan a dominio del taller.", 10, cY);
+                doc.line(30, 275, 80, 275); doc.text("Firma Cliente", 45, 280);
+            } else {
+                doc.text("DIAGNÓSTICO TÉCNICO:", 10, cY); cY += 8;
+                doc.setFont("helvetica", "normal"); doc.text(doc.splitTextToSize(datos.diagnostico, 185), 10, cY);
+                cY += 40;
+                doc.setFont("helvetica", "bold"); doc.text("REPUESTOS / SERVICIOS:", 10, cY); cY += 8;
+                const items = repuestosActuales.map(r => [r.nombre, r.cantidad, "Consultar"]);
+                doc.autoTable({ startY: cY, head: [['Descripción', 'Cant', 'Precio']], body: items });
+                cY = doc.lastAutoTable.finalY + 15;
+                const neto = parseInt(datos.valorNeto); const total = Math.round(neto * 1.19);
+                doc.text(`TOTAL NETO: $${fmt.format(neto)}`, 140, cY);
+                doc.text(`TOTAL CON IVA (19%): $${fmt.format(total)}`, 140, cY + 8);
+            }
+            doc.save(`${tipo}_OT${ot.ot}.pdf`);
+        }
+
+        // --- FUNCIONES AUXILIARES ---
+        function iniciarDictado(id) { const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); rec.lang = 'es-ES'; rec.start(); rec.onresult = (e) => { document.getElementById(id).value = e.results[0][0].transcript; }; }
+        function buscarCliente(t) {
+            const ul = document.getElementById('sugerencias-cliente'); ul.innerHTML = ''; if(t.length < 2) { ul.classList.add('hidden'); return; }
+            const fil = [...dbFull, ...clientesLocales].filter(c => gV(c, 'NOMBRE').toLowerCase().includes(t.toLowerCase()));
+            if(fil.length > 0) {
+                ul.classList.remove('hidden');
+                fil.forEach(c => {
+                    const li = document.createElement('li'); li.className = "p-4 border-b font-bold"; li.innerText = gV(c, 'NOMBRE');
+                    li.onclick = () => { document.getElementById('nombre').value = gV(c, 'NOMBRE'); document.getElementById('rut').value = gV(c, 'RUT'); document.getElementById('whatsapp').value = gV(c, 'WHATSAPP'); ul.classList.add('hidden'); };
+                    ul.appendChild(li);
+                });
+            }
+        }
+        function agregarRepuestoLista() { const n = document.getElementById('buscador-repuesto').value; if(!n) return; repuestosActuales.push({ nombre: n, cantidad: document.getElementById('cantidad-repuesto').value }); renderRepuestosPresupuesto(); document.getElementById('buscador-repuesto').value = ''; }
+        function renderRepuestosPresupuesto() { document.getElementById('lista-repuestos-seleccionados').innerHTML = repuestosActuales.map((r, i) => `<li class="flex justify-between bg-white p-2 border rounded-xl text-xs font-bold shadow-sm"><span>${r.nombre} (x${r.cantidad})</span><button onclick="repuestosActuales.splice(${i},1);renderRepuestosPresupuesto()" class="text-red-500 px-2"><i class="fa-solid fa-trash"></i></button></li>`).join(''); }
+        function importarClientesMasivo() { const t = document.getElementById('import-clientes').value; if(!t.trim()) return; localStorage.setItem('wm_clientes_locales', JSON.stringify(t.split('\n').map(x => { const p = x.split(','); return { NOMBRE: p[0], RUT: p[1], WHATSAPP: p[2] }; }))); alert("✅ Clientes sincronizados."); }
+        function guardarIAKey() { localStorage.setItem('wm_ia_key', document.getElementById('ia-key-input').value.trim()); alert("✅ Llave Guardada."); }
+        
+        document.getElementById('ingreso-form').addEventListener('submit', async (e) => {
+            e.preventDefault(); const btn = document.getElementById('btn-submit'); btn.disabled = true;
+            const d = { action: "ingreso", NOMBRE: document.getElementById('nombre').value, RUT: document.getElementById('rut').value, WHATSAPP: document.getElementById('whatsapp').value, MARCA: document.getElementById('marca').value, MODELO: document.getElementById('modelo').value, SERIE: document.getElementById('serie').value, GUIA: document.getElementById('guia').value, FALLA: document.getElementById('falla').value, ACCESORIOS: Array.from(document.querySelectorAll('.acc:checked')).map(el => el.value).join(', ') };
+            try {
+                const res = await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(d) }); const r = await res.json();
+                generarPDFGlobal('OT', { ...d, ot: r.ot }, {}); alert("✅ OT #" + r.ot + " Registrada."); location.reload();
+            } catch(e) { btn.disabled = false; }
+        });
     </script>
 </body>
 </html>
