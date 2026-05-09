@@ -39,25 +39,23 @@
 <body class="bg-gray-100 font-sans pb-10 text-gray-800">
 
     <div id="home-screen" class="max-w-md mx-auto h-screen flex flex-col relative bg-white">
-        <div id="home-screen" class="max-w-md mx-auto h-screen flex flex-col relative bg-white">
-        <div class="app-header-bg h-48 rounded-b-3xl shadow-lg relative p-6 flex flex-col">
+        <div class="app-header-bg h-48 rounded-b-3xl shadow-lg flex flex-col justify-between p-6 relative">
             <div class="app-header-overlay hidden banner-overlay"></div>
             
-            <div class="app-header-content flex justify-end w-full absolute top-5 right-5">
-                <button onclick="showScreen('config-screen')" class="text-white p-2 transition active:scale-90 z-[10]"><i class="fa-solid fa-gear text-2xl"></i></button>
+            <div class="app-header-content flex justify-end items-start relative z-50">
+                <button onclick="showScreen('config-screen')" class="text-white p-2 transition active:scale-90 cursor-pointer"><i class="fa-solid fa-gear text-2xl"></i></button>
             </div>
-
-            <div class="app-header-content flex flex-col justify-center flex-grow -mt-2">
-                <span class="text-[9px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest w-fit mb-1">v20.7 Premium</span>
-                <h1 class="text-4xl font-black uppercase tracking-tighter leading-none">Welding</h1>
-                <h1 class="text-4xl font-black uppercase tracking-tighter leading-none text-blue-200">Servicio</h1>
-                <div class="mt-2">
+            
+            <div class="app-header-content mb-4">
+                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v20.7 Premium</span>
+                <h1 class="text-3xl font-black uppercase tracking-tighter mt-1 leading-none">Welding</h1>
+                <h1 class="text-3xl font-black uppercase tracking-tighter leading-none text-blue-200">Servicio</h1>
+                <div class="mt-1">
                     <p class="text-[10px] font-bold opacity-90 leading-tight uppercase">Servicio Técnico</p>
                     <p class="text-[10px] font-bold opacity-90 leading-tight uppercase">Soluciones Integrales</p>
                 </div>
             </div>
         </div>
-
 
         <div class="flex-1 px-6 pt-10 pb-6 flex flex-col justify-center">
             <div class="text-center mb-8">
@@ -363,21 +361,13 @@
             const mainImgData = localStorage.getItem('wm_main_img');
             const bannerData = localStorage.getItem('wm_banner');
 
-            // 1. Aplicar Logo a las esquinas
-            const logoContainers = document.querySelectorAll('.app-logo-container');
-            logoContainers.forEach(c => {
-                if(logoData) c.innerHTML = `<img src="${logoData}" class="h-10 w-auto object-contain drop-shadow-md bg-white p-1 rounded">`;
-                else c.innerHTML = ``; 
-            });
-
-                        // 2. Aplicar Imagen Central (Más pequeña)
+            // 2. Aplicar Imagen Central (Tamaño reducido)
             const mainImgContainer = document.getElementById('home-main-img-container');
             if (mainImgData) {
                 mainImgContainer.innerHTML = `<img src="${mainImgData}" class="h-24 mx-auto object-contain drop-shadow-lg rounded-xl">`;
             } else {
                 mainImgContainer.innerHTML = `<i class="fa-solid fa-bolt-lightning text-azul text-6xl mb-2 drop-shadow-md"></i>`;
             }
-
 
             // 3. Aplicar Banner a los Encabezados
             const headerContainers = document.querySelectorAll('.app-header-bg');
