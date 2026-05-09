@@ -39,23 +39,24 @@
 <body class="bg-gray-100 font-sans pb-10 text-gray-800">
 
     <div id="home-screen" class="max-w-md mx-auto h-screen flex flex-col relative bg-white">
-        <div class="app-header-bg h-48 rounded-b-3xl shadow-lg flex flex-col justify-between p-6 relative">
+        <div class="app-header-bg h-48 rounded-b-3xl shadow-lg relative overflow-hidden">
             <div class="app-header-overlay hidden banner-overlay"></div>
             
-            <div class="app-header-content flex justify-end items-start relative z-50">
-                <button onclick="showScreen('config-screen')" class="text-white p-2 transition active:scale-90 cursor-pointer"><i class="fa-solid fa-gear text-2xl"></i></button>
+            <div class="absolute top-4 right-4 z-50">
+                <button onclick="showScreen('config-screen')" class="text-white p-2 transition active:scale-90 cursor-pointer">
+                    <i class="fa-solid fa-gear text-2xl drop-shadow-md"></i>
+                </button>
             </div>
             
-                        <div class="app-header-content mb-12">
+            <div class="app-header-content absolute bottom-8 left-6 z-40">
                 <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v20.7 Premium</span>
-                <h1 class="text-3xl font-black uppercase tracking-tighter mt-1 leading-none">Welding</h1>
-                <h1 class="text-3xl font-black uppercase tracking-tighter leading-none text-blue-200">Servicio</h1>
-                <div class="mt-1">
+                <h1 class="text-4xl font-black uppercase tracking-tighter mt-1 leading-none text-white drop-shadow-md">Welding</h1>
+                <h1 class="text-4xl font-black uppercase tracking-tighter leading-none text-blue-200 drop-shadow-md">Servicio</h1>
+                <div class="mt-1 text-white drop-shadow-md">
                     <p class="text-[10px] font-bold opacity-90 leading-tight uppercase">Servicio Técnico</p>
                     <p class="text-[10px] font-bold opacity-90 leading-tight uppercase">Soluciones Integrales</p>
                 </div>
             </div>
-
         </div>
 
         <div class="flex-1 px-6 pt-10 pb-6 flex flex-col justify-center">
@@ -333,15 +334,19 @@
 
         window.onload = () => {
             const iaK = localStorage.getItem('wm_ia_key');
-            if(iaK) document.getElementById('ia-key-input').value = iaK;
-            cargarImagenesVisuales(); // Carga las 3 imágenes en la interfaz V20.6
+            if(iaK) {
+                document.getElementById('ia-key-input').value = iaK;
+            }
+            cargarImagenesVisuales(); 
             sincronizarBaseAlInicio();
         };
 
         // --- SISTEMA TRIPLE IDENTIDAD VISUAL V20.6 ---
         function guardarImagen(inputId, storageKey) {
             const file = document.getElementById(inputId).files[0];
-            if (!file) return alert("⚠️ Selecciona una imagen primero en el recuadro.");
+            if (!file) {
+                return alert("⚠️ Selecciona una imagen primero en el recuadro.");
+            }
             const reader = new FileReader();
             reader.onload = function(e) {
                 localStorage.setItem(storageKey, e.target.result);
@@ -362,7 +367,17 @@
             const mainImgData = localStorage.getItem('wm_main_img');
             const bannerData = localStorage.getItem('wm_banner');
 
-            // 2. Aplicar Imagen Central (Tamaño reducido)
+            // 1. Aplicar Logo a las esquinas
+            const logoContainers = document.querySelectorAll('.app-logo-container');
+            logoContainers.forEach(c => {
+                if(logoData) {
+                    c.innerHTML = `<img src="${logoData}" class="h-10 w-auto object-contain drop-shadow-md bg-white p-1 rounded">`;
+                } else {
+                    c.innerHTML = ``; 
+                }
+            });
+
+            // 2. Aplicar Imagen Central
             const mainImgContainer = document.getElementById('home-main-img-container');
             if (mainImgData) {
                 mainImgContainer.innerHTML = `<img src="${mainImgData}" class="h-24 mx-auto object-contain drop-shadow-lg rounded-xl">`;
@@ -378,17 +393,23 @@
                     c.style.backgroundImage = `url(${bannerData})`;
                     c.style.backgroundSize = 'cover';
                     c.style.backgroundPosition = 'center';
-                    if(overlays[index]) overlays[index].classList.remove('hidden'); // Activa capa negra translúcida para leer texto
+                    if(overlays[index]) {
+                        overlays[index].classList.remove('hidden'); 
+                    }
                 } else {
                     c.style.backgroundImage = 'none';
-                    if(overlays[index]) overlays[index].classList.add('hidden');
+                    if(overlays[index]) {
+                        overlays[index].classList.add('hidden');
+                    }
                 }
             });
         }
 
         // NORMALIZADOR DE DATOS: Asegura encontrar la columna sin importar mayúsculas/espacios.
         function gV(obj, k) {
-            if (!obj) return "";
+            if (!obj) {
+                return "";
+            }
             const keys = Object.keys(obj);
             const f = keys.find(x => x.trim().toUpperCase() === k.toUpperCase());
             return f ? obj[f] : "";
@@ -398,12 +419,20 @@
             try { 
                 const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime()); 
                 dbFull = await res.json(); 
-            } catch(e) {} 
+            } catch(e) {
+                
+            } 
         }
 
         function showScreen(id) { 
-            document.querySelectorAll('div[id$="-screen"]').forEach(s => s.style.display = 'none'); 
-            document.getElementById(id).style.display = (id === 'home-screen') ? 'flex' : 'block'; 
+            document.querySelectorAll('div[id$="-screen"]').forEach(s => {
+                s.style.display = 'none';
+            }); 
+            if (id === 'home-screen') {
+                document.getElementById(id).style.display = 'flex';
+            } else {
+                document.getElementById(id).style.display = 'block';
+            }
             window.scrollTo(0,0); 
         }
 
@@ -423,14 +452,18 @@
 
         // --- MOTOR DE TIEMPOS V20.6 ---
         function obtenerDiasCorridos(fecha) {
-            if(!fecha) return 0;
+            if(!fecha) {
+                return 0;
+            }
             const fechaValida = fecha.replace(" ", "T");
             const diff = new Date() - new Date(fechaValida);
             return Math.floor(diff / (1000 * 60 * 60 * 24));
         }
 
         function calcularDiasHabiles(fechaInicio) {
-            if (!fechaInicio) return 0;
+            if (!fechaInicio) {
+                return 0;
+            }
             const fechaValida = fechaInicio.replace(" ", "T");
             let start = new Date(fechaValida);
             let end = new Date();
@@ -438,7 +471,9 @@
             let current = new Date(start);
             while (current <= end) {
                 let day = current.getDay();
-                if (day !== 0 && day !== 6) count++; 
+                if (day !== 0 && day !== 6) {
+                    count++; 
+                }
                 current.setDate(current.getDate() + 1);
             }
             return count;
@@ -493,10 +528,16 @@
 
                 let color = "bg-blue-100 text-blue-600";
                 if(filtro === 'PRESUPUESTADO') {
-                    if(diasH === 2) color = "bg-orange-100 text-orange-600";
-                    if(diasH >= 3) color = "bg-red-100 text-red-600";
+                    if(diasH === 2) {
+                        color = "bg-orange-100 text-orange-600";
+                    }
+                    if(diasH >= 3) {
+                        color = "bg-red-100 text-red-600";
+                    }
                 }
-                if(filtro === 'ABANDONADO') color = "bg-yellow-500 text-black";
+                if(filtro === 'ABANDONADO') {
+                    color = "bg-yellow-500 text-black";
+                }
 
                 let btns = '';
                 if(filtro === 'PRESUPUESTADO') {
@@ -530,7 +571,11 @@
 
         async function cambiarEstadoNube(ot, nE) {
             try {
-                await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "update_status", ot: ot, estado: nE }) });
+                await fetch(WEB_APP_URL, { 
+                    method: 'POST', 
+                    mode: 'no-cors', 
+                    body: JSON.stringify({ action: "update_status", ot: ot, estado: nE }) 
+                });
                 const fActual = document.getElementById('titulo-lista-gestion').innerText.replace("S", "");
                 renderizarListaGestion(fActual);
             } catch(e) { 
@@ -540,7 +585,10 @@
 
         // --- MOTOR PDF GIGANTE V20.6 (CORPORATIVO CON TRIPLE IMAGEN) ---
         function generarPDFGlobal(tipo, ot, datos) {
-            const { jsPDF } = window.jspdf; const doc = new jsPDF(); const r = 0, g = 112, b = 243; const fmt = new Intl.NumberFormat("es-CL");
+            const { jsPDF } = window.jspdf; 
+            const doc = new jsPDF(); 
+            const r = 0, g = 112, b = 243; 
+            const fmt = new Intl.NumberFormat("es-CL");
             
             // INYECCIÓN BANNER PANORÁMICO
             const bannerData = localStorage.getItem('wm_banner');
@@ -549,16 +597,28 @@
                     const formatB = bannerData.includes("image/png") ? "PNG" : "JPEG";
                     doc.addImage(bannerData, formatB, 0, 0, 210, 52);
                     // Capa oscurecedora para garantizar legibilidad del texto
-                    doc.setFillColor(0, 0, 0); doc.setGState(new doc.GState({opacity: 0.6}));
-                    doc.rect(0, 0, 210, 52, 'F'); doc.setGState(new doc.GState({opacity: 1}));
-                } catch(e) { doc.setFillColor(r, g, b); doc.rect(0, 0, 210, 52, 'F'); }
+                    doc.setFillColor(0, 0, 0); 
+                    doc.setGState(new doc.GState({opacity: 0.6}));
+                    doc.rect(0, 0, 210, 52, 'F'); 
+                    doc.setGState(new doc.GState({opacity: 1}));
+                } catch(e) { 
+                    doc.setFillColor(r, g, b); 
+                    doc.rect(0, 0, 210, 52, 'F'); 
+                }
             } else {
-                doc.setFillColor(r, g, b); doc.rect(0, 0, 210, 52, 'F');
+                doc.setFillColor(r, g, b); 
+                doc.rect(0, 0, 210, 52, 'F');
             }
 
-            doc.setTextColor(255); doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 15);
-            doc.setFontSize(26); doc.text(tipo === 'OT' ? "ORDEN DE INGRESO" : "COTIZACIÓN TÉCNICA", 10, 30);
-            doc.setFontSize(9); doc.setFont("helvetica", "normal"); doc.text(`RUT: 76.349.984-7 | amsetecsi@gmail.com`, 10, 40);
+            doc.setTextColor(255); 
+            doc.setFontSize(14); 
+            doc.setFont("helvetica", "bold"); 
+            doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 15);
+            doc.setFontSize(26); 
+            doc.text(tipo === 'OT' ? "ORDEN DE INGRESO" : "COTIZACIÓN TÉCNICA", 10, 30);
+            doc.setFontSize(9); 
+            doc.setFont("helvetica", "normal"); 
+            doc.text(`RUT: 76.349.984-7 | amsetecsi@gmail.com`, 10, 40);
             doc.text(`Fono: +56 9 95412322 | Santiago, Chile`, 10, 45);
             
             // INYECCIÓN DEL LOGO CUADRADO
@@ -566,12 +626,21 @@
             if (logoData) {
                 try {
                     // Fondo blanco protector para el logo
-                    doc.setFillColor(255, 255, 255); doc.roundedRect(163, 6, 39, 39, 2, 2, 'F');
+                    doc.setFillColor(255, 255, 255); 
+                    doc.roundedRect(163, 6, 39, 39, 2, 2, 'F');
                     const formatL = logoData.includes("image/png") ? "PNG" : "JPEG";
                     doc.addImage(logoData, formatL, 165, 8, 35, 35);
-                } catch(e) { doc.setDrawColor(255); doc.rect(165, 8, 35, 35); doc.setFontSize(7); doc.text("LOGO ERROR", 175, 27); }
+                } catch(e) { 
+                    doc.setDrawColor(255); 
+                    doc.rect(165, 8, 35, 35); 
+                    doc.setFontSize(7); 
+                    doc.text("LOGO ERROR", 175, 27); 
+                }
             } else {
-                doc.setDrawColor(255); doc.rect(165, 8, 35, 35); doc.setFontSize(7); doc.text("LOGO AQUÍ", 175, 27);
+                doc.setDrawColor(255); 
+                doc.rect(165, 8, 35, 35); 
+                doc.setFontSize(7); 
+                doc.text("LOGO AQUÍ", 175, 27);
             }
             
             let cY = 65;
@@ -588,43 +657,96 @@
             const FA = ot.FALLA || ot.falla || "Sin descripción de falla reportada.";
 
             if(tipo === 'OT') {
-                doc.setTextColor(r,g,b); doc.setFontSize(32); doc.setFont("helvetica", "bold"); doc.text(`OT: ${ot.ot}`, 130, 75);
-                doc.setTextColor(40); doc.setFontSize(10); doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 130, 82);
+                doc.setTextColor(r,g,b); 
+                doc.setFontSize(32); 
+                doc.setFont("helvetica", "bold"); 
+                doc.text(`OT: ${ot.ot}`, 130, 75);
+                doc.setTextColor(40); 
+                doc.setFontSize(10); 
+                doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 130, 82);
                 
-                doc.setFontSize(15); doc.text("I. DATOS DEL CLIENTE", 10, cY); cY += 10;
-                doc.setFontSize(12); doc.setFont("helvetica", "normal"); 
-                doc.text(`Nombre / Empresa: ${N}`, 12, cY); cY += 8;
-                doc.text(`RUT: ${RT}`, 12, cY); cY += 8;
-                doc.text(`WhatsApp: ${W}`, 12, cY); cY += 8;
-                doc.text(`Correo Electrónico: ${E}`, 12, cY); cY += 8;
-                doc.text(`Dirección: ${D}`, 12, cY); cY += 14;
+                doc.setFontSize(15); 
+                doc.text("I. DATOS DEL CLIENTE", 10, cY); 
+                cY += 10;
+                doc.setFontSize(12); 
+                doc.setFont("helvetica", "normal"); 
+                doc.text(`Nombre / Empresa: ${N}`, 12, cY); 
+                cY += 8;
+                doc.text(`RUT: ${RT}`, 12, cY); 
+                cY += 8;
+                doc.text(`WhatsApp: ${W}`, 12, cY); 
+                cY += 8;
+                doc.text(`Correo Electrónico: ${E}`, 12, cY); 
+                cY += 8;
+                doc.text(`Dirección: ${D}`, 12, cY); 
+                cY += 14;
                 
-                doc.setFontSize(15); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("II. DETALLES DEL EQUIPO", 10, cY); cY += 10;
-                doc.setFontSize(12); doc.setFont("helvetica", "normal"); doc.setTextColor(40);
-                doc.text(`Equipo: ${M} ${MO}`, 12, cY); cY += 8;
-                doc.text(`N° Serie: ${S} | N° Guía Cliente: ${GU}`, 12, cY); cY += 10;
+                doc.setFontSize(15); 
+                doc.setFont("helvetica", "bold"); 
+                doc.setTextColor(r,g,b); 
+                doc.text("II. DETALLES DEL EQUIPO", 10, cY); 
+                cY += 10;
+                doc.setFontSize(12); 
+                doc.setFont("helvetica", "normal"); 
+                doc.setTextColor(40);
+                doc.text(`Equipo: ${M} ${MO}`, 12, cY); 
+                cY += 8;
+                doc.text(`N° Serie: ${S} | N° Guía Cliente: ${GU}`, 12, cY); 
+                cY += 10;
                 
-                const acL = doc.splitTextToSize(`Accesorios Recepcionados: ${AC}`, 180); doc.text(acL, 12, cY); cY += (acL.length*8)+10;
+                const acL = doc.splitTextToSize(`Accesorios Recepcionados: ${AC}`, 180); 
+                doc.text(acL, 12, cY); 
+                cY += (acL.length*8)+10;
                 
-                doc.setFontSize(15); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("III. FALLA REPORTADA POR EL CLIENTE", 10, cY); cY += 8;
-                const fL = doc.splitTextToSize(FA, 185); doc.setFillColor(248); doc.roundedRect(10, cY, 190, (fL.length*8)+8, 1, 1, 'F');
-                doc.setFontSize(12); doc.setFont("helvetica", "normal"); doc.setTextColor(40); doc.text(fL, 15, cY+8);
+                doc.setFontSize(15); 
+                doc.setFont("helvetica", "bold"); 
+                doc.setTextColor(r,g,b); 
+                doc.text("III. FALLA REPORTADA POR EL CLIENTE", 10, cY); 
+                cY += 8;
+                const fL = doc.splitTextToSize(FA, 185); 
+                doc.setFillColor(248); 
+                doc.roundedRect(10, cY, 190, (fL.length*8)+8, 1, 1, 'F');
+                doc.setFontSize(12); 
+                doc.setFont("helvetica", "normal"); 
+                doc.setTextColor(40); 
+                doc.text(fL, 15, cY+8);
                 
-                cY = 230; doc.setFontSize(8.5); doc.setTextColor(100); doc.setFont("helvetica", "bold"); doc.text("TÉRMINOS Y CONDICIONES LEGALES:", 10, cY);
+                cY = 230; 
+                doc.setFontSize(8.5); 
+                doc.setTextColor(100); 
+                doc.setFont("helvetica", "bold"); 
+                doc.text("TÉRMINOS Y CONDICIONES LEGALES:", 10, cY);
                 doc.setFont("helvetica", "normal");
-                const nOT = ["1. Plazo de diagnóstico estimado: 3 días hábiles.", "2. El rechazo del presupuesto generará un cargo administrativo por revisión de 0,05 UF.", "3. Pasados 7 días de aviso de término sin que se retire el equipo, aplicará cargo por bodegaje de 0,07 UF diarios.", "4. Equipos no retirados transcurridos 6 meses se considerarán legalmente abandonados, pasando a dominio del taller."];
-                nOT.forEach((n, i) => { doc.text(n, 10, cY+6+(i*4.5)); });
+                const nOT = [
+                    "1. Plazo de diagnóstico estimado: 3 días hábiles.", 
+                    "2. El rechazo del presupuesto generará un cargo administrativo por revisión de 0,05 UF.", 
+                    "3. Pasados 7 días de aviso de término sin que se retire el equipo, aplicará cargo por bodegaje de 0,07 UF diarios.", 
+                    "4. Equipos no retirados transcurridos 6 meses se considerarán legalmente abandonados, pasando a dominio del taller."
+                ];
+                nOT.forEach((n, i) => { 
+                    doc.text(n, 10, cY+6+(i*4.5)); 
+                });
                 
-                doc.line(30, 275, 80, 275); doc.text("Firma o Timbre Cliente", 45, 280); 
-                doc.line(130, 275, 180, 275); doc.text("Firma Recepción Técnica", 145, 280);
+                doc.line(30, 275, 80, 275); 
+                doc.text("Firma o Timbre Cliente", 45, 280); 
+                doc.line(130, 275, 180, 275); 
+                doc.text("Firma Recepción Técnica", 145, 280);
             } else {
                 // PDF COTIZACIÓN A DOS COLUMNAS
-                doc.setTextColor(40); doc.setFontSize(10); doc.setFont("helvetica", "normal"); 
-                doc.text(`OT N°: ${ot.ot}`, 165, 62); doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 165, 68);
+                doc.setTextColor(40); 
+                doc.setFontSize(10); 
+                doc.setFont("helvetica", "normal"); 
+                doc.text(`OT N°: ${ot.ot}`, 165, 62); 
+                doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 165, 68);
                 
                 // Columna Izquierda: Cliente
-                doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("DATOS DEL CLIENTE", 10, 62);
-                doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(40);
+                doc.setFontSize(11); 
+                doc.setFont("helvetica", "bold"); 
+                doc.setTextColor(r,g,b); 
+                doc.text("DATOS DEL CLIENTE", 10, 62);
+                doc.setFontSize(10); 
+                doc.setFont("helvetica", "normal"); 
+                doc.setTextColor(40);
                 doc.text(`Nombre: ${N}`, 10, 68); 
                 doc.text(`RUT: ${RT}`, 10, 73); 
                 doc.text(`Dirección: ${D}`, 10, 78); 
@@ -632,30 +754,68 @@
                 doc.text(`WhatsApp: ${W}`, 10, 88);
                 
                 // Columna Derecha: Equipo
-                doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("DATOS DEL EQUIPO", 110, 62);
-                doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(40);
+                doc.setFontSize(11); 
+                doc.setFont("helvetica", "bold"); 
+                doc.setTextColor(r,g,b); 
+                doc.text("DATOS DEL EQUIPO", 110, 62);
+                doc.setFontSize(10); 
+                doc.setFont("helvetica", "normal"); 
+                doc.setTextColor(40);
                 doc.text(`Equipo: ${M} ${MO}`, 110, 68); 
                 doc.text(`Serie: ${S}`, 110, 73); 
                 doc.text(`Guía Cliente: ${GU}`, 110, 78);
-                const accLineCOT = doc.splitTextToSize(`Accesorios: ${AC}`, 90); doc.text(accLineCOT, 110, 83);
+                const accLineCOT = doc.splitTextToSize(`Accesorios: ${AC}`, 90); 
+                doc.text(accLineCOT, 110, 83);
 
                 cY = 105;
-                doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("DIAGNÓSTICO TÉCNICO ESPECIALIZADO:", 10, cY); cY += 5;
-                const dL = doc.splitTextToSize(datos.diagnostico, 190); doc.setFillColor(248); doc.roundedRect(10, cY, 190, (dL.length*6)+5, 1, 1, 'F');
-                doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(40); doc.text(dL, 14, cY+7); cY += (dL.length*6)+14;
+                doc.setFontSize(10); 
+                doc.setFont("helvetica", "bold"); 
+                doc.setTextColor(r,g,b); 
+                doc.text("DIAGNÓSTICO TÉCNICO ESPECIALIZADO:", 10, cY); 
+                cY += 5;
+                const dL = doc.splitTextToSize(datos.diagnostico, 190); 
+                doc.setFillColor(248); 
+                doc.roundedRect(10, cY, 190, (dL.length*6)+5, 1, 1, 'F');
+                doc.setFontSize(10); 
+                doc.setFont("helvetica", "normal"); 
+                doc.setTextColor(40); 
+                doc.text(dL, 14, cY+7); 
+                cY += (dL.length*6)+14;
                 
-                doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("DETALLE DE REPUESTOS Y SERVICIOS", 10, cY); cY += 5;
+                doc.setFontSize(11); 
+                doc.setFont("helvetica", "bold"); 
+                doc.setTextColor(r,g,b); 
+                doc.text("DETALLE DE REPUESTOS Y SERVICIOS", 10, cY); 
+                cY += 5;
                 const rT = repuestosActuales.length > 0 ? repuestosActuales.map(r => `• ${r.nombre} (x${r.cantidad})`).join('\n') : "Servicios técnicos especializados y mano de obra.";
-                const rL = doc.splitTextToSize(rT, 190); doc.setFillColor(242); doc.roundedRect(10, cY, 190, (rL.length*6)+5, 1, 1, 'F');
-                doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(40); doc.text(rL, 14, cY+7); cY += (rL.length*6)+18;
+                const rL = doc.splitTextToSize(rT, 190); 
+                doc.setFillColor(242); 
+                doc.roundedRect(10, cY, 190, (rL.length*6)+5, 1, 1, 'F');
+                doc.setFontSize(10); 
+                doc.setFont("helvetica", "normal"); 
+                doc.setTextColor(40); 
+                doc.text(rL, 14, cY+7); 
+                cY += (rL.length*6)+18;
                 
-                const neto = parseInt(datos.valorNeto); const iva = Math.round(neto * 0.19); const total = neto + iva;
-                doc.setFillColor(250); doc.rect(120, cY, 80, 28);
-                doc.text("VALOR NETO:", 125, cY+8); doc.text(`$${fmt.format(neto)}`, 195, cY+8, {align:'right'});
-                doc.text("IVA (19%):", 125, cY+15); doc.text(`$${fmt.format(iva)}`, 195, cY+15, {align:'right'});
-                doc.setFontSize(12); doc.setTextColor(r,g,b); doc.setFont("helvetica", "bold"); doc.text("TOTAL A PAGAR:", 125, cY+23); doc.text(`$${fmt.format(total)} CLP`, 195, cY+23, {align:'right'});
+                const neto = parseInt(datos.valorNeto); 
+                const iva = Math.round(neto * 0.19); 
+                const total = neto + iva;
+                doc.setFillColor(250); 
+                doc.rect(120, cY, 80, 28);
+                doc.text("VALOR NETO:", 125, cY+8); 
+                doc.text(`$${fmt.format(neto)}`, 195, cY+8, {align:'right'});
+                doc.text("IVA (19%):", 125, cY+15); 
+                doc.text(`$${fmt.format(iva)}`, 195, cY+15, {align:'right'});
+                doc.setFontSize(12); 
+                doc.setTextColor(r,g,b); 
+                doc.setFont("helvetica", "bold"); 
+                doc.text("TOTAL A PAGAR:", 125, cY+23); 
+                doc.text(`$${fmt.format(total)} CLP`, 195, cY+23, {align:'right'});
                 
-                cY = 240; doc.setFontSize(8.5); doc.setTextColor(100); doc.text("MEDIOS DE PAGO Y CONDICIONES COMERCIALES:", 10, cY);
+                cY = 240; 
+                doc.setFontSize(8.5); 
+                doc.setTextColor(100); 
+                doc.text("MEDIOS DE PAGO Y CONDICIONES COMERCIALES:", 10, cY);
                 doc.setFont("helvetica", "normal");
                 const nC = [
                     "- Pago vía Transferencia Bancaria, Tarjeta de Débito, Crédito o Efectivo.", 
@@ -663,14 +823,18 @@
                     "- Validez de esta Cotización: 7 días corridos.", 
                     "- Para aprobar este presupuesto, envíe mensaje por WhatsApp o una Orden de Compra al correo: amsetecsi@gmail.com"
                 ];
-                nC.forEach((n, i) => { doc.text(n, 10, cY+6+(i*4.5)); });
+                nC.forEach((n, i) => { 
+                    doc.text(n, 10, cY+6+(i*4.5)); 
+                });
             }
             
             // Envío a Drive
             try {
                 const blob = doc.output('blob');
                 subirArchivoANube(ot.ot, blob, `${tipo}_OT${ot.ot}_${N}.pdf`, 'application/pdf');
-            } catch(e) { console.log("Omitiendo subida a Drive."); }
+            } catch(e) { 
+                console.log("Omitiendo subida a Drive."); 
+            }
             
             doc.save(`${tipo}_OT${ot.ot}_${N}.pdf`);
         }
@@ -680,8 +844,18 @@
             reader.readAsDataURL(blob);
             reader.onloadend = async () => {
                 const base64 = reader.result.split(',')[1];
-                const payload = { action: "upload_file", ot: ot, base64: base64, fileName: fileName, mimeType: mime };
-                await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+                const payload = { 
+                    action: "upload_file", 
+                    ot: ot, 
+                    base64: base64, 
+                    fileName: fileName, 
+                    mimeType: mime 
+                };
+                await fetch(WEB_APP_URL, { 
+                    method: 'POST', 
+                    mode: 'no-cors', 
+                    body: JSON.stringify(payload) 
+                });
             };
         }
 
@@ -691,13 +865,25 @@
             const v = document.getElementById('valor-neto').value;
             const p = document.getElementById('plazo').value; 
             
-            if(!d || !v) return alert("⚠️ Complete el Diagnóstico y el Valor Neto.");
+            if(!d || !v) {
+                return alert("⚠️ Complete el Diagnóstico y el Valor Neto.");
+            }
             
             const btn = document.getElementById('btn-enviar-presupuesto'); 
             btn.disabled = true;
             
             try { 
-                await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "update_presupuesto", ot: otActiva.ot, DIAGNOSTICO: d, NETO: v, estado: 'PRESUPUESTADO' }) }); 
+                await fetch(WEB_APP_URL, { 
+                    method: 'POST', 
+                    mode: 'no-cors', 
+                    body: JSON.stringify({ 
+                        action: "update_presupuesto", 
+                        ot: otActiva.ot, 
+                        DIAGNOSTICO: d, 
+                        NETO: v, 
+                        estado: 'PRESUPUESTADO' 
+                    }) 
+                }); 
                 generarPDFGlobal('COT', otActiva, { diagnostico: d, valorNeto: v, plazo: p }); 
                 
                 const clienteAviso = otActiva.NOMBRE || "Cliente";
@@ -705,8 +891,12 @@
                 const msg = `Estimado(a) *${clienteAviso}*, le saludamos de Soluciones Integrales. Adjuntamos la Cotización Técnica formal de su equipo correspondiente a la *OT ${otActiva.ot}*. Quedamos atentos a sus comentarios. Saludos cordiales.`;
                 window.open(`https://wa.me/${whatsAviso}?text=${msg}`, '_blank');
                 
-                setTimeout(() => location.reload(), 1500); 
-            } catch (e) { btn.disabled = false; }
+                setTimeout(() => {
+                    location.reload();
+                }, 1500); 
+            } catch (e) { 
+                btn.disabled = false; 
+            }
         }
 
         document.getElementById('ingreso-form').addEventListener('submit', async (e) => {
@@ -733,11 +923,16 @@
             };
             
             try { 
-                const res = await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(d) });
+                const res = await fetch(WEB_APP_URL, { 
+                    method: 'POST', 
+                    body: JSON.stringify(d) 
+                });
                 const r = await res.json();
                 generarPDFGlobal('OT', { ...d, ot: r.ot }, {});
                 alert("✅ OT #" + r.ot + " Registrada con éxito."); 
-                setTimeout(() => location.reload(), 1000); 
+                setTimeout(() => {
+                    location.reload();
+                }, 1000); 
             } catch (e) { 
                 btn.disabled = false; 
                 alert("Error al registrar OT."); 
@@ -774,32 +969,49 @@
                         const dias = calcularDiasHabiles(fechaBase);
                         
                         let sh = "sh-dia-1"; 
-                        if(dias === 2) sh = "sh-dia-2"; 
-                        if(dias >= 3) sh = "sh-dia-3";
+                        if(dias === 2) {
+                            sh = "sh-dia-2"; 
+                        }
+                        if(dias >= 3) {
+                            sh = "sh-dia-3";
+                        }
                         
                         const div = document.createElement('div');
                         div.className = `bg-white p-5 rounded-2xl border-l-8 border-azul transition active:scale-95 cursor-pointer shadow-sm ${sh}`;
                         
                         div.onclick = () => { 
                             otActiva = {
-                                fila: p.fila, ot: otNum, NOMBRE: nmb, RUT: gV(p, 'RUT') || '',
-                                WHATSAPP: gV(p, 'WHATSAPP') || gV(p, 'CELULAR') || '', CORREO: gV(p, 'CORREO') || gV(p, 'EMAIL') || '',
-                                DIRECCION: gV(p, 'DIRECCION') || '', MARCA: mrc, MODELO: mdl, SERIE: gV(p, 'SERIE') || 'S/S',
-                                GUIA: gu, ACCESORIOS: gV(p, 'ACCESORIOS') || 'Ninguno', FALLA: fa
+                                fila: p.fila, 
+                                ot: otNum, 
+                                NOMBRE: nmb, 
+                                RUT: gV(p, 'RUT') || '',
+                                WHATSAPP: gV(p, 'WHATSAPP') || gV(p, 'CELULAR') || '', 
+                                CORREO: gV(p, 'CORREO') || gV(p, 'EMAIL') || '',
+                                DIRECCION: gV(p, 'DIRECCION') || '', 
+                                MARCA: mrc, 
+                                MODELO: mdl, 
+                                SERIE: gV(p, 'SERIE') || 'S/S',
+                                GUIA: gu, 
+                                ACCESORIOS: gV(p, 'ACCESORIOS') || 'Ninguno', 
+                                FALLA: fa
                             }; 
                             document.getElementById('ot-numero').innerText = otNum;
                             document.getElementById('det-cliente').innerText = nmb;
                             document.getElementById('det-equipo').innerText = mrc + " " + mdl;
                             document.getElementById('det-guia-ref').innerText = gu;
                             document.getElementById('det-falla').innerText = fa;
-                            repuestosActuales = []; renderRep(); showScreen('presupuesto-detail-screen');
+                            repuestosActuales = []; 
+                            renderRep(); 
+                            showScreen('presupuesto-detail-screen');
                         };
                         div.innerHTML = `<div><div class="flex justify-between items-center mb-1"><span class="text-[10px] font-black text-azul uppercase">OT-${otNum}</span><span class="text-[9px] font-black text-gray-400 uppercase tracking-tighter">${dias} DÍA(S) HÁBIL(ES)</span></div><h3 class="font-black text-gray-900 leading-tight">${nmb}</h3><p class="text-xs text-gray-500 font-black">${mrc} ${mdl}</p></div>`;
                         document.getElementById('lista-pendientes').appendChild(div);
                     }
                 });
 
-                if(conteo === 0) document.getElementById('lista-pendientes').innerHTML = '<p class="text-center py-10 text-gray-400 font-bold">No hay equipos por presupuestar.</p>';
+                if(conteo === 0) {
+                    document.getElementById('lista-pendientes').innerHTML = '<p class="text-center py-10 text-gray-400 font-bold">No hay equipos por presupuestar.</p>';
+                }
             } catch (e) { 
                 document.getElementById('loading-pendientes').classList.add('hidden');
                 alert("No se pudo conectar al servidor de Google."); 
@@ -808,21 +1020,36 @@
 
         // --- BÚSQUEDAS Y CONFIGURACIÓN ---
         function buscarCliente(t) {
-            const ul = document.getElementById('sugerencias-cliente'); ul.innerHTML = '';
-            if(t.length < 2) { ul.classList.add('hidden'); return; }
+            const ul = document.getElementById('sugerencias-cliente'); 
+            ul.innerHTML = '';
+            if(t.length < 2) { 
+                ul.classList.add('hidden'); 
+                return; 
+            }
             const fil = [...dbFull, ...clientesLocales].filter(c => (gV(c, 'NOMBRE') || "").toString().toLowerCase().includes(t.toLowerCase()));
-            if(fil.length === 0) { ul.classList.add('hidden'); return; }
+            if(fil.length === 0) { 
+                ul.classList.add('hidden'); 
+                return; 
+            }
             ul.classList.remove('hidden');
             
             const unicos = [];
-            fil.forEach(c => { if(!unicos.find(u => gV(u, 'NOMBRE') === gV(c, 'NOMBRE'))) unicos.push(c); });
+            fil.forEach(c => { 
+                if(!unicos.find(u => gV(u, 'NOMBRE') === gV(c, 'NOMBRE'))) {
+                    unicos.push(c); 
+                }
+            });
 
             unicos.forEach(c => {
-                const li = document.createElement('li'); li.className = "p-4 border-b font-bold text-gray-900"; li.innerText = gV(c, 'NOMBRE');
+                const li = document.createElement('li'); 
+                li.className = "p-4 border-b font-bold text-gray-900"; 
+                li.innerText = gV(c, 'NOMBRE');
                 li.onclick = () => {
-                    document.getElementById('nombre').value = gV(c, 'NOMBRE'); document.getElementById('rut').value = gV(c, 'RUT');
+                    document.getElementById('nombre').value = gV(c, 'NOMBRE'); 
+                    document.getElementById('rut').value = gV(c, 'RUT');
                     document.getElementById('whatsapp').value = gV(c, 'WHATSAPP') || gV(c, 'CELULAR');
-                    document.getElementById('direccion').value = gV(c, 'DIRECCION'); document.getElementById('correo').value = gV(c, 'CORREO') || gV(c, 'EMAIL');
+                    document.getElementById('direccion').value = gV(c, 'DIRECCION'); 
+                    document.getElementById('correo').value = gV(c, 'CORREO') || gV(c, 'EMAIL');
                     ul.classList.add('hidden');
                 };
                 ul.appendChild(li);
@@ -830,39 +1057,67 @@
         }
         
         function buscarRepuesto(t) {
-            const ul = document.getElementById('sugerencias-repuestos'); ul.innerHTML = '';
-            if(t.length < 2) { ul.classList.add('hidden'); return; }
+            const ul = document.getElementById('sugerencias-repuestos'); 
+            ul.innerHTML = '';
+            if(t.length < 2) { 
+                ul.classList.add('hidden'); 
+                return; 
+            }
             const fil = repuestosDB.filter(r => r.toLowerCase().includes(t.toLowerCase()));
-            if(fil.length === 0) { ul.classList.add('hidden'); return; }
+            if(fil.length === 0) { 
+                ul.classList.add('hidden'); 
+                return; 
+            }
             ul.classList.remove('hidden');
             fil.forEach(r => {
-                const li = document.createElement('li'); li.className = "p-3 border-b text-xs font-bold text-gray-900"; li.innerText = r;
-                li.onclick = () => { document.getElementById('buscador-repuesto').value = r; ul.classList.add('hidden'); };
+                const li = document.createElement('li'); 
+                li.className = "p-3 border-b text-xs font-bold text-gray-900"; 
+                li.innerText = r;
+                li.onclick = () => { 
+                    document.getElementById('buscador-repuesto').value = r; 
+                    ul.classList.add('hidden'); 
+                };
                 ul.appendChild(li);
             });
         }
         
         function agregarRepuestoLista() { 
-            const n = document.getElementById('buscador-repuesto').value; const c = document.getElementById('cantidad-repuesto').value; 
-            if(!n) return; repuestosActuales.push({ nombre: n, cantidad: parseInt(c) }); renderRep(); document.getElementById('buscador-repuesto').value = ''; 
+            const n = document.getElementById('buscador-repuesto').value; 
+            const c = document.getElementById('cantidad-repuesto').value; 
+            if(!n) {
+                return; 
+            }
+            repuestosActuales.push({ nombre: n, cantidad: parseInt(c) }); 
+            renderRep(); 
+            document.getElementById('buscador-repuesto').value = ''; 
         }
         
-        function renderRep() { document.getElementById('lista-repuestos-seleccionados').innerHTML = repuestosActuales.map((r, i) => `<li class="flex justify-between bg-white p-2 border rounded-xl text-xs font-bold text-gray-900 shadow-sm"><span>${r.nombre} <b>x${r.cantidad}</b></span><button onclick="repuestosActuales.splice(${i},1);renderRep()" class="text-red-500 px-2"><i class="fa-solid fa-trash"></i></button></li>`).join(''); }
+        function renderRep() { 
+            document.getElementById('lista-repuestos-seleccionados').innerHTML = repuestosActuales.map((r, i) => `<li class="flex justify-between bg-white p-2 border rounded-xl text-xs font-bold text-gray-900 shadow-sm"><span>${r.nombre} <b>x${r.cantidad}</b></span><button onclick="repuestosActuales.splice(${i},1);renderRep()" class="text-red-500 px-2"><i class="fa-solid fa-trash"></i></button></li>`).join(''); 
+        }
         
         function importarRepuestosMasivo() { 
-            const t = document.getElementById('import-repuestos').value; if(!t.trim()) return; 
+            const t = document.getElementById('import-repuestos').value; 
+            if(!t.trim()) {
+                return; 
+            }
             const l = t.split('\n').map(x => x.trim()).filter(x => x !== ""); 
-            repuestosDB = [...new Set([...repuestosDB, ...l])]; localStorage.setItem('wm_repuestos', JSON.stringify(repuestosDB)); 
+            repuestosDB = [...new Set([...repuestosDB, ...l])]; 
+            localStorage.setItem('wm_repuestos', JSON.stringify(repuestosDB)); 
             alert("✅ Repuestos listos y actualizados en la base de datos local."); 
         }
         
         function importarClientesMasivo() { 
-            const t = document.getElementById('import-clientes').value; if(!t.trim()) return;
+            const t = document.getElementById('import-clientes').value; 
+            if(!t.trim()) {
+                return;
+            }
             const l = t.split('\n').map(x => { 
                 const p = x.split(',').map(s => s.trim()); 
                 return { NOMBRE: p[0], RUT: p[1] || '', WHATSAPP: p[2] || '', DIRECCION: p[3] || '', CORREO: p[4] || '' }; 
             }).filter(x => x.NOMBRE);
-            clientesLocales = l; localStorage.setItem('wm_clientes_locales', JSON.stringify(l)); 
+            clientesLocales = l; 
+            localStorage.setItem('wm_clientes_locales', JSON.stringify(l)); 
             alert("✅ Clientes habituales listos y guardados en memoria.");
         }
     </script>
