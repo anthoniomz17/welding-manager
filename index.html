@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Manager Pro V20.1 - Normalizador Total</title>
+    <title>Welding Manager Pro V20.2 - Estabilidad Total</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -33,7 +33,7 @@
 <body class="bg-gray-100 font-sans pb-10 text-gray-800">
 
     <div id="home-screen" class="p-6 max-w-md mx-auto h-screen flex flex-col justify-center relative">
-        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v20.1 Master</span>
+        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v20.2 Estable</span>
         <button onclick="showScreen('config-screen')" class="absolute top-6 right-6 text-gray-400 p-2 transition"><i class="fa-solid fa-gear text-3xl"></i></button>
         
         <div class="text-center mb-10">
@@ -63,23 +63,23 @@
             <h2 class="text-2xl font-black uppercase tracking-tighter">Panel de Gestión</h2>
         </div>
         <div class="grid gap-4">
-            <button onclick="abrirListaGestion('PRESUPUESTADO')" class="bg-gray-50 p-6 rounded-2xl border-l-8 border-blue-500 shadow-sm flex items-center justify-between">
+            <button onclick="abrirListaGestion('PRESUPUESTADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl border-l-8 border-blue-500 shadow-sm flex items-center justify-between">
                 <div class="text-left"><span class="block text-lg font-black uppercase">Presupuestos</span><span class="text-[10px] text-gray-400 italic">Esperando aprobación</span></div>
                 <i class="fa-solid fa-clock-rotate-left text-2xl text-blue-500"></i>
             </button>
-            <button onclick="abrirListaGestion('APROBADO')" class="bg-gray-50 p-6 rounded-2xl border-l-8 border-orange-500 shadow-sm flex items-center justify-between">
+            <button onclick="abrirListaGestion('APROBADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl border-l-8 border-orange-500 shadow-sm flex items-center justify-between">
                 <div class="text-left"><span class="block text-lg font-black uppercase">Aprobados</span><span class="text-[10px] text-gray-400 italic">En reparación activa</span></div>
                 <i class="fa-solid fa-screwdriver-wrench text-2xl text-orange-500"></i>
             </button>
-            <button onclick="abrirListaGestion('RECHAZADO')" class="bg-gray-50 p-6 rounded-2xl border-l-8 border-red-500 shadow-sm flex items-center justify-between">
+            <button onclick="abrirListaGestion('RECHAZADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl border-l-8 border-red-500 shadow-sm flex items-center justify-between">
                 <div class="text-left"><span class="block text-lg font-black uppercase">Rechazados</span><span class="text-[10px] text-gray-400 italic">Esperando retiro</span></div>
                 <i class="fa-solid fa-ban text-2xl text-red-500"></i>
             </button>
-            <button onclick="abrirListaGestion('REPARADO')" class="bg-gray-50 p-6 rounded-2xl border-l-8 border-green-500 shadow-sm flex items-center justify-between">
+            <button onclick="abrirListaGestion('REPARADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl border-l-8 border-green-500 shadow-sm flex items-center justify-between">
                 <div class="text-left"><span class="block text-lg font-black uppercase">Reparados</span><span class="text-[10px] text-gray-400 italic">Listos para entrega</span></div>
                 <i class="fa-solid fa-circle-check text-2xl text-green-500"></i>
             </button>
-            <button onclick="abrirListaGestion('ENTREGADO')" class="bg-gray-50 p-6 rounded-2xl border-l-8 border-gray-400 shadow-sm flex items-center justify-between">
+            <button onclick="abrirListaGestion('ENTREGADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl border-l-8 border-gray-400 shadow-sm flex items-center justify-between">
                 <div class="text-left"><span class="block text-lg font-black uppercase">Entregados</span><span class="text-[10px] text-gray-400 italic">Historial histórico</span></div>
                 <i class="fa-solid fa-box-open text-2xl text-gray-400"></i>
             </button>
@@ -154,7 +154,7 @@
         </div>
         <div id="loading-pendientes" class="flex flex-col items-center justify-center py-20 hidden text-gray-900">
             <div class="loader rounded-full border-4 h-12 w-12 mb-4 border-t-azul text-gray-900"></div>
-            <p class="font-bold text-gray-400 text-gray-900">Sincronizando con la nube...</p>
+            <p class="font-bold text-gray-400 text-gray-900">Conectando a base de datos...</p>
         </div>
         <div id="lista-pendientes" class="space-y-6 pb-10 text-gray-900"></div>
     </div>
@@ -248,7 +248,8 @@
         let dbFull = [];
         let clientesLocales = JSON.parse(localStorage.getItem('wm_clientes_locales')) || [];
         let repuestosDB = JSON.parse(localStorage.getItem('wm_repuestos')) || [];
-        let otActiva = null; let repuestosActuales = [];
+        let otActiva = null; 
+        let repuestosActuales = [];
 
         window.onload = () => {
             const iaK = localStorage.getItem('wm_ia_key');
@@ -256,43 +257,18 @@
             sincronizarBaseAlInicio();
         };
 
-        // --- NORMALIZADOR UNIVERSAL ---
-        // Esto garantiza que aunque el Excel tenga "Nombre", "NOMBRE ", o "N° OT", la app siempre lo encuentre.
-        function getVal(obj, searchKey) {
+        // --- TRADUCTOR / NORMALIZADOR SEGURO ---
+        function v(obj, searchKey) {
             if (!obj) return "";
             const keys = Object.keys(obj);
             const found = keys.find(k => k.trim().toUpperCase() === searchKey.toUpperCase());
             return found ? obj[found] : "";
         }
 
-        function normalizarFila(p) {
-            return {
-                fila: p.fila,
-                ot: getVal(p, 'OT') || getVal(p, 'N° OT') || (p.fila - 1),
-                NOMBRE: getVal(p, 'NOMBRE') || getVal(p, 'CLIENTE') || "Desconocido",
-                RUT: getVal(p, 'RUT'),
-                WHATSAPP: getVal(p, 'WHATSAPP') || getVal(p, 'TELEFONO') || getVal(p, 'CELULAR'),
-                DIRECCION: getVal(p, 'DIRECCION'),
-                CORREO: getVal(p, 'CORREO') || getVal(p, 'EMAIL'),
-                MARCA: getVal(p, 'MARCA') || "Sin Marca",
-                MODELO: getVal(p, 'MODELO') || "Sin Modelo",
-                SERIE: getVal(p, 'SERIE') || getVal(p, 'N° SERIE'),
-                GUIA: getVal(p, 'GUIA') || getVal(p, 'N° GUIA'),
-                ACCESORIOS: getVal(p, 'ACCESORIOS'),
-                FALLA: getVal(p, 'FALLA'),
-                ESTADO: getVal(p, 'ESTADO') || "INGRESADO",
-                DIAGNOSTICO: getVal(p, 'DIAGNOSTICO'),
-                NETO: getVal(p, 'NETO'),
-                FECHA: getVal(p, 'FECHA') || getVal(p, 'FECHA_INGRESO')
-            };
-        }
-
         async function sincronizarBaseAlInicio() { 
             try { 
-                // Añadimos headers para destruir la caché del navegador y forzar descarga nueva
-                const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime(), { cache: "no-store" }); 
-                const dataCruda = await res.json(); 
-                dbFull = dataCruda.map(normalizarFila); // Convertimos todos los datos al formato perfecto
+                const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime()); 
+                dbFull = await res.json(); 
             } catch(e) {} 
         }
 
@@ -325,7 +301,7 @@
             return count;
         }
 
-        // --- MOTOR DE GESTIÓN Y FLUJO NUBE V20.1 ---
+        // --- MOTOR DE GESTIÓN Y FLUJO NUBE V20.2 ---
         function inyectarEnGestion(equipo, estado) {
             let g = JSON.parse(localStorage.getItem('wm_gestion_taller')) || [];
             g = g.filter(x => x.ot.toString() !== equipo.ot.toString()); 
@@ -422,7 +398,7 @@
             }
         }
 
-        // --- MOTOR PDF GIGANTE V20.1 (NORMALIZADO) ---
+        // --- MOTOR PDF GIGANTE V20.2 (PROTEGIDO) ---
         function generarPDFGlobal(tipo, ot, datos) {
             const { jsPDF } = window.jspdf; const doc = new jsPDF(); const r = 0, g = 112, b = 243; const fmt = new Intl.NumberFormat("es-CL");
             doc.setFillColor(r, g, b); doc.rect(0, 0, 210, 52, 'F');
@@ -434,36 +410,23 @@
             
             let cY = 65;
             
-            // Asignación con los datos que ya pasaron por el normalizador
-            const N = ot.NOMBRE || "Sin Nombre Registrado";
-            const RT = ot.RUT || "No Registrado";
-            const W = ot.WHATSAPP || "No Registrado";
-            const D = ot.DIRECCION || "No Registrada";
-            const E = ot.CORREO || "No Registrado";
-            const M = ot.MARCA || "Sin Marca";
-            const MO = ot.MODELO || "Sin Modelo";
-            const S = ot.SERIE || "S/N";
-            const GU = ot.GUIA || "S/G";
-            const AC = ot.ACCESORIOS || "Ninguno";
-            const FA = ot.FALLA || "Sin descripción de falla";
-
             if(tipo === 'OT') {
                 doc.setTextColor(r,g,b); doc.setFontSize(32); doc.setFont("helvetica", "bold"); doc.text(`OT: ${ot.ot}`, 130, 75);
                 doc.setTextColor(40); doc.setFontSize(10); doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 130, 82);
                 doc.setFontSize(15); doc.text("I. DATOS DEL CLIENTE", 10, cY); cY += 10;
                 doc.setFontSize(12); doc.setFont("helvetica", "normal"); 
-                doc.text(`Nombre / Empresa: ${N}`, 12, cY); cY += 8;
-                doc.text(`RUT: ${RT}`, 12, cY); cY += 8;
-                doc.text(`WhatsApp: ${W}`, 12, cY); cY += 8;
-                doc.text(`Email: ${E}`, 12, cY); cY += 8;
-                doc.text(`Dirección: ${D}`, 12, cY); cY += 14;
+                doc.text(`Nombre / Empresa: ${ot.NOMBRE}`, 12, cY); cY += 8;
+                doc.text(`RUT: ${ot.RUT}`, 12, cY); cY += 8;
+                doc.text(`WhatsApp: ${ot.WHATSAPP}`, 12, cY); cY += 8;
+                doc.text(`Email: ${ot.CORREO}`, 12, cY); cY += 8;
+                doc.text(`Dirección: ${ot.DIRECCION}`, 12, cY); cY += 14;
                 doc.setFontSize(15); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("II. DETALLES DEL EQUIPO", 10, cY); cY += 10;
                 doc.setFontSize(12); doc.setFont("helvetica", "normal"); doc.setTextColor(40);
-                doc.text(`Equipo: ${M} ${MO}`, 12, cY); cY += 8;
-                doc.text(`N° Serie: ${S} | N° Guía: ${GU}`, 12, cY); cY += 10;
-                const acL = doc.splitTextToSize(`Accesorios: ${AC}`, 180); doc.text(acL, 12, cY); cY += (acL.length*8)+10;
+                doc.text(`Equipo: ${ot.MARCA} ${ot.MODELO}`, 12, cY); cY += 8;
+                doc.text(`N° Serie: ${ot.SERIE} | N° Guía: ${ot.GUIA}`, 12, cY); cY += 10;
+                const acL = doc.splitTextToSize(`Accesorios: ${ot.ACCESORIOS}`, 180); doc.text(acL, 12, cY); cY += (acL.length*8)+10;
                 doc.setFontSize(15); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("III. FALLA REPORTADA", 10, cY); cY += 8;
-                const fL = doc.splitTextToSize(FA, 185); doc.setFillColor(248); doc.roundedRect(10, cY, 190, (fL.length*8)+8, 1, 1, 'F');
+                const fL = doc.splitTextToSize(ot.FALLA, 185); doc.setFillColor(248); doc.roundedRect(10, cY, 190, (fL.length*8)+8, 1, 1, 'F');
                 doc.setFontSize(12); doc.text(fL, 15, cY+8);
                 cY = 230; doc.setFontSize(8.5); doc.setTextColor(100); doc.text("TÉRMINOS Y CONDICIONES LEGALES:", 10, cY);
                 const nOT = ["1. Plazo de diagnóstico estimado: 3 días hábiles.", "2. El rechazo de presupuesto genera un cargo administrativo de 0,05 UF.", "3. Pasados 7 días de aviso sin retiro, aplica cargo por bodegaje de 0,07 UF diarios.", "4. Equipos no retirados en 6 meses se considerarán legalmente abandonados."];
@@ -473,9 +436,9 @@
                 doc.setTextColor(40); doc.setFontSize(10); doc.text(`OT N°: ${ot.ot}`, 165, 62); doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 165, 68);
                 doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("DATOS DEL CLIENTE", 10, 62);
                 doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(40);
-                doc.text(`Nombre: ${N}`, 10, 68); doc.text(`RUT: ${RT}`, 10, 73); doc.text(`Dirección: ${D}`, 10, 78); doc.text(`Email: ${E}`, 10, 83); doc.text(`WhatsApp: ${W}`, 10, 88);
+                doc.text(`Nombre: ${ot.NOMBRE}`, 10, 68); doc.text(`RUT: ${ot.RUT}`, 10, 73); doc.text(`Dirección: ${ot.DIRECCION}`, 10, 78); doc.text(`Email: ${ot.CORREO}`, 10, 83); doc.text(`WhatsApp: ${ot.WHATSAPP}`, 10, 88);
                 doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("DATOS DEL EQUIPO", 110, 62);
-                doc.setFontSize(10); doc.text(`Equipo: ${M} ${MO}`, 110, 68); doc.text(`Serie: ${S}`, 110, 73); doc.text(`Guía: ${GU}`, 110, 78);
+                doc.setFontSize(10); doc.text(`Equipo: ${ot.MARCA} ${ot.MODELO}`, 110, 68); doc.text(`Serie: ${ot.SERIE}`, 110, 73); doc.text(`Guía: ${ot.GUIA}`, 110, 78);
                 cY = 105;
                 doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("DIAGNÓSTICO TÉCNICO ESPECIALIZADO:", 10, cY); cY += 5;
                 const dL = doc.splitTextToSize(datos.diagnostico, 190); doc.setFillColor(248); doc.roundedRect(10, cY, 190, (dL.length*6)+5, 1, 1, 'F');
@@ -497,10 +460,10 @@
             // Subida a Drive
             try {
                 const blob = doc.output('blob');
-                subirArchivoANube(ot.ot, blob, `${tipo}_OT${ot.ot}_${N}.pdf`, 'application/pdf');
+                subirArchivoANube(ot.ot, blob, `${tipo}_OT${ot.ot}_${ot.NOMBRE}.pdf`, 'application/pdf');
             } catch(e) { console.log("Omitiendo subida a Drive (Permisos)"); }
             
-            doc.save(`${tipo}_OT${ot.ot}_${N}.pdf`);
+            doc.save(`${tipo}_OT${ot.ot}_${ot.NOMBRE}.pdf`);
         }
 
         async function subirArchivoANube(ot, blob, fileName, mime) {
@@ -514,15 +477,16 @@
         }
 
         async function enviarPresupuesto() {
-            const d = document.getElementById('diagnostico').value; const v = document.getElementById('valor-neto').value;
-            const p = document.getElementById('plazo').value; if(!d || !v) return alert("⚠️ Datos incompletos.");
+            const d = document.getElementById('diagnostico').value; const val = document.getElementById('valor-neto').value;
+            const pzo = document.getElementById('plazo').value; if(!d || !val) return alert("⚠️ Complete los datos técnicos.");
             const btn = document.getElementById('btn-enviar-presupuesto'); btn.disabled = true;
             
-            otActiva.plazo = p;
+            otActiva.plazo = pzo;
             inyectarEnGestion(otActiva, 'PRESUPUESTADO');
+            
             try { 
-                await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "update_presupuesto", ot: otActiva.ot, DIAGNOSTICO: d, NETO: v, estado: 'PRESUPUESTADO' }) }); 
-                generarPDFGlobal('COT', otActiva, { diagnostico: d, valorNeto: v, plazo: p }); 
+                await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "update_presupuesto", ot: otActiva.ot, DIAGNOSTICO: d, NETO: val, estado: 'PRESUPUESTADO' }) }); 
+                generarPDFGlobal('COT', otActiva, { diagnostico: d, valorNeto: val, plazo: pzo }); 
                 const msg = `Estimado(a) *${otActiva.NOMBRE}*, enviamos cotización por la *OT ${otActiva.ot}*. Saludos.`;
                 window.open(`https://wa.me/${otActiva.WHATSAPP}?text=${msg}`, '_blank');
                 setTimeout(() => location.reload(), 1500); 
@@ -533,87 +497,115 @@
             e.preventDefault(); const btn = document.getElementById('btn-submit'); btn.disabled = true;
             const accs = Array.from(document.querySelectorAll('.acc:checked')).map(el => el.value).join(', ');
             const tA = accs + (document.getElementById('otros-acc').value ? ', ' + document.getElementById('otros-acc').value : '');
-            const d = { 
+            const objBase = { 
                 action: "ingreso", 
-                NOMBRE: document.getElementById('nombre').value, 
-                RUT: document.getElementById('rut').value, 
-                WHATSAPP: document.getElementById('whatsapp').value, 
-                DIRECCION: document.getElementById('direccion').value, 
-                CORREO: document.getElementById('correo').value, 
-                MARCA: document.getElementById('marca').value, 
-                MODELO: document.getElementById('modelo').value, 
-                SERIE: document.getElementById('serie').value, 
-                ACCESORIOS: tA, 
-                FALLA: document.getElementById('falla').value, 
-                GUIA: document.getElementById('guia').value 
+                NOMBRE: document.getElementById('nombre').value || "S/N", 
+                RUT: document.getElementById('rut').value || "S/R", 
+                WHATSAPP: document.getElementById('whatsapp').value || "S/W", 
+                DIRECCION: document.getElementById('direccion').value || "S/D", 
+                CORREO: document.getElementById('correo').value || "S/C", 
+                MARCA: document.getElementById('marca').value || "S/M", 
+                MODELO: document.getElementById('modelo').value || "S/M", 
+                SERIE: document.getElementById('serie').value || "S/S", 
+                ACCESORIOS: tA || "Ninguno", 
+                FALLA: document.getElementById('falla').value || "Ninguna", 
+                GUIA: document.getElementById('guia').value || "S/G"
             };
             try { 
-                const res = await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(d) });
+                const res = await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(objBase) });
                 const r = await res.json();
-                generarPDFGlobal('OT', normalizarFila({ ...d, fila: r.ot, OT: r.ot }), {});
+                generarPDFGlobal('OT', { ...objBase, ot: r.ot }, {});
                 alert("✅ OT #" + r.ot + " Registrada con éxito."); setTimeout(() => location.reload(), 1000); 
             } catch (e) { btn.disabled = false; }
         });
 
-        // --- RENDER LISTA PRESUPUESTOS ---
+        // --- RENDER LISTA PRESUPUESTOS (NUBE DIRECTA Y LIMPIA) ---
         async function cargarPendientes() {
             showScreen('presupuesto-list-screen'); document.getElementById('lista-pendientes').innerHTML = ''; document.getElementById('loading-pendientes').classList.remove('hidden');
             try {
-                // El no-store obliga a bajar la lista fresca, borrando la memoria caché
-                const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime(), { cache: "no-store" }); 
+                // Aquí usamos el parámetro ?t= para evitar el caché de forma segura sin bloquear Google
+                const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime()); 
                 const dataCruda = await res.json();
-                dbFull = dataCruda.map(normalizarFila);
-                
                 document.getElementById('loading-pendientes').classList.add('hidden');
                 
-                // Filtramos
-                const pendientes = dbFull.filter(p => !p.DIAGNOSTICO && p.ESTADO !== 'ENTREGADO');
-                
-                if(pendientes.length === 0) {
-                     document.getElementById('lista-pendientes').innerHTML = '<p class="text-center py-10 text-gray-400 font-bold">No hay equipos por presupuestar.</p>';
-                     return;
-                }
+                dbFull = dataCruda;
 
-                pendientes.forEach(p => {
-                    const dias = calcularDiasHabiles(p.FECHA);
-                    let sh = "sh-dia-1"; if(dias === 2) sh = "sh-dia-2"; if(dias >= 3) sh = "sh-dia-3";
-                    const div = document.createElement('div');
-                    div.className = `bg-white p-5 rounded-2xl border-l-8 border-azul transition active:scale-95 cursor-pointer ${sh}`;
-                    div.onclick = () => { 
-                        otActiva = p; 
-                        document.getElementById('ot-numero').innerText = p.ot;
-                        document.getElementById('det-cliente').innerText = p.NOMBRE;
-                        document.getElementById('det-equipo').innerText = p.MARCA + " " + p.MODELO;
-                        document.getElementById('det-guia-ref').innerText = p.GUIA;
-                        document.getElementById('det-falla').innerText = p.FALLA;
-                        repuestosActuales = []; renderRep(); showScreen('presupuesto-detail-screen');
-                    };
-                    div.innerHTML = `<div><div class="flex justify-between items-center mb-1"><span class="text-[10px] font-black text-azul uppercase">OT-${p.ot}</span><span class="text-[9px] font-black text-gray-400 uppercase tracking-tighter">${dias} DÍA(S) HÁBIL(ES)</span></div><h3 class="font-black text-gray-900 leading-tight">${p.NOMBRE}</h3><p class="text-xs text-gray-500 font-black">${p.MARCA} ${p.MODELO}</p></div>`;
-                    document.getElementById('lista-pendientes').appendChild(div);
+                dbFull.forEach(p => {
+                    const diag = v(p, 'DIAGNOSTICO');
+                    const est = v(p, 'ESTADO').toUpperCase();
+                    const otNum = v(p, 'OT') || v(p, 'N° OT') || (p.fila ? p.fila - 1 : 0);
+
+                    // Si no tiene diagnóstico y no está entregado, lo mostramos
+                    if (!diag && est !== 'ENTREGADO') {
+                        const dias = calcularDiasHabiles(v(p, 'FECHA') || v(p, 'FECHA_INGRESO'));
+                        let sh = "sh-dia-1"; if(dias === 2) sh = "sh-dia-2"; if(dias >= 3) sh = "sh-dia-3";
+                        
+                        const div = document.createElement('div');
+                        div.className = `bg-white p-5 rounded-2xl border-l-8 border-azul transition active:scale-95 cursor-pointer ${sh}`;
+                        
+                        // Asignación ultra segura para evitar undefined
+                        const nmb = v(p, 'NOMBRE') || v(p, 'CLIENTE') || 'Cliente no registrado';
+                        const mrc = v(p, 'MARCA') || 'Sin Marca';
+                        const mdl = v(p, 'MODELO') || 'Sin Modelo';
+                        const fa = v(p, 'FALLA') || 'Falla no registrada';
+                        const gu = v(p, 'GUIA') || v(p, 'N° GUIA') || 'S/G';
+
+                        div.onclick = () => { 
+                            otActiva = {
+                                fila: p.fila,
+                                ot: otNum,
+                                NOMBRE: nmb,
+                                RUT: v(p, 'RUT') || 'S/R',
+                                WHATSAPP: v(p, 'WHATSAPP') || v(p, 'CELULAR') || 'S/W',
+                                CORREO: v(p, 'CORREO') || v(p, 'EMAIL') || 'S/C',
+                                DIRECCION: v(p, 'DIRECCION') || 'S/D',
+                                MARCA: mrc,
+                                MODELO: mdl,
+                                SERIE: v(p, 'SERIE') || 'S/S',
+                                GUIA: gu,
+                                ACCESORIOS: v(p, 'ACCESORIOS') || 'Ninguno',
+                                FALLA: fa
+                            }; 
+                            document.getElementById('ot-numero').innerText = otNum;
+                            document.getElementById('det-cliente').innerText = nmb;
+                            document.getElementById('det-equipo').innerText = mrc + " " + mdl;
+                            document.getElementById('det-guia-ref').innerText = gu;
+                            document.getElementById('det-falla').innerText = fa;
+                            repuestosActuales = []; renderRep(); showScreen('presupuesto-detail-screen');
+                        };
+                        div.innerHTML = `<div><div class="flex justify-between items-center mb-1"><span class="text-[10px] font-black text-azul uppercase">OT-${otNum}</span><span class="text-[9px] font-black text-gray-400 uppercase tracking-tighter">${dias} DÍA(S) HÁBIL(ES)</span></div><h3 class="font-black text-gray-900 leading-tight">${nmb}</h3><p class="text-xs text-gray-500 font-black">${mrc} ${mdl}</p></div>`;
+                        document.getElementById('lista-pendientes').appendChild(div);
+                    }
                 });
-            } catch (e) { alert("Error de conexión. Revisa internet o el Excel."); }
+
+                if(document.getElementById('lista-pendientes').innerHTML === '') {
+                    document.getElementById('lista-pendientes').innerHTML = '<p class="text-center py-10 text-gray-400 font-bold">No hay equipos por presupuestar.</p>';
+                }
+            } catch (e) { 
+                document.getElementById('loading-pendientes').classList.add('hidden');
+                alert("No se pudo conectar a la base de datos."); 
+            }
         }
 
-        // --- FUNCIONES DE APOYO ---
+        // Búsquedas y Otros
         function buscarCliente(t) {
             const ul = document.getElementById('sugerencias-cliente'); ul.innerHTML = '';
             if(t.length < 2) { ul.classList.add('hidden'); return; }
-            const fil = [...dbFull, ...clientesLocales].filter(c => (c.NOMBRE || c.nombre || "").toString().toLowerCase().includes(t.toLowerCase()));
+            const fil = [...dbFull, ...clientesLocales].filter(c => (v(c, 'NOMBRE') || "").toString().toLowerCase().includes(t.toLowerCase()));
             if(fil.length === 0) { ul.classList.add('hidden'); return; }
             ul.classList.remove('hidden');
             
-            // Eliminar duplicados en sugerencias
             const unicos = [];
-            fil.forEach(c => { if(!unicos.find(u => (u.NOMBRE || u.nombre) === (c.NOMBRE || c.nombre))) unicos.push(c); });
+            fil.forEach(c => { if(!unicos.find(u => v(u, 'NOMBRE') === v(c, 'NOMBRE'))) unicos.push(c); });
 
             unicos.forEach(c => {
-                const li = document.createElement('li'); li.className = "p-4 border-b font-bold text-gray-900"; li.innerText = c.NOMBRE || c.nombre;
+                const li = document.createElement('li'); li.className = "p-4 border-b font-bold text-gray-900"; li.innerText = v(c, 'NOMBRE');
                 li.onclick = () => {
-                    document.getElementById('nombre').value = c.NOMBRE || c.nombre;
-                    document.getElementById('rut').value = c.RUT || c.rut || '';
-                    document.getElementById('whatsapp').value = c.WHATSAPP || c.whatsapp || '';
-                    document.getElementById('direccion').value = c.DIRECCION || c.direccion || '';
-                    document.getElementById('correo').value = c.CORREO || c.correo || '';
+                    document.getElementById('nombre').value = v(c, 'NOMBRE');
+                    document.getElementById('rut').value = v(c, 'RUT');
+                    document.getElementById('whatsapp').value = v(c, 'WHATSAPP');
+                    document.getElementById('direccion').value = v(c, 'DIRECCION');
+                    document.getElementById('correo').value = v(c, 'CORREO');
                     ul.classList.add('hidden');
                 };
                 ul.appendChild(li);
@@ -636,7 +628,7 @@
         function importarRepuestosMasivo() { const t = document.getElementById('import-repuestos').value; if(!t.trim()) return; const l = t.split('\n').map(x => x.trim()).filter(x => x !== ""); repuestosDB = [...new Set([...repuestosDB, ...l])]; localStorage.setItem('wm_repuestos', JSON.stringify(repuestosDB)); alert("✅ Repuestos listos."); }
         function importarClientesMasivo() { 
             const t = document.getElementById('import-clientes').value; if(!t.trim()) return;
-            const l = t.split('\n').map(x => { const p = x.split(',').map(s => s.trim()); return { NOMBRE: p[0], RUT: p[1], WHATSAPP: p[2], DIRECCION: p[3], CORREO: p[4] }; }).filter(x => x.NOMBRE);
+            const l = t.split('\n').map(x => { const p = x.split(',').map(s => s.trim()); return { NOMBRE: p[0], RUT: p[1] || '', WHATSAPP: p[2] || '', DIRECCION: p[3] || '', CORREO: p[4] || '' }; }).filter(x => x.NOMBRE);
             clientesLocales = l; localStorage.setItem('wm_clientes_locales', JSON.stringify(l)); alert("✅ Clientes listos.");
         }
     </script>
