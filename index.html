@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Manager Pro V19.9 - Master Elite Full</title>
+    <title>Welding Manager Pro V20.0 - Cloud Master Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -16,8 +16,6 @@
         @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .autocomplete-dropdown { max-height: 200px; overflow-y: auto; z-index: 100; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
         .checkbox-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .btn-menu-gestion { transition: 0.3s; border-left: 8px solid var(--azul); }
-        .btn-menu-gestion:active { scale: 0.95; }
         .status-pill { font-size: 10px; padding: 2px 8px; border-radius: 99px; text-transform: uppercase; font-weight: 800; }
         .counter-pill { font-weight: 900; padding: 4px 10px; border-radius: 8px; font-size: 11px; display: inline-flex; align-items: center; gap: 4px; }
         .tabla-entregados { width: 100%; border-collapse: collapse; font-size: 11px; }
@@ -33,7 +31,7 @@
 <body class="bg-gray-100 font-sans pb-10 text-gray-800">
 
     <div id="home-screen" class="p-6 max-w-md mx-auto h-screen flex flex-col justify-center relative">
-        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v19.9 Elite</span>
+        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v20.0 Cloud</span>
         <button onclick="showScreen('config-screen')" class="absolute top-6 right-6 text-gray-400 p-2 transition"><i class="fa-solid fa-gear text-3xl"></i></button>
         
         <div class="text-center mb-10">
@@ -48,7 +46,7 @@
                 <i class="fa-solid fa-plus-circle text-3xl text-white"></i>
             </button>
             <button onclick="cargarPendientes()" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left text-gray-900">
-                <div><span class="block text-xl font-bold">Presupuesto</span><span class="text-sm opacity-50 text-left text-gray-500">Generar Cotización</span></div>
+                <div><span class="block text-xl font-bold text-gray-900">Presupuesto</span><span class="text-sm opacity-50 text-left text-gray-500 text-gray-500">Generar Cotización</span></div>
                 <i class="fa-solid fa-file-invoice-dollar text-2xl text-azul"></i>
             </button>
             <button onclick="showScreen('menu-gestion-screen')" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left text-gray-900">
@@ -63,23 +61,23 @@
             <h2 class="text-2xl font-black uppercase tracking-tighter">Panel de Gestión</h2>
         </div>
         <div class="grid gap-4">
-            <button onclick="abrirListaGestion('PRESUPUESTADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl shadow-sm flex items-center justify-between">
+            <button onclick="abrirListaGestion('PRESUPUESTADO')" class="bg-gray-50 p-6 rounded-2xl border-l-8 border-blue-500 shadow-sm flex items-center justify-between">
                 <div class="text-left"><span class="block text-lg font-black uppercase">Presupuestos</span><span class="text-[10px] text-gray-400 italic">Esperando aprobación</span></div>
                 <i class="fa-solid fa-clock-rotate-left text-2xl text-blue-500"></i>
             </button>
-            <button onclick="abrirListaGestion('APROBADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl shadow-sm flex items-center justify-between">
+            <button onclick="abrirListaGestion('APROBADO')" class="bg-gray-50 p-6 rounded-2xl border-l-8 border-orange-500 shadow-sm flex items-center justify-between">
                 <div class="text-left"><span class="block text-lg font-black uppercase">Aprobados</span><span class="text-[10px] text-gray-400 italic">En reparación activa</span></div>
                 <i class="fa-solid fa-screwdriver-wrench text-2xl text-orange-500"></i>
             </button>
-            <button onclick="abrirListaGestion('RECHAZADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl shadow-sm flex items-center justify-between">
+            <button onclick="abrirListaGestion('RECHAZADO')" class="bg-gray-50 p-6 rounded-2xl border-l-8 border-red-500 shadow-sm flex items-center justify-between">
                 <div class="text-left"><span class="block text-lg font-black uppercase">Rechazados</span><span class="text-[10px] text-gray-400 italic">Esperando retiro</span></div>
                 <i class="fa-solid fa-ban text-2xl text-red-500"></i>
             </button>
-            <button onclick="abrirListaGestion('REPARADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl shadow-sm flex items-center justify-between">
+            <button onclick="abrirListaGestion('REPARADO')" class="bg-gray-50 p-6 rounded-2xl border-l-8 border-green-500 shadow-sm flex items-center justify-between">
                 <div class="text-left"><span class="block text-lg font-black uppercase">Reparados</span><span class="text-[10px] text-gray-400 italic">Listos para entrega</span></div>
                 <i class="fa-solid fa-circle-check text-2xl text-green-500"></i>
             </button>
-            <button onclick="abrirListaGestion('ENTREGADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl border-l-gray-400 flex items-center justify-between">
+            <button onclick="abrirListaGestion('ENTREGADO')" class="bg-gray-50 p-6 rounded-2xl border-l-8 border-gray-400 shadow-sm flex items-center justify-between">
                 <div class="text-left"><span class="block text-lg font-black uppercase">Entregados</span><span class="text-[10px] text-gray-400 italic">Historial histórico</span></div>
                 <i class="fa-solid fa-box-open text-2xl text-gray-400"></i>
             </button>
@@ -87,43 +85,43 @@
     </div>
 
     <div id="lista-gestion-screen" class="hidden p-0 max-w-md mx-auto bg-white min-h-screen text-gray-900">
-        <div class="p-4 border-b sticky top-0 bg-white z-50 flex items-center justify-between">
+        <div class="p-4 border-b sticky top-0 bg-white z-50 flex items-center justify-between text-gray-900">
             <div class="flex items-center">
-                <button onclick="showScreen('menu-gestion-screen')" class="text-gray-600 mr-3 p-1"><i class="fa-solid fa-arrow-left text-xl"></i></button>
-                <h2 id="titulo-lista-gestion" class="text-xl font-black uppercase tracking-tighter text-gray-900">LISTA</h2>
+                <button onclick="showScreen('menu-gestion-screen')" class="text-gray-600 mr-3 p-1 text-gray-900"><i class="fa-solid fa-arrow-left text-xl text-gray-900"></i></button>
+                <h2 id="titulo-lista-gestion" class="text-xl font-black uppercase tracking-tighter">LISTA</h2>
             </div>
         </div>
-        <div id="contenedor-items-gestion" class="p-4 space-y-4"></div>
+        <div id="contenedor-items-gestion" class="p-4 space-y-4 text-gray-900"></div>
     </div>
 
     <div id="ingreso-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen text-gray-900">
-        <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50">
-            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
+        <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50 text-gray-900">
+            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 text-gray-900"><i class="fa-solid fa-arrow-left text-2xl text-gray-900"></i></button>
             <h2 class="text-2xl font-bold">Registro de Ingreso</h2>
         </div>
-        <form id="ingreso-form" class="space-y-6 pb-20 px-1">
-            <div class="bg-blue-50 p-4 rounded-2xl space-y-3 border border-blue-100 relative">
+        <form id="ingreso-form" class="space-y-6 pb-20 px-1 text-gray-900">
+            <div class="bg-blue-50 p-4 rounded-2xl space-y-3 border border-blue-100 relative text-gray-900">
                 <input type="text" id="nombre" onkeyup="buscarCliente(this.value)" placeholder="Nombre del Cliente / Empresa" class="w-full p-3 rounded-xl border text-gray-900" required autocomplete="off">
-                <ul id="sugerencias-cliente" class="autocomplete-dropdown absolute w-full bg-white border hidden mt-1 left-0"></ul>
+                <ul id="sugerencias-cliente" class="autocomplete-dropdown absolute w-full bg-white border hidden mt-1 left-0 text-gray-900"></ul>
                 <input type="text" id="rut" placeholder="RUT (Ej: 12.345.678-9)" class="w-full p-3 rounded-xl border text-gray-900">
                 <input type="tel" id="whatsapp" placeholder="WhatsApp (Ej: +569...)" class="w-full p-3 rounded-xl border text-gray-900">
                 <input type="text" id="direccion" placeholder="Dirección del Cliente" class="w-full p-3 rounded-xl border text-gray-900">
                 <input type="email" id="correo" placeholder="Correo Electrónico" class="w-full p-3 rounded-xl border text-gray-900">
             </div>
             
-            <div class="bg-gray-50 p-4 rounded-2xl space-y-3 border border-gray-100">
-                <div class="grid grid-cols-2 gap-2">
+            <div class="bg-gray-50 p-4 rounded-2xl space-y-3 border border-gray-100 text-gray-900">
+                <div class="grid grid-cols-2 gap-2 text-gray-900">
                     <input type="text" id="marca" placeholder="Marca" class="w-full p-3 rounded-xl border text-gray-900" required>
                     <input type="text" id="modelo" placeholder="Modelo" class="w-full p-3 rounded-xl border text-gray-900">
                 </div>
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-2 gap-2 text-gray-900">
                     <input type="text" id="serie" placeholder="N° de Serie" class="w-full p-3 rounded-xl border text-gray-900">
-                    <input type="text" id="guia" placeholder="N° Guía Cliente" class="w-full p-3 rounded-xl border font-black bg-blue-50">
+                    <input type="text" id="guia" placeholder="N° Guía Cliente" class="w-full p-3 rounded-xl border font-black bg-blue-50 text-gray-900">
                 </div>
                 
-                <div class="p-2 border-t mt-2">
-                    <p class="text-[10px] font-black text-gray-400 uppercase mb-3 tracking-widest">Accesorios Recibidos:</p>
-                    <div class="checkbox-grid text-xs font-bold text-gray-700">
+                <div class="p-2 border-t mt-2 text-gray-900">
+                    <p class="text-[10px] font-black text-gray-400 uppercase mb-3 tracking-widest text-gray-900">Accesorios Recibidos:</p>
+                    <div class="checkbox-grid text-xs font-bold text-gray-700 text-gray-900">
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Pistola (MIG)"> Pistola (MIG)</label>
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Pistola (TIG)"> Pistola (TIG)</label>
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Pistola (Plasma)"> Pistola (Plasma)</label>
@@ -132,74 +130,74 @@
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Porta Electrodo"> Porta Electrodo</label>
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Grampa Tierra"> Grampa Tierra</label>
                         <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Enchufe"> Enchufe</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Cable Alimentacion"> Cable Alim.</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" class="acc" value="Cable Alimentación"> Cable Aliment.</label>
                     </div>
-                    <input type="text" id="otros-acc" placeholder="Otros accesorios..." class="w-full mt-3 p-2 border-b bg-transparent text-sm">
+                    <input type="text" id="otros-acc" placeholder="Otros accesorios..." class="w-full mt-3 p-2 border-b bg-transparent text-sm text-gray-900">
                 </div>
             </div>
 
-            <div class="relative">
-                <label class="font-bold text-gray-400 uppercase text-[10px] px-1">Falla Reportada por Cliente</label>
+            <div class="relative text-gray-900">
+                <label class="font-bold text-gray-400 uppercase text-[10px] px-1 text-gray-900">Falla Reportada por Cliente</label>
                 <textarea id="falla" placeholder="Describa el problema..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 mt-1 shadow-inner text-gray-900"></textarea>
                 <button type="button" onclick="iniciarDictado('falla')" class="absolute right-3 bottom-3 bg-azul text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition"><i class="fa-solid fa-microphone text-xl text-white"></i></button>
             </div>
-            <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition uppercase tracking-widest">Registrar Ingreso</button>
+            <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition uppercase tracking-widest text-white">Registrar Ingreso</button>
         </form>
     </div>
 
     <div id="presupuesto-list-screen" class="hidden p-4 max-w-md mx-auto bg-gray-50 min-h-screen text-gray-900">
-        <div class="flex items-center mb-6 sticky top-0 bg-gray-50 py-2 border-b z-50">
-            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-black uppercase tracking-tighter">Por Presupuestar</h2>
+        <div class="flex items-center mb-6 sticky top-0 bg-gray-50 py-2 border-b z-50 text-gray-900">
+            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 text-gray-900"><i class="fa-solid fa-arrow-left text-2xl text-gray-900"></i></button>
+            <h2 class="text-2xl font-black uppercase tracking-tighter text-gray-900">Por Presupuestar</h2>
         </div>
-        <div id="loading-pendientes" class="flex flex-col items-center justify-center py-20 hidden">
-            <div class="loader rounded-full border-4 h-12 w-12 mb-4 border-t-azul"></div>
-            <p class="font-bold text-gray-400">Accediendo a base de datos...</p>
+        <div id="loading-pendientes" class="flex flex-col items-center justify-center py-20 hidden text-gray-900">
+            <div class="loader rounded-full border-4 h-12 w-12 mb-4 border-t-azul text-gray-900"></div>
+            <p class="font-bold text-gray-400 text-gray-900">Sincronizando con la nube...</p>
         </div>
-        <div id="lista-pendientes" class="space-y-6 pb-10"></div>
+        <div id="lista-pendientes" class="space-y-6 pb-10 text-gray-900"></div>
     </div>
 
     <div id="presupuesto-detail-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen pb-20 shadow-2xl text-gray-900">
-        <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50">
-            <button onclick="showScreen('presupuesto-list-screen')" class="text-gray-600 mr-4 p-2 transition"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-bold">OT: <span id="ot-numero" class="text-azul font-black text-gray-900"></span></h2>
+        <div class="flex items-center mb-6 sticky top-0 bg-white py-2 border-b z-50 text-gray-900">
+            <button onclick="showScreen('presupuesto-list-screen')" class="text-gray-600 mr-4 p-2 transition text-gray-900"><i class="fa-solid fa-arrow-left text-2xl text-gray-900"></i></button>
+            <h2 class="text-2xl font-bold text-gray-900 text-gray-900">OT: <span id="ot-numero" class="text-azul font-black text-gray-900"></span></h2>
         </div>
         
-        <div class="space-y-5 px-1">
-            <div class="p-2">
+        <div class="space-y-5 px-1 text-gray-900">
+            <div class="p-2 text-gray-900">
                 <p id="det-cliente" class="text-lg font-black text-gray-900"></p>
-                <p id="det-equipo" class="text-gray-500 font-bold"></p>
-                <div id="det-guia-container" class="mt-2 text-azul font-black text-xs uppercase bg-blue-50 inline-block px-3 py-1 rounded-lg">GUÍA CLIENTE: <span id="det-guia-ref"></span></div>
+                <p id="det-equipo" class="text-gray-500 font-bold text-gray-900"></p>
+                <div id="det-guia-container" class="mt-2 text-azul font-black text-xs uppercase bg-blue-50 inline-block px-3 py-1 rounded-lg text-gray-900">GUÍA CLIENTE: <span id="det-guia-ref" class="text-gray-900"></span></div>
             </div>
             
-            <div class="relative">
-                <label class="font-bold text-gray-400 uppercase text-[10px] tracking-widest px-1">Falla Reportada por Cliente</label>
-                <div id="det-falla" class="mt-1 p-4 bg-gray-100 rounded-2xl italic text-red-800 border-l-4 border-red-500 text-sm shadow-inner"></div>
+            <div class="relative text-gray-900">
+                <label class="font-bold text-gray-400 uppercase text-[10px] tracking-widest px-1 text-gray-900">Falla Reportada por Cliente</label>
+                <div id="det-falla" class="mt-1 p-4 bg-gray-100 rounded-2xl italic text-red-800 border-l-4 border-red-500 text-sm shadow-inner text-gray-900"></div>
             </div>
 
-            <div class="relative mt-4">
-                <label class="font-bold text-azul uppercase text-[10px] tracking-widest px-1"><i class="fa-solid fa-stethoscope"></i> Diagnóstico Técnico Final</label>
+            <div class="relative mt-4 text-gray-900">
+                <label class="font-bold text-azul uppercase text-[10px] tracking-widest px-1 text-gray-900"><i class="fa-solid fa-stethoscope"></i> Diagnóstico Técnico Final</label>
                 <textarea id="diagnostico" placeholder="Describa los hallazgos técnicos..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 shadow-inner mt-1 text-gray-900"></textarea>
-                <button type="button" onclick="iniciarDictado('diagnostico')" class="absolute right-3 bottom-3 bg-azul text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition"><i class="fa-solid fa-microphone text-lg text-white"></i></button>
+                <button type="button" onclick="iniciarDictado('diagnostico')" class="absolute right-3 bottom-3 bg-azul text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition text-white"><i class="fa-solid fa-microphone text-lg text-white text-white"></i></button>
             </div>
 
-            <div class="bg-gray-50 p-5 rounded-3xl border border-gray-200 shadow-sm relative">
-                <label class="font-bold text-azul uppercase text-[10px] tracking-widest px-1">Repuestos y Servicios</label>
-                <div class="flex gap-2 mt-2">
-                    <div class="flex-1 relative">
-                        <input type="text" id="buscador-repuesto" onkeyup="buscarRepuesto(this.value)" placeholder="Buscar repuesto..." class="flex-1 w-full p-3 rounded-xl border text-sm text-gray-900" autocomplete="off">
-                        <ul id="sugerencias-repuestos" class="autocomplete-dropdown absolute w-full bg-white border hidden z-50 shadow-xl mt-1"></ul>
+            <div class="bg-gray-50 p-5 rounded-3xl border border-gray-200 shadow-sm relative text-gray-900">
+                <label class="font-bold text-azul uppercase text-[10px] tracking-widest px-1 text-gray-900">Repuestos y Servicios</label>
+                <div class="flex gap-2 mt-2 text-gray-900">
+                    <div class="flex-1 relative text-gray-900">
+                        <input type="text" id="buscador-repuesto" onkeyup="buscarRepuesto(this.value)" placeholder="Buscar repuesto..." class="w-full p-3 rounded-xl border text-sm text-gray-900" autocomplete="off">
+                        <ul id="sugerencias-repuestos" class="autocomplete-dropdown absolute w-full bg-white border hidden z-50 shadow-xl mt-1 text-gray-900"></ul>
                     </div>
                     <input type="number" id="cantidad-repuesto" value="1" min="1" class="w-12 p-3 rounded-xl border text-center font-bold text-gray-900">
-                    <button onclick="agregarRepuestoLista()" class="bg-azul text-white px-5 rounded-xl shadow-md active:scale-90 transition"><i class="fa-solid fa-plus text-white"></i></button>
+                    <button onclick="agregarRepuestoLista()" class="bg-azul text-white px-5 rounded-xl shadow-md active:scale-90 transition text-white"><i class="fa-solid fa-plus text-white"></i></button>
                 </div>
-                <ul id="lista-repuestos-seleccionados" class="space-y-2 mt-4"></ul>
+                <ul id="lista-repuestos-seleccionados" class="space-y-2 mt-4 text-gray-900"></ul>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div class="space-y-1">
-                    <label class="text-[10px] font-bold text-gray-400 uppercase px-1">Plazo de Entrega</label>
-                    <select id="plazo" class="w-full p-4 rounded-xl border bg-gray-50 font-bold text-sm text-gray-700">
+            <div class="grid grid-cols-2 gap-4 text-gray-900">
+                <div class="space-y-1 text-gray-900">
+                    <label class="text-[10px] font-bold text-gray-400 uppercase px-1 text-gray-900">Plazo de Entrega</label>
+                    <select id="plazo" class="w-full p-4 rounded-xl border bg-gray-50 font-bold text-sm text-gray-700 text-gray-900">
                         <option value="3">3 días hábiles</option>
                         <option value="5">5 días hábiles</option>
                         <option value="8">8 días hábiles</option>
@@ -207,44 +205,44 @@
                         <option value="45">45 días hábiles</option>
                     </select>
                 </div>
-                <div class="space-y-1">
-                    <label class="text-[10px] font-bold text-gray-400 uppercase px-1">Valor Neto</label>
-                    <input type="number" id="valor-neto" placeholder="Neto CLP" class="w-full p-4 rounded-xl border bg-gray-50 text-xl font-black text-gray-900 shadow-sm">
+                <div class="space-y-1 text-gray-900">
+                    <label class="text-[10px] font-bold text-gray-400 uppercase px-1 text-gray-900">Valor Neto</label>
+                    <input type="number" id="valor-neto" placeholder="Neto CLP" class="w-full p-4 rounded-xl border bg-gray-50 text-xl font-black text-gray-900 shadow-sm text-gray-900">
                 </div>
             </div>
             
-            <button id="btn-enviar-presupuesto" onclick="enviarPresupuesto()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-xl shadow-xl active:scale-95 transition uppercase tracking-widest text-center text-white">Guardar y Enviar al Cliente</button>
+            <button id="btn-enviar-presupuesto" onclick="enviarPresupuesto()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-xl shadow-xl active:scale-95 transition uppercase tracking-widest text-center text-white text-white">Guardar y Enviar al Cliente</button>
         </div>
     </div>
 
     <div id="config-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen text-gray-900">
-        <div class="flex items-center mb-6 border-b pb-4">
-            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 transition active:scale-90"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
-            <h2 class="text-2xl font-bold">Ajustes del Sistema</h2>
+        <div class="flex items-center mb-6 border-b pb-4 text-gray-900">
+            <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 transition active:scale-90 text-gray-900"><i class="fa-solid fa-arrow-left text-2xl text-gray-900"></i></button>
+            <h2 class="text-2xl font-bold text-gray-900 text-gray-900">Ajustes del Sistema</h2>
         </div>
-        <div class="space-y-8 pb-10">
-            <div class="bg-orange-50 p-4 rounded-2xl border border-orange-200">
-                <label class="font-bold text-orange-700 uppercase text-xs">Llave IA API (Groq)</label>
-                <div class="flex gap-2 mt-2">
-                    <input type="password" id="ia-key-input" placeholder="gsk_..." class="flex-1 p-3 rounded-xl border bg-white">
-                    <button onclick="guardarIAKey()" class="bg-orange-600 text-white px-4 rounded-xl shadow-md text-white"><i class="fa-solid fa-save"></i></button>
+        <div class="space-y-8 pb-10 text-gray-900">
+            <div class="bg-orange-50 p-4 rounded-2xl border border-orange-200 text-gray-900">
+                <label class="font-bold text-orange-700 uppercase text-xs text-gray-900">Llave IA API (Groq)</label>
+                <div class="flex gap-2 mt-2 text-gray-900">
+                    <input type="password" id="ia-key-input" placeholder="gsk_..." class="flex-1 p-3 rounded-xl border bg-white text-gray-900">
+                    <button onclick="guardarIAKey()" class="bg-orange-600 text-white px-4 rounded-xl shadow-md text-white text-white"><i class="fa-solid fa-save text-white"></i></button>
                 </div>
             </div>
-            <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 shadow-sm">
-                <label class="font-bold text-azul uppercase text-xs">Importar Repuestos Maestros</label>
+            <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 shadow-sm text-gray-900">
+                <label class="font-bold text-azul uppercase text-xs text-gray-900">Importar Repuestos Maestros</label>
                 <textarea id="import-repuestos" class="w-full p-3 rounded-xl border h-32 text-sm mt-2 text-gray-900" placeholder="Uno por línea..."></textarea>
-                <button onclick="importarRepuestosMasivo()" class="w-full bg-azul text-white py-3 rounded-xl font-bold mt-2 shadow-md">Actualizar Base</button>
+                <button onclick="importarRepuestosMasivo()" class="w-full bg-azul text-white py-3 rounded-xl font-bold mt-2 shadow-md text-white text-white">Actualizar Base</button>
             </div>
-            <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200 shadow-sm">
-                <label class="font-bold text-blue-700 uppercase text-xs">Importar Clientes Habituales</label>
+            <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200 shadow-sm text-gray-900">
+                <label class="font-bold text-blue-700 uppercase text-xs text-gray-900">Importar Clientes Habituales</label>
                 <textarea id="import-clientes" class="w-full p-3 rounded-xl border h-32 text-sm mt-2 text-gray-900" placeholder="NOMBRE, RUT, WHATSAPP, DIRECCION, CORREO"></textarea>
-                <button onclick="importarClientesMasivo()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-2 shadow-md">Actualizar Clientes</button>
+                <button onclick="importarClientesMasivo()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-2 shadow-md text-white text-white">Actualizar Clientes</button>
             </div>
         </div>
     </div>
 
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz2t1slR2Ymxqnw_hre-y7bDQgZFtLsYYqj7du-9U0bBpDjMSl0g4hHCyILTwSFkBc1/exec";
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwKVDVW1iS2ai5vV2ysfSyXpQOcVybRfdmxIrC7GRw5Mu6BFf5knT0H45_hZJSHYZNd/exec";
         let dbFull = [];
         let clientesLocales = JSON.parse(localStorage.getItem('wm_clientes_locales')) || [];
         let repuestosDB = JSON.parse(localStorage.getItem('wm_repuestos')) || [];
@@ -292,10 +290,10 @@
             return count;
         }
 
-        // --- MOTOR DE GESTIÓN Y TIEMPOS V19.9 ---
+        // --- MOTOR DE GESTIÓN Y FLUJO NUBE V20.0 ---
         function inyectarEnGestion(equipo, estado) {
             let g = JSON.parse(localStorage.getItem('wm_gestion_taller')) || [];
-            g = g.filter(x => x.ot !== equipo.ot); 
+            g = g.filter(x => x.ot.toString() !== equipo.ot.toString()); 
             
             const dataFull = {
                 ot: equipo.ot,
@@ -320,7 +318,7 @@
 
         function abrirListaGestion(f) {
             showScreen('lista-gestion-screen');
-            document.getElementById('titulo-lista-gestion').innerText = f + (f === 'ENTREGADO' ? 'S' : 'S');
+            document.getElementById('titulo-lista-gestion').innerText = f + "S";
             renderizarListaGestion(f);
         }
 
@@ -330,7 +328,7 @@
             const filtrados = g.filter(x => x.estado === filtro);
 
             if (filtro === 'ENTREGADO') { renderizarTablaEntregados(filtrados); return; }
-            if (filtrados.length === 0) { container.innerHTML = '<p class="text-center py-20 text-gray-400 italic">No hay equipos en esta etapa.</p>'; return; }
+            if (filtrados.length === 0) { container.innerHTML = '<p class="text-center py-20 text-gray-400 italic">No hay registros en esta sección.</p>'; return; }
 
             container.innerHTML = filtrados.map(item => {
                 const dias = calcularDiasHabiles(item.fechaEntrada);
@@ -353,25 +351,25 @@
                         <button onclick="cambiarEstadoLocal('${item.ot}', 'RECHAZADO')" class="bg-red-500 text-white py-3 rounded-xl text-[10px] font-black uppercase shadow-sm active:scale-95 transition">Rechazar</button>
                     </div>`;
                 } else if(filtro === 'APROBADO') {
-                    btns = `<button onclick="cambiarEstadoLocal('${item.ot}', 'REPARADO')" class="w-full bg-azul text-white py-4 rounded-xl text-[11px] font-black uppercase mt-4 shadow-md active:scale-95 transition">Equipo Listo</button>`;
+                    btns = `<button onclick="cambiarEstadoLocal('${item.ot}', 'REPARADO')" class="w-full bg-azul text-white py-3 rounded-xl text-[11px] font-black uppercase mt-4 shadow-md active:scale-95 transition">Equipo Listo</button>`;
                 } else if(filtro === 'REPARADO' || filtro === 'RECHAZADO') {
-                    btns = `<button onclick="cambiarEstadoLocal('${item.ot}', 'ENTREGADO')" class="w-full bg-gray-900 text-white py-4 rounded-xl text-[11px] font-black uppercase mt-4 shadow-md active:scale-95 transition text-white">Entregado</button>`;
+                    btns = `<button onclick="cambiarEstadoLocal('${item.ot}', 'ENTREGADO')" class="w-full bg-gray-900 text-white py-3 rounded-xl text-[11px] font-black uppercase mt-4 shadow-md active:scale-95 transition text-white">Entregado</button>`;
                 }
 
                 return `
                 <div class="bg-white p-5 rounded-2xl shadow-md border border-gray-100 text-gray-900">
-                    <div class="flex justify-between items-start">
+                    <div class="flex justify-between items-start text-gray-900">
                         <div>
-                            <span class="status-pill bg-gray-100 text-gray-500 font-black">OT-${item.ot}</span>
-                            <h4 class="font-black text-lg text-gray-900 mt-1 leading-tight">${item.NOMBRE}</h4>
-                            <p class="text-xs text-gray-500 font-bold">${item.MARCA} ${item.MODELO}</p>
-                            <p class="text-[10px] text-azul font-black mt-1">GUÍA: ${item.GUIA || 'S/G'}</p>
+                            <span class="status-pill bg-gray-100 text-gray-500 font-black text-gray-900">OT-${item.ot}</span>
+                            <h4 class="font-black text-lg text-gray-900 mt-1 leading-tight text-gray-900">${item.NOMBRE}</h4>
+                            <p class="text-xs text-gray-500 font-bold text-gray-900">${item.MARCA} ${item.MODELO}</p>
+                            <p class="text-[10px] text-azul font-black mt-1 text-gray-900">GUÍA: ${item.GUIA || 'S/G'}</p>
                         </div>
                         <a href="https://wa.me/${item.WHATSAPP}" class="bg-green-100 text-green-600 w-11 h-11 rounded-full flex items-center justify-center shadow-inner"><i class="fa-brands fa-whatsapp text-2xl"></i></a>
                     </div>
-                    <div class="mt-3 flex items-center justify-between border-t pt-3">
-                        <span class="counter-pill ${color}"><i class="fa-regular fa-clock"></i> ${dias} DÍAS HÁBILES</span>
-                        ${filtro === 'APROBADO' ? `<span class="text-[10px] font-black text-gray-300">PLAZO: ${item.plazo} DÍAS</span>` : ''}
+                    <div class="mt-3 flex items-center justify-between border-t pt-3 text-gray-900">
+                        <span class="counter-pill ${color} text-gray-900"><i class="fa-regular fa-clock text-gray-900"></i> ${dias} DÍAS HÁBILES</span>
+                        ${filtro === 'APROBADO' ? `<span class="text-[10px] font-black text-gray-300 text-gray-900">PLAZO: ${item.plazo} DÍAS</span>` : ''}
                     </div>
                     ${btns}
                 </div>`;
@@ -380,10 +378,10 @@
 
         function renderizarTablaEntregados(datos) {
             const container = document.getElementById('contenedor-items-gestion');
-            let h = `<div class="overflow-x-auto bg-white rounded-2xl shadow-sm"><table class="tabla-entregados">
-                <thead><tr><th>OT</th><th>CLIENTE</th><th>FECHA</th><th>PDF</th></tr></thead>
-                <tbody>`;
-            datos.forEach(x => { h += `<tr><td class="font-black">#${x.ot}</td><td>${x.NOMBRE}</td><td>${new Date(x.fechaEntrada).toLocaleDateString()}</td><td><i class="fa-solid fa-file-pdf text-red-500 text-lg"></i></td></tr>`; });
+            let h = `<div class="overflow-x-auto bg-white rounded-2xl shadow-sm text-gray-900"><table class="tabla-entregados text-gray-900">
+                <thead class="text-gray-900"><tr><th class="text-gray-900">OT</th><th class="text-gray-900">CLIENTE</th><th class="text-gray-900">FECHA</th><th class="text-gray-900">PDF</th></tr></thead>
+                <tbody class="text-gray-900">`;
+            datos.forEach(x => { h += `<tr class="text-gray-900"><td class="font-black text-gray-900">#${x.ot}</td><td class="text-gray-900">${x.NOMBRE}</td><td class="text-gray-900">${new Date(x.fechaEntrada).toLocaleDateString()}</td><td class="text-gray-900"><i class="fa-solid fa-file-pdf text-red-500 text-lg text-gray-900"></i></td></tr>`; });
             h += `</tbody></table></div>`;
             container.innerHTML = h;
         }
@@ -395,20 +393,20 @@
                 g[idx].estado = nE;
                 g[idx].fechaEntrada = new Date().toISOString();
                 localStorage.setItem('wm_gestion_taller', JSON.stringify(g));
-                const filtroActual = document.getElementById('titulo-lista-gestion').innerText.slice(0, -1);
+                const filtroActual = document.getElementById('titulo-lista-gestion').innerText.replace("S", "");
                 renderizarListaGestion(filtroActual);
                 fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "update_status", ot: ot, estado: nE }) });
             }
         }
 
-        // --- MOTOR PDF GIGANTE V19.9 (REMAPEO TOTAL) ---
+        // --- MOTOR PDF GIGANTE V20.0 (RESTORACIÓN TOTAL + NUBE) ---
         function generarPDFGlobal(tipo, ot, datos) {
             const { jsPDF } = window.jspdf; const doc = new jsPDF(); const r = 0, g = 112, b = 243; const fmt = new Intl.NumberFormat("es-CL");
             doc.setFillColor(r, g, b); doc.rect(0, 0, 210, 52, 'F');
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 15);
             doc.setFontSize(26); doc.text(tipo === 'OT' ? "ORDEN DE INGRESO" : "COTIZACIÓN TÉCNICA", 10, 30);
             doc.setFontSize(9); doc.setFont("helvetica", "normal"); doc.text(`RUT: 76.349.984-7 | amsetecsi@gmail.com`, 10, 40);
-            doc.text(`Fono: +56 9 95412322 | Santiago, Chile`, 10, 45);
+            doc.text(`Fono: +56 9 95412322 | Santiago, Cerrillos`, 10, 45);
             doc.setDrawColor(255); doc.rect(165, 8, 35, 35); doc.setFontSize(7); doc.text("LOGO AQUÍ", 175, 27);
             
             let cY = 65;
@@ -442,8 +440,8 @@
                 doc.setFontSize(15); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("III. FALLA REPORTADA", 10, cY); cY += 8;
                 const fL = doc.splitTextToSize(FA, 185); doc.setFillColor(248); doc.roundedRect(10, cY, 190, (fL.length*8)+8, 1, 1, 'F');
                 doc.setFontSize(12); doc.text(fL, 15, cY+8);
-                cY = 230; doc.setFontSize(8.5); doc.setTextColor(100); doc.text("TÉRMINOS Y CONDICIONES LEGALES DEL SERVICIO:", 10, cY);
-                const nOT = ["1. Plazo de diagnóstico estimado: 3 días hábiles.", "2. El rechazo del presupuesto genera un cargo administrativo de 0,05 UF.", "3. Pasados 7 días de aviso sin retiro, aplica cargo por bodegaje de 0,07 UF diarios.", "4. Equipos no retirados en 6 meses se considerarán legalmente abandonados bajo la normativa vigente."];
+                cY = 230; doc.setFontSize(8.5); doc.setTextColor(100); doc.text("TÉRMINOS Y CONDICIONES LEGALES:", 10, cY);
+                const nOT = ["1. Plazo de diagnóstico estimado: 3 días hábiles.", "2. El rechazo de presupuesto genera un cargo administrativo de 0,05 UF.", "3. Pasados 7 días de aviso sin retiro, aplica cargo por bodegaje de 0,07 UF diario.", "4. Equipos no retirados en 6 meses se considerarán legalmente abandonados."];
                 nOT.forEach((n, i) => { doc.text(n, 10, cY+6+(i*4.5)); });
                 doc.line(30, 275, 80, 275); doc.text("Firma Cliente", 45, 280); doc.line(130, 275, 180, 275); doc.text("Firma Recepción", 145, 280);
             } else {
@@ -457,8 +455,8 @@
                 doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("DIAGNÓSTICO TÉCNICO ESPECIALIZADO:", 10, cY); cY += 5;
                 const dL = doc.splitTextToSize(datos.diagnostico, 190); doc.setFillColor(248); doc.roundedRect(10, cY, 190, (dL.length*6)+5, 1, 1, 'F');
                 doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.setTextColor(40); doc.text(dL, 14, cY+7); cY += (dL.length*6)+14;
-                doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("DETALLE DE REPUESTOS Y SERVICIOS", 10, cY); cY += 5;
-                const rT = repuestosActuales.length > 0 ? repuestosActuales.map(r => `• ${r.nombre} (x${r.cantidad})`).join('\n') : "Servicios técnicos especializados y mano de obra.";
+                doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(r,g,b); doc.text("REPUESTOS Y SERVICIOS", 10, cY); cY += 5;
+                const rT = repuestosActuales.length > 0 ? repuestosActuales.map(r => `• ${r.nombre} (x${r.cantidad})`).join('\n') : "Mano de obra y servicios especializados.";
                 const rL = doc.splitTextToSize(rT, 190); doc.setFillColor(242); doc.roundedRect(10, cY, 190, (rL.length*6)+5, 1, 1, 'F');
                 doc.text(rL, 14, cY+7); cY += (rL.length*6)+18;
                 const neto = parseInt(datos.valorNeto); const iva = Math.round(neto * 0.19); const total = neto + iva;
@@ -470,34 +468,32 @@
                 const nC = ["- Pago vía Transferencia Bancaria, Débito, Crédito o Efectivo.", `- Entrega: ${datos.plazo} días hábiles tras confirmación formal.`, "- Validez: 7 días corridos.", "- Para aprobar, envíe un WhatsApp o una Orden de Compra a: amsetecsi@gmail.com"];
                 nC.forEach((n, i) => { doc.text(n, 10, cY+6+(i*4.5)); });
             }
+            const blob = doc.output('blob');
+            subirArchivoANube(ot.ot, blob, `${tipo}_OT${ot.ot}_${N}.pdf`, 'application/pdf');
             doc.save(`${tipo}_OT${ot.ot}_${N}.pdf`);
+        }
+
+        async function subirArchivoANube(ot, blob, fileName, mime) {
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = async () => {
+                const base64 = reader.result.split(',')[1];
+                const payload = { action: "upload_file", ot: ot, base64: base64, fileName: fileName, mimeType: mime };
+                await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+            };
         }
 
         async function enviarPresupuesto() {
             const d = document.getElementById('diagnostico').value; const v = document.getElementById('valor-neto').value;
-            const p = document.getElementById('plazo').value; if(!d || !v) return alert("⚠️ Complete los datos técnicos.");
+            const p = document.getElementById('plazo').value; if(!d || !v) return alert("⚠️ Datos incompletos.");
             const btn = document.getElementById('btn-enviar-presupuesto'); btn.disabled = true;
-            const itemParaGestion = {
-                ...otActiva,
-                NOMBRE: otActiva.NOMBRE || otActiva.nombre,
-                WHATSAPP: otActiva.WHATSAPP || otActiva.whatsapp,
-                RUT: otActiva.RUT || otActiva.rut,
-                DIRECCION: otActiva.DIRECCION || otActiva.direccion,
-                CORREO: otActiva.CORREO || otActiva.correo,
-                MARCA: otActiva.MARCA || otActiva.marca,
-                MODELO: otActiva.MODELO || otActiva.modelo,
-                SERIE: otActiva.SERIE || otActiva.serie,
-                GUIA: otActiva.GUIA || otActiva.guia,
-                ACCESORIOS: otActiva.ACCESORIOS || otActiva.accesorios,
-                FALLA: otActiva.FALLA || otActiva.falla,
-                plazo: p
-            };
-            inyectarEnGestion(itemParaGestion, 'PRESUPUESTADO');
+            const itemFinal = { ...otActiva, NOMBRE: otActiva.NOMBRE || otActiva.nombre, WHATSAPP: otActiva.WHATSAPP || otActiva.whatsapp, plazo: p };
+            inyectarEnGestion(itemFinal, 'PRESUPUESTADO');
             try { 
-                await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "update_presupuesto", fila: otActiva.fila, DIAGNOSTICO: d, NETO: v, ESTADO: 'PRESUPUESTADO' }) }); 
-                generarPDFGlobal('COT', itemParaGestion, { diagnostico: d, valorNeto: v, plazo: p }); 
-                const msg = `Estimado(a) *${itemParaGestion.NOMBRE}*, adjuntamos presupuesto técnico profesional por la *OT ${otActiva.ot}*. Quedamos atentos a su aprobación.`;
-                window.open(`https://wa.me/${itemParaGestion.WHATSAPP}?text=${msg}`, '_blank');
+                await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "update_presupuesto", ot: otActiva.ot, DIAGNOSTICO: d, NETO: v, estado: 'PRESUPUESTADO' }) }); 
+                generarPDFGlobal('COT', itemFinal, { diagnostico: d, valorNeto: v, plazo: p }); 
+                const msg = `Estimado(a) *${itemFinal.NOMBRE}*, enviamos cotización por la *OT ${otActiva.ot}*. Saludos.`;
+                window.open(`https://wa.me/${itemFinal.WHATSAPP}?text=${msg}`, '_blank');
                 setTimeout(() => location.reload(), 1500); 
             } catch (e) { btn.disabled = false; }
         }
@@ -506,22 +502,22 @@
             e.preventDefault(); const btn = document.getElementById('btn-submit'); btn.disabled = true;
             const accs = Array.from(document.querySelectorAll('.acc:checked')).map(el => el.value).join(', ');
             const tA = accs + (document.getElementById('otros-acc').value ? ', ' + document.getElementById('otros-acc').value : '');
-            const d = { NOMBRE: document.getElementById('nombre').value, RUT: document.getElementById('rut').value, WHATSAPP: document.getElementById('whatsapp').value, DIRECCION: document.getElementById('direccion').value, CORREO: document.getElementById('correo').value, MARCA: document.getElementById('marca').value, MODELO: document.getElementById('modelo').value, SERIE: document.getElementById('serie').value, ACCESORIOS: tA, FALLA: document.getElementById('falla').value, GUIA: document.getElementById('guia').value, ESTADO: 'INGRESADO' };
+            const d = { action: "ingreso", NOMBRE: document.getElementById('nombre').value, RUT: document.getElementById('rut').value, WHATSAPP: document.getElementById('whatsapp').value, DIRECCION: document.getElementById('direccion').value, CORREO: document.getElementById('correo').value, MARCA: document.getElementById('marca').value, MODELO: document.getElementById('modelo').value, SERIE: document.getElementById('serie').value, ACCESORIOS: tA, FALLA: document.getElementById('falla').value, GUIA: document.getElementById('guia').value };
             try { 
                 const res = await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(d) });
                 const r = await res.json();
                 generarPDFGlobal('OT', { ...d, ot: r.ot }, {});
-                alert("✅ OT #" + r.ot + " Registrada."); setTimeout(() => location.reload(), 1000); 
+                alert("✅ OT #" + r.ot + " Registrada con éxito."); setTimeout(() => location.reload(), 1000); 
             } catch (e) { btn.disabled = false; }
         });
 
-        // --- RENDER LISTA PRESUPUESTOS CON SEMÁFORO ---
+        // --- RENDER LISTA PRESUPUESTOS ---
         async function cargarPendientes() {
             showScreen('presupuesto-list-screen'); document.getElementById('lista-pendientes').innerHTML = ''; document.getElementById('loading-pendientes').classList.remove('hidden');
             try {
                 const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime()); dbFull = await res.json();
                 document.getElementById('loading-pendientes').classList.add('hidden');
-                dbFull.filter(p => !(p.DIAGNOSTICO || p.diagnostico)).forEach(p => {
+                dbFull.filter(p => !p.DIAGNOSTICO && p.ESTADO !== 'ENTREGADO').forEach(p => {
                     const dias = calcularDiasHabiles(p.FECHA || p.fecha);
                     let sh = "sh-dia-1"; if(dias === 2) sh = "sh-dia-2"; if(dias >= 3) sh = "sh-dia-3";
                     const div = document.createElement('div');
@@ -534,17 +530,17 @@
                         document.getElementById('det-falla').innerText = p.FALLA || p.falla;
                         repuestosActuales = []; renderRep(); showScreen('presupuesto-detail-screen');
                     };
-                    div.innerHTML = `<div><div class="flex justify-between items-center mb-1"><span class="text-[10px] font-black text-azul uppercase">OT-${p.ot}</span><span class="text-[9px] font-black text-gray-400 uppercase tracking-tighter">${dias} DÍA(S) HÁBIL(ES)</span></div><h3 class="font-black text-gray-800 leading-tight">${p.NOMBRE || p.nombre}</h3><p class="text-xs text-gray-500 font-black">${p.MARCA || p.marca} ${p.MODELO || p.modelo}</p></div>`;
+                    div.innerHTML = `<div><div class="flex justify-between items-center mb-1"><span class="text-[10px] font-black text-azul uppercase">OT-${p.ot}</span><span class="text-[9px] font-black text-gray-400 uppercase">${dias} DÍA(S) HÁBIL(ES)</span></div><h3 class="font-black text-gray-800 leading-tight">${p.NOMBRE || p.nombre}</h3><p class="text-xs text-gray-500 font-black">${p.MARCA || p.marca} ${p.MODELO || p.modelo}</p></div>`;
                     document.getElementById('lista-pendientes').appendChild(div);
                 });
-            } catch (e) { alert("Error de conexión."); }
+            } catch (e) { alert("Error."); }
         }
 
-        // Búsquedas y Otros
+        // --- FUNCIONES DE APOYO ---
         function buscarCliente(t) {
             const ul = document.getElementById('sugerencias-cliente'); ul.innerHTML = '';
             if(t.length < 2) { ul.classList.add('hidden'); return; }
-            const fil = dbFull.filter(c => (c.NOMBRE || c.nombre || "").toString().toLowerCase().includes(t.toLowerCase()));
+            const fil = [...dbFull, ...clientesLocales].filter(c => (c.NOMBRE || c.nombre || "").toString().toLowerCase().includes(t.toLowerCase()));
             if(fil.length === 0) { ul.classList.add('hidden'); return; }
             ul.classList.remove('hidden');
             fil.forEach(c => {
@@ -573,18 +569,12 @@
             });
         }
         function agregarRepuestoLista() { const n = document.getElementById('buscador-repuesto').value; const c = document.getElementById('cantidad-repuesto').value; if(!n) return; repuestosActuales.push({ nombre: n, cantidad: parseInt(c) }); renderRep(); document.getElementById('buscador-repuesto').value = ''; }
-        function renderRep() { document.getElementById('lista-repuestos-seleccionados').innerHTML = repuestosActuales.map((r, i) => `<li class="flex justify-between bg-white p-2 border rounded-xl text-xs font-bold text-gray-900 shadow-sm"><span>${r.nombre} <b>x${r.cantidad}</b></span><button onclick="repuestosActuales.splice(${i},1);renderRep()" class="text-red-500 px-2"><i class="fa-solid fa-trash"></i></button></li>`).join(''); }
-        function importarRepuestosMasivo() { const t = document.getElementById('import-repuestos').value; if(!t.trim()) return; const l = t.split('\n').map(x => x.trim()).filter(x => x !== ""); repuestosDB = [...new Set([...repuestosDB, ...l])]; localStorage.setItem('wm_repuestos', JSON.stringify(repuestosDB)); alert("✅ Repuestos cargados."); }
+        function renderRep() { document.getElementById('lista-repuestos-seleccionados').innerHTML = repuestosActuales.map((r, i) => `<li class="flex justify-between bg-white p-2 border rounded-xl text-xs font-bold text-gray-900"><span>${r.nombre} <b>x${r.cantidad}</b></span><button onclick="repuestosActuales.splice(${i},1);renderRep()" class="text-red-500 px-2"><i class="fa-solid fa-trash"></i></button></li>`).join(''); }
+        function importarRepuestosMasivo() { const t = document.getElementById('import-repuestos').value; if(!t.trim()) return; const l = t.split('\n').map(x => x.trim()).filter(x => x !== ""); repuestosDB = [...new Set([...repuestosDB, ...l])]; localStorage.setItem('wm_repuestos', JSON.stringify(repuestosDB)); alert("✅ Repuestos listos."); }
         function importarClientesMasivo() { 
-            const t = document.getElementById('import-clientes').value; 
-            if(!t.trim()) return; 
-            const l = t.split('\n').map(x => { 
-                const p = x.split(',').map(s => s.trim()); 
-                return { NOMBRE: p[0], RUT: p[1] || '', WHATSAPP: p[2] || '', DIRECCION: p[3] || '', CORREO: p[4] || '' }; 
-            }).filter(x => x.NOMBRE); 
-            clientesLocales = l;
-            localStorage.setItem('wm_clientes_locales', JSON.stringify(l)); 
-            alert("✅ Clientes importados."); 
+            const t = document.getElementById('import-clientes').value; if(!t.trim()) return;
+            const l = t.split('\n').map(x => { const p = x.split(',').map(s => s.trim()); return { NOMBRE: p[0], RUT: p[1], WHATSAPP: p[2], DIRECCION: p[3], CORREO: p[4] }; }).filter(x => x.NOMBRE);
+            clientesLocales = l; localStorage.setItem('wm_clientes_locales', JSON.stringify(l)); alert("✅ Clientes listos.");
         }
     </script>
 </body>
