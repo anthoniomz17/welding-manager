@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Manager Pro V20.4 - Código Íntegro</title>
+    <title>Welding Manager Pro V20.5 - Gestión de Tiempos Real</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -28,12 +28,13 @@
         .sh-dia-1 { box-shadow: 0 15px 30px -5px rgba(34, 197, 94, 0.4); border: 1px solid rgba(34, 197, 94, 0.2); }
         .sh-dia-2 { box-shadow: 0 15px 30px -5px rgba(234, 179, 8, 0.4); border: 1px solid rgba(234, 179, 8, 0.2); }
         .sh-dia-3 { box-shadow: 0 15px 30px -5px rgba(239, 68, 68, 0.5); border: 1px solid rgba(239, 68, 68, 0.3); }
+        .sh-abandono { box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.5); border: 2px solid #000; }
     </style>
 </head>
 <body class="bg-gray-100 font-sans pb-10 text-gray-800">
 
     <div id="home-screen" class="p-6 max-w-md mx-auto h-screen flex flex-col justify-center relative">
-        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v20.4 Master</span>
+        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v20.5 Premium</span>
         <button onclick="showScreen('config-screen')" class="absolute top-6 right-6 text-gray-400 p-2 transition"><i class="fa-solid fa-gear text-3xl"></i></button>
         
         <div class="text-center mb-10">
@@ -58,30 +59,34 @@
     </div>
 
     <div id="menu-gestion-screen" class="hidden p-6 max-w-md mx-auto bg-white min-h-screen text-gray-900">
-        <div class="flex items-center mb-8 border-b pb-4">
+        <div class="flex items-center mb-6 border-b pb-4">
             <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 transition"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
             <h2 class="text-2xl font-black uppercase tracking-tighter">Panel de Gestión</h2>
         </div>
-        <div class="grid gap-4">
-            <button onclick="abrirListaGestion('PRESUPUESTADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl border-l-8 border-blue-500 shadow-sm flex items-center justify-between">
-                <div class="text-left"><span class="block text-lg font-black uppercase text-gray-900">Presupuestos</span><span class="text-[10px] text-gray-400 italic">Esperando aprobación</span></div>
-                <i class="fa-solid fa-clock-rotate-left text-2xl text-blue-500"></i>
+        <div class="grid gap-3">
+            <button onclick="abrirListaGestion('PRESUPUESTADO')" class="btn-menu-gestion bg-gray-50 p-4 rounded-2xl border-l-8 border-blue-500 shadow-sm flex items-center justify-between">
+                <div class="text-left"><span class="block text-md font-black uppercase text-gray-900">Presupuestos</span><span class="text-[9px] text-gray-400 italic">Esperando aprobación</span></div>
+                <i class="fa-solid fa-clock-rotate-left text-xl text-blue-500"></i>
             </button>
-            <button onclick="abrirListaGestion('APROBADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl border-l-8 border-orange-500 shadow-sm flex items-center justify-between">
-                <div class="text-left"><span class="block text-lg font-black uppercase text-gray-900">Aprobados</span><span class="text-[10px] text-gray-400 italic">En reparación activa</span></div>
-                <i class="fa-solid fa-screwdriver-wrench text-2xl text-orange-500"></i>
+            <button onclick="abrirListaGestion('APROBADO')" class="btn-menu-gestion bg-gray-50 p-4 rounded-2xl border-l-8 border-orange-500 shadow-sm flex items-center justify-between">
+                <div class="text-left"><span class="block text-md font-black uppercase text-gray-900">Aprobados</span><span class="text-[9px] text-gray-400 italic">En reparación activa</span></div>
+                <i class="fa-solid fa-screwdriver-wrench text-xl text-orange-500"></i>
             </button>
-            <button onclick="abrirListaGestion('RECHAZADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl border-l-8 border-red-500 shadow-sm flex items-center justify-between">
-                <div class="text-left"><span class="block text-lg font-black uppercase text-gray-900">Rechazados</span><span class="text-[10px] text-gray-400 italic">Esperando retiro</span></div>
-                <i class="fa-solid fa-ban text-2xl text-red-500"></i>
+            <button onclick="abrirListaGestion('RECHAZADO')" class="btn-menu-gestion bg-gray-50 p-4 rounded-2xl border-l-8 border-red-500 shadow-sm flex items-center justify-between">
+                <div class="text-left"><span class="block text-md font-black uppercase text-gray-900">Rechazados</span><span class="text-[9px] text-gray-400 italic">Esperando retiro</span></div>
+                <i class="fa-solid fa-ban text-xl text-red-500"></i>
             </button>
-            <button onclick="abrirListaGestion('REPARADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl border-l-8 border-green-500 shadow-sm flex items-center justify-between">
-                <div class="text-left"><span class="block text-lg font-black uppercase text-gray-900">Reparados</span><span class="text-[10px] text-gray-400 italic">Listos para entrega</span></div>
-                <i class="fa-solid fa-circle-check text-2xl text-green-500"></i>
+            <button onclick="abrirListaGestion('REPARADO')" class="btn-menu-gestion bg-gray-50 p-4 rounded-2xl border-l-8 border-green-500 shadow-sm flex items-center justify-between">
+                <div class="text-left"><span class="block text-md font-black uppercase text-gray-900">Reparados</span><span class="text-[9px] text-gray-400 italic">Listos para entrega</span></div>
+                <i class="fa-solid fa-circle-check text-xl text-green-500"></i>
             </button>
-            <button onclick="abrirListaGestion('ENTREGADO')" class="btn-menu-gestion bg-gray-50 p-6 rounded-2xl border-l-8 border-gray-400 shadow-sm flex items-center justify-between">
-                <div class="text-left"><span class="block text-lg font-black uppercase text-gray-900">Entregados</span><span class="text-[10px] text-gray-400 italic">Historial finalizado</span></div>
-                <i class="fa-solid fa-box-open text-2xl text-gray-400"></i>
+            <button onclick="abrirListaGestion('ENTREGADO')" class="btn-menu-gestion bg-gray-50 p-4 rounded-2xl border-l-8 border-gray-400 shadow-sm flex items-center justify-between">
+                <div class="text-left"><span class="block text-md font-black uppercase text-gray-900">Entregados</span><span class="text-[9px] text-gray-400 italic">Historial (90 Días)</span></div>
+                <i class="fa-solid fa-box-open text-xl text-gray-400"></i>
+            </button>
+            <button onclick="abrirListaGestion('ABANDONADO')" class="btn-menu-gestion bg-black p-4 rounded-2xl border-l-8 border-yellow-500 shadow-sm flex items-center justify-between">
+                <div class="text-left"><span class="block text-md font-black uppercase text-white">Nunca Retirados</span><span class="text-[9px] text-yellow-500 italic">Abandono Legal (>6 Meses)</span></div>
+                <i class="fa-solid fa-skull-crossbones text-xl text-yellow-500"></i>
             </button>
         </div>
     </div>
@@ -112,11 +117,11 @@
             </div>
             
             <div class="bg-gray-50 p-4 rounded-2xl space-y-3 border border-gray-100">
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-2 gap-2 text-gray-900">
                     <input type="text" id="marca" placeholder="Marca" class="w-full p-3 rounded-xl border text-gray-900" required>
                     <input type="text" id="modelo" placeholder="Modelo" class="w-full p-3 rounded-xl border text-gray-900">
                 </div>
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-2 gap-2 text-gray-900">
                     <input type="text" id="serie" placeholder="N° de Serie" class="w-full p-3 rounded-xl border text-gray-900">
                     <input type="text" id="guia" placeholder="N° Guía Cliente" class="w-full p-3 rounded-xl border font-black bg-blue-50 text-gray-900">
                 </div>
@@ -143,7 +148,7 @@
                 <textarea id="falla" placeholder="Describa el problema reportado..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 mt-1 shadow-inner text-gray-900"></textarea>
                 <button type="button" onclick="iniciarDictado('falla')" class="absolute right-3 bottom-3 bg-azul text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition"><i class="fa-solid fa-microphone text-xl text-white"></i></button>
             </div>
-            <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition uppercase tracking-widest">Registrar Ingreso</button>
+            <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition uppercase tracking-widest text-white">Registrar Ingreso</button>
         </form>
     </div>
 
@@ -244,7 +249,9 @@
     </div>
 
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzS4m8_HUqXhAF_zLml_6LbmSnB5V73YVYNZ4MNJxd1ADAiALsCrJYXp4IVEG3jc0hM/exec";
+        // PEGA AQUÍ TU NUEVA URL DE IMPLEMENTACIÓN DE GOOGLE SCRIPT
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzVENGiRnU40wG1rrKBuXIgoHtnpYvRMtXPUSUShQI_P6NzPedatOsxXf99N2_HwIjM/exec"; 
+        
         let dbFull = [];
         let clientesLocales = JSON.parse(localStorage.getItem('wm_clientes_locales')) || [];
         let repuestosDB = JSON.parse(localStorage.getItem('wm_repuestos')) || [];
@@ -280,16 +287,31 @@
 
         function iniciarDictado(id) { 
             const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); 
-            rec.lang = 'es-ES'; rec.start(); 
-            rec.onresult = (e) => { document.getElementById(id).value = e.results[0][0].transcript; }; 
+            rec.lang = 'es-ES'; 
+            rec.start(); 
+            rec.onresult = (e) => { 
+                document.getElementById(id).value = e.results[0][0].transcript; 
+            }; 
         }
 
-        function guardarIAKey() { localStorage.setItem('wm_ia_key', document.getElementById('ia-key-input').value.trim()); alert("✅ Llave IA Guardada."); }
+        function guardarIAKey() { 
+            localStorage.setItem('wm_ia_key', document.getElementById('ia-key-input').value.trim()); 
+            alert("✅ Llave IA Guardada."); 
+        }
 
-        // --- LÓGICA DE DÍAS HÁBILES CHILE ---
+        // --- MOTOR DE TIEMPOS V20.5 ---
+        function obtenerDiasCorridos(fecha) {
+            if(!fecha) return 0;
+            // Normalizar el formato de fecha para que sea compatible con todos los navegadores
+            const fechaValida = fecha.replace(" ", "T");
+            const diff = new Date() - new Date(fechaValida);
+            return Math.floor(diff / (1000 * 60 * 60 * 24));
+        }
+
         function calcularDiasHabiles(fechaInicio) {
             if (!fechaInicio) return 0;
-            let start = new Date(fechaInicio);
+            const fechaValida = fechaInicio.replace(" ", "T");
+            let start = new Date(fechaValida);
             let end = new Date();
             let count = 0;
             let current = new Date(start);
@@ -301,104 +323,106 @@
             return count;
         }
 
-        // --- MOTOR DE GESTIÓN Y FLUJO NUBE V20.4 ---
-        function inyectarEnGestion(equipo, estado) {
-            let g = JSON.parse(localStorage.getItem('wm_gestion_taller')) || [];
-            g = g.filter(x => x.ot.toString() !== equipo.ot.toString()); 
-            
-            const dataFull = {
-                ...equipo,
-                estado: estado,
-                fechaEntrada: new Date().toISOString()
-            };
-            g.push(dataFull);
-            localStorage.setItem('wm_gestion_taller', JSON.stringify(g));
-        }
-
+        // --- GESTIÓN NUBE DIRECTA V20.5 ---
         function abrirListaGestion(f) {
             showScreen('lista-gestion-screen');
             document.getElementById('titulo-lista-gestion').innerText = f + "S";
             renderizarListaGestion(f);
         }
 
-        function renderizarListaGestion(filtro) {
+        async function renderizarListaGestion(filtro) {
             const container = document.getElementById('contenedor-items-gestion');
-            const g = JSON.parse(localStorage.getItem('wm_gestion_taller')) || [];
-            const filtrados = g.filter(x => x.estado === filtro);
+            container.innerHTML = '<div class="text-center py-20"><div class="loader rounded-full border-4 h-10 w-10 mx-auto"></div><p class="text-xs font-bold mt-2 text-gray-400">Leyendo nube...</p></div>';
+            
+            await sincronizarBaseAlInicio();
+            
+            // FILTRO DE ABANDONO LEGAL (180 DÍAS CORRIDOS DESDE ÚLTIMO MOVIMIENTO)
+            // Se asume que la columna en el excel donde guardas la fecha de movimiento se llama 'FECHA_MOVIMIENTO'
+            // Si no está, el sistema usará 'FECHA' o 'FECHA_INGRESO' como respaldo
+            const abandonados = dbFull.filter(p => {
+                const fEvaluar = gV(p, 'FECHA_MOVIMIENTO') || gV(p, 'FECHA') || gV(p, 'FECHA_INGRESO');
+                return obtenerDiasCorridos(fEvaluar) > 180 && gV(p, 'ESTADO') !== 'ENTREGADO';
+            });
+            
+            let filtrados = [];
+            
+            if(filtro === 'ABANDONADO') {
+                filtrados = abandonados;
+            } else {
+                // Filtramos equipos normales (que NO estén en la lista de abandono legal)
+                filtrados = dbFull.filter(p => !abandonados.includes(p) && gV(p, 'ESTADO') === filtro);
+                
+                // REGLA 90 DÍAS PARA ENTREGADOS
+                if(filtro === 'ENTREGADO') {
+                    filtrados = filtrados.filter(p => {
+                        const fEvaluar = gV(p, 'FECHA_MOVIMIENTO') || gV(p, 'FECHA') || gV(p, 'FECHA_INGRESO');
+                        return obtenerDiasCorridos(fEvaluar) <= 90;
+                    });
+                }
+            }
 
-            if (filtro === 'ENTREGADO') { renderizarTablaEntregados(filtrados); return; }
-            if (filtrados.length === 0) { container.innerHTML = '<p class="text-center py-20 text-gray-400 italic font-bold">No hay equipos en esta etapa.</p>'; return; }
+            if (filtrados.length === 0) { 
+                container.innerHTML = '<p class="text-center py-20 text-gray-400 italic font-bold">Sin equipos en esta lista.</p>'; 
+                return; 
+            }
 
             container.innerHTML = filtrados.map(item => {
-                const dias = calcularDiasHabiles(item.fechaEntrada);
+                const fechaBase = gV(item, 'FECHA_MOVIMIENTO') || gV(item, 'FECHA') || gV(item, 'FECHA_INGRESO');
+                const diasM = obtenerDiasCorridos(fechaBase);
+                const diasH = calcularDiasHabiles(fechaBase);
+                const otN = gV(item, 'OT') || gV(item, 'N° OT');
+                const nmb = gV(item, 'NOMBRE') || gV(item, 'CLIENTE') || 'Sin Nombre';
+                const wp = gV(item, 'WHATSAPP') || gV(item, 'CELULAR') || '';
+
                 let color = "bg-blue-100 text-blue-600";
-                
                 if(filtro === 'PRESUPUESTADO') {
-                    if(dias === 2) color = "bg-orange-100 text-orange-600";
-                    if(dias >= 3) color = "bg-red-100 text-red-600";
-                } else if(filtro === 'APROBADO') {
-                    if(dias >= item.plazo - 1) color = "bg-orange-100 text-orange-600";
-                    if(dias >= item.plazo) color = "bg-red-600 text-white animate-pulse";
-                } else if(filtro === 'REPARADO' || filtro === 'RECHAZADO') {
-                    color = dias > 7 ? "bg-red-600 text-white" : "bg-green-100 text-green-600";
+                    if(diasH === 2) color = "bg-orange-100 text-orange-600";
+                    if(diasH >= 3) color = "bg-red-100 text-red-600";
                 }
+                if(filtro === 'ABANDONADO') color = "bg-yellow-500 text-black";
 
                 let btns = '';
                 if(filtro === 'PRESUPUESTADO') {
                     btns = `<div class="grid grid-cols-2 gap-2 mt-4">
-                        <button onclick="cambiarEstadoLocal('${item.ot}', 'APROBADO')" class="bg-green-600 text-white py-3 rounded-xl text-[10px] font-black uppercase shadow-sm active:scale-95 transition">Aceptar</button>
-                        <button onclick="cambiarEstadoLocal('${item.ot}', 'RECHAZADO')" class="bg-red-500 text-white py-3 rounded-xl text-[10px] font-black uppercase shadow-sm active:scale-95 transition">Rechazar</button>
+                        <button onclick="cambiarEstadoNube('${otN}', 'APROBADO')" class="bg-green-600 text-white py-3 rounded-xl text-[10px] font-black uppercase">Aceptar</button>
+                        <button onclick="cambiarEstadoNube('${otN}', 'RECHAZADO')" class="bg-red-500 text-white py-3 rounded-xl text-[10px] font-black uppercase">Rechazar</button>
                     </div>`;
                 } else if(filtro === 'APROBADO') {
-                    btns = `<button onclick="cambiarEstadoLocal('${item.ot}', 'REPARADO')" class="w-full bg-azul text-white py-3 rounded-xl text-[11px] font-black uppercase mt-4 shadow-md active:scale-95 transition">Equipo Listo</button>`;
+                    btns = `<button onclick="cambiarEstadoNube('${otN}', 'REPARADO')" class="w-full bg-azul text-white py-4 rounded-xl text-[11px] font-black uppercase mt-4">Equipo Reparado</button>`;
                 } else if(filtro === 'REPARADO' || filtro === 'RECHAZADO') {
-                    btns = `<button onclick="cambiarEstadoLocal('${item.ot}', 'ENTREGADO')" class="w-full bg-gray-900 text-white py-3 rounded-xl text-[11px] font-black uppercase mt-4 shadow-md active:scale-95 transition">Marcar Entregado</button>`;
+                    btns = `<button onclick="cambiarEstadoNube('${otN}', 'ENTREGADO')" class="w-full bg-gray-900 text-white py-4 rounded-xl text-[11px] font-black uppercase mt-4">Marcar Entregado</button>`;
                 }
 
                 return `
-                <div class="bg-white p-5 rounded-2xl shadow-md border border-gray-100">
+                <div class="bg-white p-5 rounded-2xl shadow-md border border-gray-100 ${filtro === 'ABANDONADO' ? 'sh-abandono' : ''}">
                     <div class="flex justify-between items-start">
                         <div>
-                            <span class="status-pill bg-gray-100 text-gray-500 font-black">OT-${item.ot}</span>
-                            <h4 class="font-black text-lg text-gray-900 mt-1 leading-tight">${item.NOMBRE}</h4>
-                            <p class="text-xs text-gray-500 font-bold">${item.MARCA} ${item.MODELO}</p>
-                            <p class="text-[10px] text-azul font-black mt-1">GUÍA: ${item.GUIA || 'S/G'}</p>
+                            <span class="status-pill bg-gray-100 text-gray-500 font-black">OT-${otN}</span>
+                            <h4 class="font-black text-lg text-gray-900 mt-1 leading-tight">${nmb}</h4>
+                            <p class="text-xs text-gray-500 font-bold">${gV(item, 'MARCA')} ${gV(item, 'MODELO')}</p>
                         </div>
-                        <a href="https://wa.me/${item.WHATSAPP}" class="bg-green-100 text-green-600 w-11 h-11 rounded-full flex items-center justify-center shadow-inner"><i class="fa-brands fa-whatsapp text-2xl"></i></a>
+                        <a href="https://wa.me/${wp}" class="bg-green-100 text-green-600 w-11 h-11 rounded-full flex items-center justify-center text-green-600"><i class="fa-brands fa-whatsapp text-2xl"></i></a>
                     </div>
                     <div class="mt-3 flex items-center justify-between border-t pt-3">
-                        <span class="counter-pill ${color}"><i class="fa-regular fa-clock"></i> ${dias} DÍAS HÁBILES</span>
-                        ${filtro === 'APROBADO' ? `<span class="text-[10px] font-black text-gray-400">PLAZO: ${item.plazo} DÍAS</span>` : ''}
+                        <span class="counter-pill ${color} uppercase"><i class="fa-regular fa-clock"></i> ${filtro === 'ENTREGADO' || filtro === 'ABANDONADO' ? diasM + ' DÍAS' : diasH + ' DÍAS HÁBILES'}</span>
                     </div>
                     ${btns}
                 </div>`;
             }).join('');
         }
 
-        function renderizarTablaEntregados(datos) {
-            const container = document.getElementById('contenedor-items-gestion');
-            let h = `<div class="overflow-x-auto bg-white rounded-2xl shadow-sm"><table class="tabla-entregados">
-                <thead><tr><th>OT</th><th>CLIENTE</th><th>FECHA</th><th>DOC</th></tr></thead>
-                <tbody>`;
-            datos.forEach(x => { h += `<tr><td class="font-black text-gray-900">#${x.ot}</td><td class="text-gray-900">${x.NOMBRE}</td><td class="text-gray-900">${new Date(x.fechaEntrada).toLocaleDateString()}</td><td><i class="fa-solid fa-file-pdf text-red-500 text-lg"></i></td></tr>`; });
-            h += `</tbody></table></div>`;
-            container.innerHTML = h;
-        }
-
-        function cambiarEstadoLocal(ot, nE) {
-            let g = JSON.parse(localStorage.getItem('wm_gestion_taller')) || [];
-            const idx = g.findIndex(x => x.ot.toString() === ot.toString());
-            if (idx !== -1) {
-                g[idx].estado = nE;
-                g[idx].fechaEntrada = new Date().toISOString();
-                localStorage.setItem('wm_gestion_taller', JSON.stringify(g));
-                const filtroActual = document.getElementById('titulo-lista-gestion').innerText.replace("S", "");
-                renderizarListaGestion(filtroActual);
-                fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "update_status", ot: ot, estado: nE }) });
+        async function cambiarEstadoNube(ot, nE) {
+            try {
+                // Notificamos al servidor del nuevo estado. Esto dispara la actualización de la FECHA_MOVIMIENTO en el Excel.
+                await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "update_status", ot: ot, estado: nE }) });
+                const fActual = document.getElementById('titulo-lista-gestion').innerText.replace("S", "");
+                renderizarListaGestion(fActual);
+            } catch(e) { 
+                alert("Error al conectar con la nube. Revise su conexión."); 
             }
         }
 
-        // --- MOTOR PDF GIGANTE V20.4 (FORMATO CORPORATIVO TOTAL) ---
+        // --- MOTOR PDF GIGANTE V20.5 (FORMATO CORPORATIVO TOTAL) ---
         function generarPDFGlobal(tipo, ot, datos) {
             const { jsPDF } = window.jspdf; const doc = new jsPDF(); const r = 0, g = 112, b = 243; const fmt = new Intl.NumberFormat("es-CL");
             doc.setFillColor(r, g, b); doc.rect(0, 0, 210, 52, 'F');
@@ -410,7 +434,6 @@
             
             let cY = 65;
             
-            // Asignación directa con Fallback a valores por defecto para que JAMÁS se pierdan datos.
             const N = ot.NOMBRE || ot.nombre || "Cliente no registrado";
             const RT = ot.RUT || ot.rut || "No registrado";
             const W = ot.WHATSAPP || ot.whatsapp || "No registrado";
@@ -426,6 +449,7 @@
             if(tipo === 'OT') {
                 doc.setTextColor(r,g,b); doc.setFontSize(32); doc.setFont("helvetica", "bold"); doc.text(`OT: ${ot.ot}`, 130, 75);
                 doc.setTextColor(40); doc.setFontSize(10); doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 130, 82);
+                
                 doc.setFontSize(15); doc.text("I. DATOS DEL CLIENTE", 10, cY); cY += 10;
                 doc.setFontSize(12); doc.setFont("helvetica", "normal"); 
                 doc.text(`Nombre / Empresa: ${N}`, 12, cY); cY += 8;
@@ -505,7 +529,9 @@
             try {
                 const blob = doc.output('blob');
                 subirArchivoANube(ot.ot, blob, `${tipo}_OT${ot.ot}_${N}.pdf`, 'application/pdf');
-            } catch(e) { console.log("Omitiendo subida a Drive."); }
+            } catch(e) { 
+                console.log("Omitiendo subida a Drive."); 
+            }
             
             doc.save(`${tipo}_OT${ot.ot}_${N}.pdf`);
         }
@@ -522,31 +548,40 @@
 
         // --- ACCIONES PRINCIPALES ---
         async function enviarPresupuesto() {
-            const d = document.getElementById('diagnostico').value; const v = document.getElementById('valor-neto').value;
-            const p = document.getElementById('plazo').value; if(!d || !v) return alert("⚠️ Complete el Diagnóstico y el Valor Neto.");
-            const btn = document.getElementById('btn-enviar-presupuesto'); btn.disabled = true;
+            const d = document.getElementById('diagnostico').value; 
+            const v = document.getElementById('valor-neto').value;
+            const p = document.getElementById('plazo').value; 
             
-            // Garantizar la transferencia de todos los datos extraídos previamente
-            const itemFinalParaGestion = { ...otActiva, plazo: p };
-            inyectarEnGestion(itemFinalParaGestion, 'PRESUPUESTADO');
+            if(!d || !v) {
+                return alert("⚠️ Complete el Diagnóstico y el Valor Neto.");
+            }
+            
+            const btn = document.getElementById('btn-enviar-presupuesto'); 
+            btn.disabled = true;
             
             try { 
                 await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "update_presupuesto", ot: otActiva.ot, DIAGNOSTICO: d, NETO: v, estado: 'PRESUPUESTADO' }) }); 
-                generarPDFGlobal('COT', itemFinalParaGestion, { diagnostico: d, valorNeto: v, plazo: p }); 
+                generarPDFGlobal('COT', otActiva, { diagnostico: d, valorNeto: v, plazo: p }); 
                 
-                const clienteAviso = itemFinalParaGestion.NOMBRE || "Cliente";
-                const whatsAviso = itemFinalParaGestion.WHATSAPP || "";
+                const clienteAviso = otActiva.NOMBRE || "Cliente";
+                const whatsAviso = otActiva.WHATSAPP || "";
                 const msg = `Estimado(a) *${clienteAviso}*, le saludamos de Soluciones Integrales. Adjuntamos la Cotización Técnica formal de su equipo correspondiente a la *OT ${otActiva.ot}*. Quedamos atentos a sus comentarios. Saludos cordiales.`;
                 window.open(`https://wa.me/${whatsAviso}?text=${msg}`, '_blank');
                 
                 setTimeout(() => location.reload(), 1500); 
-            } catch (e) { btn.disabled = false; }
+            } catch (e) { 
+                btn.disabled = false; 
+            }
         }
 
         document.getElementById('ingreso-form').addEventListener('submit', async (e) => {
-            e.preventDefault(); const btn = document.getElementById('btn-submit'); btn.disabled = true;
+            e.preventDefault(); 
+            const btn = document.getElementById('btn-submit'); 
+            btn.disabled = true;
+            
             const accs = Array.from(document.querySelectorAll('.acc:checked')).map(el => el.value).join(', ');
             const tA = accs + (document.getElementById('otros-acc').value ? ', ' + document.getElementById('otros-acc').value : '');
+            
             const d = { 
                 action: "ingreso", 
                 NOMBRE: document.getElementById('nombre').value, 
@@ -561,18 +596,26 @@
                 FALLA: document.getElementById('falla').value, 
                 GUIA: document.getElementById('guia').value 
             };
+            
             try { 
                 const res = await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(d) });
                 const r = await res.json();
                 generarPDFGlobal('OT', { ...d, ot: r.ot }, {});
-                alert("✅ OT #" + r.ot + " Registrada con éxito."); setTimeout(() => location.reload(), 1000); 
-            } catch (e) { btn.disabled = false; alert("Error al registrar OT."); }
+                alert("✅ OT #" + r.ot + " Registrada con éxito."); 
+                setTimeout(() => location.reload(), 1000); 
+            } catch (e) { 
+                btn.disabled = false; 
+                alert("Error al registrar OT."); 
+            }
         });
 
         async function cargarPendientes() {
-            showScreen('presupuesto-list-screen'); document.getElementById('lista-pendientes').innerHTML = ''; document.getElementById('loading-pendientes').classList.remove('hidden');
+            showScreen('presupuesto-list-screen'); 
+            document.getElementById('lista-pendientes').innerHTML = ''; 
+            document.getElementById('loading-pendientes').classList.remove('hidden');
+            
             try {
-                // Obtención de datos sin caché
+                // Obtención de datos fresca desde Google
                 const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime(), { cache: "no-store" }); 
                 const dataCruda = await res.json();
                 document.getElementById('loading-pendientes').classList.add('hidden');
@@ -584,7 +627,6 @@
                     const diag = gV(p, 'DIAGNOSTICO');
                     const est = gV(p, 'ESTADO').toUpperCase();
                     
-                    // Asegurar mapeo universal
                     const otNum = gV(p, 'OT') || gV(p, 'N° OT') || (p.fila ? p.fila - 1 : 0);
                     const nmb = gV(p, 'NOMBRE') || gV(p, 'CLIENTE') || 'Cliente no registrado';
                     const mrc = gV(p, 'MARCA') || 'Sin Marca';
@@ -594,8 +636,12 @@
 
                     if (!diag && est !== 'ENTREGADO' && otNum !== 0) {
                         conteo++;
-                        const dias = calcularDiasHabiles(gV(p, 'FECHA') || gV(p, 'FECHA_INGRESO'));
-                        let sh = "sh-dia-1"; if(dias === 2) sh = "sh-dia-2"; if(dias >= 3) sh = "sh-dia-3";
+                        const fechaBase = gV(p, 'FECHA_MOVIMIENTO') || gV(p, 'FECHA') || gV(p, 'FECHA_INGRESO');
+                        const dias = calcularDiasHabiles(fechaBase);
+                        
+                        let sh = "sh-dia-1"; 
+                        if(dias === 2) sh = "sh-dia-2"; 
+                        if(dias >= 3) sh = "sh-dia-3";
                         
                         const div = document.createElement('div');
                         div.className = `bg-white p-5 rounded-2xl border-l-8 border-azul transition active:scale-95 cursor-pointer ${sh}`;
@@ -621,7 +667,9 @@
                             document.getElementById('det-equipo').innerText = mrc + " " + mdl;
                             document.getElementById('det-guia-ref').innerText = gu;
                             document.getElementById('det-falla').innerText = fa;
-                            repuestosActuales = []; renderRep(); showScreen('presupuesto-detail-screen');
+                            repuestosActuales = []; 
+                            renderRep(); 
+                            showScreen('presupuesto-detail-screen');
                         };
                         div.innerHTML = `<div><div class="flex justify-between items-center mb-1"><span class="text-[10px] font-black text-azul uppercase">OT-${otNum}</span><span class="text-[9px] font-black text-gray-400 uppercase tracking-tighter">${dias} DÍA(S) HÁBIL(ES)</span></div><h3 class="font-black text-gray-900 leading-tight">${nmb}</h3><p class="text-xs text-gray-500 font-black">${mrc} ${mdl}</p></div>`;
                         document.getElementById('lista-pendientes').appendChild(div);
@@ -633,23 +681,40 @@
                 }
             } catch (e) { 
                 document.getElementById('loading-pendientes').classList.add('hidden');
-                alert("No se pudo conectar al servidor."); 
+                alert("No se pudo conectar al servidor de Google."); 
             }
         }
 
         // --- BÚSQUEDAS Y CONFIGURACIÓN ---
         function buscarCliente(t) {
-            const ul = document.getElementById('sugerencias-cliente'); ul.innerHTML = '';
-            if(t.length < 2) { ul.classList.add('hidden'); return; }
+            const ul = document.getElementById('sugerencias-cliente'); 
+            ul.innerHTML = '';
+            
+            if(t.length < 2) { 
+                ul.classList.add('hidden'); 
+                return; 
+            }
+            
             const fil = [...dbFull, ...clientesLocales].filter(c => (gV(c, 'NOMBRE') || "").toString().toLowerCase().includes(t.toLowerCase()));
-            if(fil.length === 0) { ul.classList.add('hidden'); return; }
+            
+            if(fil.length === 0) { 
+                ul.classList.add('hidden'); 
+                return; 
+            }
+            
             ul.classList.remove('hidden');
             
             const unicos = [];
-            fil.forEach(c => { if(!unicos.find(u => gV(u, 'NOMBRE') === gV(c, 'NOMBRE'))) unicos.push(c); });
+            fil.forEach(c => { 
+                if(!unicos.find(u => gV(u, 'NOMBRE') === gV(c, 'NOMBRE'))) {
+                    unicos.push(c); 
+                }
+            });
 
             unicos.forEach(c => {
-                const li = document.createElement('li'); li.className = "p-4 border-b font-bold text-gray-900"; li.innerText = gV(c, 'NOMBRE');
+                const li = document.createElement('li'); 
+                li.className = "p-4 border-b font-bold text-gray-900"; 
+                li.innerText = gV(c, 'NOMBRE');
                 li.onclick = () => {
                     document.getElementById('nombre').value = gV(c, 'NOMBRE');
                     document.getElementById('rut').value = gV(c, 'RUT');
@@ -663,25 +728,72 @@
         }
         
         function buscarRepuesto(t) {
-            const ul = document.getElementById('sugerencias-repuestos'); ul.innerHTML = '';
-            if(t.length < 2) { ul.classList.add('hidden'); return; }
+            const ul = document.getElementById('sugerencias-repuestos'); 
+            ul.innerHTML = '';
+            
+            if(t.length < 2) { 
+                ul.classList.add('hidden'); 
+                return; 
+            }
+            
             const fil = repuestosDB.filter(r => r.toLowerCase().includes(t.toLowerCase()));
-            if(fil.length === 0) { ul.classList.add('hidden'); return; }
+            
+            if(fil.length === 0) { 
+                ul.classList.add('hidden'); 
+                return; 
+            }
+            
             ul.classList.remove('hidden');
             fil.forEach(r => {
-                const li = document.createElement('li'); li.className = "p-3 border-b text-xs font-bold text-gray-900"; li.innerText = r;
-                li.onclick = () => { document.getElementById('buscador-repuesto').value = r; ul.classList.add('hidden'); };
+                const li = document.createElement('li'); 
+                li.className = "p-3 border-b text-xs font-bold text-gray-900"; 
+                li.innerText = r;
+                li.onclick = () => { 
+                    document.getElementById('buscador-repuesto').value = r; 
+                    ul.classList.add('hidden'); 
+                };
                 ul.appendChild(li);
             });
         }
         
-        function agregarRepuestoLista() { const n = document.getElementById('buscador-repuesto').value; const c = document.getElementById('cantidad-repuesto').value; if(!n) return; repuestosActuales.push({ nombre: n, cantidad: parseInt(c) }); renderRep(); document.getElementById('buscador-repuesto').value = ''; }
-        function renderRep() { document.getElementById('lista-repuestos-seleccionados').innerHTML = repuestosActuales.map((r, i) => `<li class="flex justify-between bg-white p-2 border rounded-xl text-xs font-bold text-gray-900 shadow-sm"><span>${r.nombre} <b>x${r.cantidad}</b></span><button onclick="repuestosActuales.splice(${i},1);renderRep()" class="text-red-500 px-2"><i class="fa-solid fa-trash"></i></button></li>`).join(''); }
-        function importarRepuestosMasivo() { const t = document.getElementById('import-repuestos').value; if(!t.trim()) return; const l = t.split('\n').map(x => x.trim()).filter(x => x !== ""); repuestosDB = [...new Set([...repuestosDB, ...l])]; localStorage.setItem('wm_repuestos', JSON.stringify(repuestosDB)); alert("✅ Repuestos listos."); }
+        function agregarRepuestoLista() { 
+            const n = document.getElementById('buscador-repuesto').value; 
+            const c = document.getElementById('cantidad-repuesto').value; 
+            if(!n) return; 
+            repuestosActuales.push({ nombre: n, cantidad: parseInt(c) }); 
+            renderRep(); 
+            document.getElementById('buscador-repuesto').value = ''; 
+        }
+        
+        function renderRep() { 
+            document.getElementById('lista-repuestos-seleccionados').innerHTML = repuestosActuales.map((r, i) => `<li class="flex justify-between bg-white p-2 border rounded-xl text-xs font-bold text-gray-900 shadow-sm"><span>${r.nombre} <b>x${r.cantidad}</b></span><button onclick="repuestosActuales.splice(${i},1);renderRep()" class="text-red-500 px-2"><i class="fa-solid fa-trash"></i></button></li>`).join(''); 
+        }
+        
+        function importarRepuestosMasivo() { 
+            const t = document.getElementById('import-repuestos').value; 
+            if(!t.trim()) return; 
+            const l = t.split('\n').map(x => x.trim()).filter(x => x !== ""); 
+            repuestosDB = [...new Set([...repuestosDB, ...l])]; 
+            localStorage.setItem('wm_repuestos', JSON.stringify(repuestosDB)); 
+            alert("✅ Repuestos listos y actualizados en la base de datos local."); 
+        }
+        
         function importarClientesMasivo() { 
-            const t = document.getElementById('import-clientes').value; if(!t.trim()) return;
-            const l = t.split('\n').map(x => { const p = x.split(',').map(s => s.trim()); return { NOMBRE: p[0], RUT: p[1] || '', WHATSAPP: p[2] || '', DIRECCION: p[3] || '', CORREO: p[4] || '' }; }).filter(x => x.NOMBRE);
-            clientesLocales = l; localStorage.setItem('wm_clientes_locales', JSON.stringify(l)); alert("✅ Clientes listos.");
+            const t = document.getElementById('import-clientes').value; 
+            if(!t.trim()) return;
+            const l = t.split('\n').map(x => { 
+                const p = x.split(',').map(s => s.trim()); 
+                return { 
+                    NOMBRE: p[0], 
+                    RUT: p[1] || '', 
+                    WHATSAPP: p[2] || '', 
+                    DIRECCION: p[3] || '', 
+                    CORREO: p[4] || '' 
+                }; 
+            }).filter(x => x.NOMBRE);
+            clientesLocales = l; 
+            localStorage.setItem('wm_clientes_locales', JSON.stringify(l)); 
+            alert("✅ Clientes habituales listos y guardados en memoria.");
         }
     </script>
 </body>
