@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Manager Pro V20.0 - Cloud Master Edition</title>
+    <title>Welding Manager Pro V20.1 - Normalizador Total</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -16,6 +16,8 @@
         @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .autocomplete-dropdown { max-height: 200px; overflow-y: auto; z-index: 100; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
         .checkbox-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .btn-menu-gestion { transition: 0.3s; border-left: 8px solid var(--azul); }
+        .btn-menu-gestion:active { scale: 0.95; }
         .status-pill { font-size: 10px; padding: 2px 8px; border-radius: 99px; text-transform: uppercase; font-weight: 800; }
         .counter-pill { font-weight: 900; padding: 4px 10px; border-radius: 8px; font-size: 11px; display: inline-flex; align-items: center; gap: 4px; }
         .tabla-entregados { width: 100%; border-collapse: collapse; font-size: 11px; }
@@ -31,7 +33,7 @@
 <body class="bg-gray-100 font-sans pb-10 text-gray-800">
 
     <div id="home-screen" class="p-6 max-w-md mx-auto h-screen flex flex-col justify-center relative">
-        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v20.0 Cloud</span>
+        <span class="absolute top-4 left-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">v20.1 Master</span>
         <button onclick="showScreen('config-screen')" class="absolute top-6 right-6 text-gray-400 p-2 transition"><i class="fa-solid fa-gear text-3xl"></i></button>
         
         <div class="text-center mb-10">
@@ -46,7 +48,7 @@
                 <i class="fa-solid fa-plus-circle text-3xl text-white"></i>
             </button>
             <button onclick="cargarPendientes()" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left text-gray-900">
-                <div><span class="block text-xl font-bold text-gray-900">Presupuesto</span><span class="text-sm opacity-50 text-left text-gray-500 text-gray-500">Generar Cotización</span></div>
+                <div><span class="block text-xl font-bold text-gray-900">Presupuesto</span><span class="text-sm opacity-50 text-left text-gray-500">Generar Cotización</span></div>
                 <i class="fa-solid fa-file-invoice-dollar text-2xl text-azul"></i>
             </button>
             <button onclick="showScreen('menu-gestion-screen')" class="bg-white text-gray-700 p-6 rounded-2xl shadow flex items-center justify-between border-l-8 border-azul active:scale-95 transition text-left text-gray-900">
@@ -242,7 +244,7 @@
     </div>
 
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwKVDVW1iS2ai5vV2ysfSyXpQOcVybRfdmxIrC7GRw5Mu6BFf5knT0H45_hZJSHYZNd/exec";
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz2t1slR2Ymxqnw_hre-y7bDQgZFtLsYYqj7du-9U0bBpDjMSl0g4hHCyILTwSFkBc1/exec";
         let dbFull = [];
         let clientesLocales = JSON.parse(localStorage.getItem('wm_clientes_locales')) || [];
         let repuestosDB = JSON.parse(localStorage.getItem('wm_repuestos')) || [];
@@ -254,10 +256,43 @@
             sincronizarBaseAlInicio();
         };
 
+        // --- NORMALIZADOR UNIVERSAL ---
+        // Esto garantiza que aunque el Excel tenga "Nombre", "NOMBRE ", o "N° OT", la app siempre lo encuentre.
+        function getVal(obj, searchKey) {
+            if (!obj) return "";
+            const keys = Object.keys(obj);
+            const found = keys.find(k => k.trim().toUpperCase() === searchKey.toUpperCase());
+            return found ? obj[found] : "";
+        }
+
+        function normalizarFila(p) {
+            return {
+                fila: p.fila,
+                ot: getVal(p, 'OT') || getVal(p, 'N° OT') || (p.fila - 1),
+                NOMBRE: getVal(p, 'NOMBRE') || getVal(p, 'CLIENTE') || "Desconocido",
+                RUT: getVal(p, 'RUT'),
+                WHATSAPP: getVal(p, 'WHATSAPP') || getVal(p, 'TELEFONO') || getVal(p, 'CELULAR'),
+                DIRECCION: getVal(p, 'DIRECCION'),
+                CORREO: getVal(p, 'CORREO') || getVal(p, 'EMAIL'),
+                MARCA: getVal(p, 'MARCA') || "Sin Marca",
+                MODELO: getVal(p, 'MODELO') || "Sin Modelo",
+                SERIE: getVal(p, 'SERIE') || getVal(p, 'N° SERIE'),
+                GUIA: getVal(p, 'GUIA') || getVal(p, 'N° GUIA'),
+                ACCESORIOS: getVal(p, 'ACCESORIOS'),
+                FALLA: getVal(p, 'FALLA'),
+                ESTADO: getVal(p, 'ESTADO') || "INGRESADO",
+                DIAGNOSTICO: getVal(p, 'DIAGNOSTICO'),
+                NETO: getVal(p, 'NETO'),
+                FECHA: getVal(p, 'FECHA') || getVal(p, 'FECHA_INGRESO')
+            };
+        }
+
         async function sincronizarBaseAlInicio() { 
             try { 
-                const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime()); 
-                dbFull = await res.json(); 
+                // Añadimos headers para destruir la caché del navegador y forzar descarga nueva
+                const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime(), { cache: "no-store" }); 
+                const dataCruda = await res.json(); 
+                dbFull = dataCruda.map(normalizarFila); // Convertimos todos los datos al formato perfecto
             } catch(e) {} 
         }
 
@@ -290,27 +325,15 @@
             return count;
         }
 
-        // --- MOTOR DE GESTIÓN Y FLUJO NUBE V20.0 ---
+        // --- MOTOR DE GESTIÓN Y FLUJO NUBE V20.1 ---
         function inyectarEnGestion(equipo, estado) {
             let g = JSON.parse(localStorage.getItem('wm_gestion_taller')) || [];
             g = g.filter(x => x.ot.toString() !== equipo.ot.toString()); 
             
             const dataFull = {
-                ot: equipo.ot,
-                NOMBRE: equipo.NOMBRE || equipo.nombre,
-                RUT: equipo.RUT || equipo.rut,
-                WHATSAPP: equipo.WHATSAPP || equipo.whatsapp,
-                CORREO: equipo.CORREO || equipo.correo,
-                DIRECCION: equipo.DIRECCION || equipo.direccion,
-                MARCA: equipo.MARCA || equipo.marca,
-                MODELO: equipo.MODELO || equipo.modelo,
-                SERIE: equipo.SERIE || equipo.serie,
-                GUIA: equipo.GUIA || equipo.guia,
-                ACCESORIOS: equipo.ACCESORIOS || equipo.accesorios,
-                FALLA: equipo.FALLA || equipo.falla,
-                plazo: equipo.plazo || 3,
-                fechaEntrada: new Date().toISOString(),
-                estado: estado
+                ...equipo,
+                estado: estado,
+                fechaEntrada: new Date().toISOString()
             };
             g.push(dataFull);
             localStorage.setItem('wm_gestion_taller', JSON.stringify(g));
@@ -399,28 +422,30 @@
             }
         }
 
-        // --- MOTOR PDF GIGANTE V20.0 (RESTORACIÓN TOTAL + NUBE) ---
+        // --- MOTOR PDF GIGANTE V20.1 (NORMALIZADO) ---
         function generarPDFGlobal(tipo, ot, datos) {
             const { jsPDF } = window.jspdf; const doc = new jsPDF(); const r = 0, g = 112, b = 243; const fmt = new Intl.NumberFormat("es-CL");
             doc.setFillColor(r, g, b); doc.rect(0, 0, 210, 52, 'F');
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 15);
             doc.setFontSize(26); doc.text(tipo === 'OT' ? "ORDEN DE INGRESO" : "COTIZACIÓN TÉCNICA", 10, 30);
             doc.setFontSize(9); doc.setFont("helvetica", "normal"); doc.text(`RUT: 76.349.984-7 | amsetecsi@gmail.com`, 10, 40);
-            doc.text(`Fono: +56 9 95412322 | Santiago, Cerrillos`, 10, 45);
+            doc.text(`Fono: +56 9 95412322 | Santiago, Chile`, 10, 45);
             doc.setDrawColor(255); doc.rect(165, 8, 35, 35); doc.setFontSize(7); doc.text("LOGO AQUÍ", 175, 27);
             
             let cY = 65;
-            const N = ot.NOMBRE || ot.nombre || "N/A";
-            const RT = ot.RUT || ot.rut || "N/A";
-            const W = ot.WHATSAPP || ot.whatsapp || "N/A";
-            const D = ot.DIRECCION || ot.direccion || "No registrada";
-            const E = ot.CORREO || ot.correo || "N/A";
-            const M = ot.MARCA || ot.marca || "N/A";
-            const MO = ot.MODELO || ot.modelo || "N/A";
-            const S = ot.SERIE || ot.serie || "S/N";
-            const GU = ot.GUIA || ot.guia || "S/G";
-            const AC = ot.ACCESORIOS || ot.accesorios || "Ninguno";
-            const FA = ot.FALLA || ot.falla || "Sin descripción";
+            
+            // Asignación con los datos que ya pasaron por el normalizador
+            const N = ot.NOMBRE || "Sin Nombre Registrado";
+            const RT = ot.RUT || "No Registrado";
+            const W = ot.WHATSAPP || "No Registrado";
+            const D = ot.DIRECCION || "No Registrada";
+            const E = ot.CORREO || "No Registrado";
+            const M = ot.MARCA || "Sin Marca";
+            const MO = ot.MODELO || "Sin Modelo";
+            const S = ot.SERIE || "S/N";
+            const GU = ot.GUIA || "S/G";
+            const AC = ot.ACCESORIOS || "Ninguno";
+            const FA = ot.FALLA || "Sin descripción de falla";
 
             if(tipo === 'OT') {
                 doc.setTextColor(r,g,b); doc.setFontSize(32); doc.setFont("helvetica", "bold"); doc.text(`OT: ${ot.ot}`, 130, 75);
@@ -441,7 +466,7 @@
                 const fL = doc.splitTextToSize(FA, 185); doc.setFillColor(248); doc.roundedRect(10, cY, 190, (fL.length*8)+8, 1, 1, 'F');
                 doc.setFontSize(12); doc.text(fL, 15, cY+8);
                 cY = 230; doc.setFontSize(8.5); doc.setTextColor(100); doc.text("TÉRMINOS Y CONDICIONES LEGALES:", 10, cY);
-                const nOT = ["1. Plazo de diagnóstico estimado: 3 días hábiles.", "2. El rechazo de presupuesto genera un cargo administrativo de 0,05 UF.", "3. Pasados 7 días de aviso sin retiro, aplica cargo por bodegaje de 0,07 UF diario.", "4. Equipos no retirados en 6 meses se considerarán legalmente abandonados."];
+                const nOT = ["1. Plazo de diagnóstico estimado: 3 días hábiles.", "2. El rechazo de presupuesto genera un cargo administrativo de 0,05 UF.", "3. Pasados 7 días de aviso sin retiro, aplica cargo por bodegaje de 0,07 UF diarios.", "4. Equipos no retirados en 6 meses se considerarán legalmente abandonados."];
                 nOT.forEach((n, i) => { doc.text(n, 10, cY+6+(i*4.5)); });
                 doc.line(30, 275, 80, 275); doc.text("Firma Cliente", 45, 280); doc.line(130, 275, 180, 275); doc.text("Firma Recepción", 145, 280);
             } else {
@@ -465,11 +490,16 @@
                 doc.text("IVA (19%):", 125, cY+15); doc.text(`$${fmt.format(iva)}`, 195, cY+15, {align:'right'});
                 doc.setFontSize(12); doc.setTextColor(r,g,b); doc.setFont("helvetica", "bold"); doc.text("TOTAL A PAGAR:", 125, cY+23); doc.text(`$${fmt.format(total)} CLP`, 195, cY+23, {align:'right'});
                 cY = 240; doc.setFontSize(8.5); doc.setTextColor(100); doc.text("MEDIOS DE PAGO Y CONDICIONES COMERCIALES:", 10, cY);
-                const nC = ["- Pago vía Transferencia Bancaria, Débito, Crédito o Efectivo.", `- Entrega: ${datos.plazo} días hábiles tras confirmación formal.`, "- Validez: 7 días corridos.", "- Para aprobar, envíe un WhatsApp o una Orden de Compra a: amsetecsi@gmail.com"];
+                const nC = ["- Pago vía Transferencia Bancaria, Débito, Crédito o Efectivo.", `- Entrega: ${datos.plazo} días hábiles tras confirmación formal.`, "- Validez de Cotización: 7 días corridos.", "- Para aprobar, envíe un WhatsApp o una Orden de Compra a: amsetecsi@gmail.com"];
                 nC.forEach((n, i) => { doc.text(n, 10, cY+6+(i*4.5)); });
             }
-            const blob = doc.output('blob');
-            subirArchivoANube(ot.ot, blob, `${tipo}_OT${ot.ot}_${N}.pdf`, 'application/pdf');
+            
+            // Subida a Drive
+            try {
+                const blob = doc.output('blob');
+                subirArchivoANube(ot.ot, blob, `${tipo}_OT${ot.ot}_${N}.pdf`, 'application/pdf');
+            } catch(e) { console.log("Omitiendo subida a Drive (Permisos)"); }
+            
             doc.save(`${tipo}_OT${ot.ot}_${N}.pdf`);
         }
 
@@ -487,13 +517,14 @@
             const d = document.getElementById('diagnostico').value; const v = document.getElementById('valor-neto').value;
             const p = document.getElementById('plazo').value; if(!d || !v) return alert("⚠️ Datos incompletos.");
             const btn = document.getElementById('btn-enviar-presupuesto'); btn.disabled = true;
-            const itemFinal = { ...otActiva, NOMBRE: otActiva.NOMBRE || otActiva.nombre, WHATSAPP: otActiva.WHATSAPP || otActiva.whatsapp, plazo: p };
-            inyectarEnGestion(itemFinal, 'PRESUPUESTADO');
+            
+            otActiva.plazo = p;
+            inyectarEnGestion(otActiva, 'PRESUPUESTADO');
             try { 
                 await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "update_presupuesto", ot: otActiva.ot, DIAGNOSTICO: d, NETO: v, estado: 'PRESUPUESTADO' }) }); 
-                generarPDFGlobal('COT', itemFinal, { diagnostico: d, valorNeto: v, plazo: p }); 
-                const msg = `Estimado(a) *${itemFinal.NOMBRE}*, enviamos cotización por la *OT ${otActiva.ot}*. Saludos.`;
-                window.open(`https://wa.me/${itemFinal.WHATSAPP}?text=${msg}`, '_blank');
+                generarPDFGlobal('COT', otActiva, { diagnostico: d, valorNeto: v, plazo: p }); 
+                const msg = `Estimado(a) *${otActiva.NOMBRE}*, enviamos cotización por la *OT ${otActiva.ot}*. Saludos.`;
+                window.open(`https://wa.me/${otActiva.WHATSAPP}?text=${msg}`, '_blank');
                 setTimeout(() => location.reload(), 1500); 
             } catch (e) { btn.disabled = false; }
         }
@@ -502,11 +533,24 @@
             e.preventDefault(); const btn = document.getElementById('btn-submit'); btn.disabled = true;
             const accs = Array.from(document.querySelectorAll('.acc:checked')).map(el => el.value).join(', ');
             const tA = accs + (document.getElementById('otros-acc').value ? ', ' + document.getElementById('otros-acc').value : '');
-            const d = { action: "ingreso", NOMBRE: document.getElementById('nombre').value, RUT: document.getElementById('rut').value, WHATSAPP: document.getElementById('whatsapp').value, DIRECCION: document.getElementById('direccion').value, CORREO: document.getElementById('correo').value, MARCA: document.getElementById('marca').value, MODELO: document.getElementById('modelo').value, SERIE: document.getElementById('serie').value, ACCESORIOS: tA, FALLA: document.getElementById('falla').value, GUIA: document.getElementById('guia').value };
+            const d = { 
+                action: "ingreso", 
+                NOMBRE: document.getElementById('nombre').value, 
+                RUT: document.getElementById('rut').value, 
+                WHATSAPP: document.getElementById('whatsapp').value, 
+                DIRECCION: document.getElementById('direccion').value, 
+                CORREO: document.getElementById('correo').value, 
+                MARCA: document.getElementById('marca').value, 
+                MODELO: document.getElementById('modelo').value, 
+                SERIE: document.getElementById('serie').value, 
+                ACCESORIOS: tA, 
+                FALLA: document.getElementById('falla').value, 
+                GUIA: document.getElementById('guia').value 
+            };
             try { 
                 const res = await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(d) });
                 const r = await res.json();
-                generarPDFGlobal('OT', { ...d, ot: r.ot }, {});
+                generarPDFGlobal('OT', normalizarFila({ ...d, fila: r.ot, OT: r.ot }), {});
                 alert("✅ OT #" + r.ot + " Registrada con éxito."); setTimeout(() => location.reload(), 1000); 
             } catch (e) { btn.disabled = false; }
         });
@@ -515,25 +559,39 @@
         async function cargarPendientes() {
             showScreen('presupuesto-list-screen'); document.getElementById('lista-pendientes').innerHTML = ''; document.getElementById('loading-pendientes').classList.remove('hidden');
             try {
-                const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime()); dbFull = await res.json();
+                // El no-store obliga a bajar la lista fresca, borrando la memoria caché
+                const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime(), { cache: "no-store" }); 
+                const dataCruda = await res.json();
+                dbFull = dataCruda.map(normalizarFila);
+                
                 document.getElementById('loading-pendientes').classList.add('hidden');
-                dbFull.filter(p => !p.DIAGNOSTICO && p.ESTADO !== 'ENTREGADO').forEach(p => {
-                    const dias = calcularDiasHabiles(p.FECHA || p.fecha);
+                
+                // Filtramos
+                const pendientes = dbFull.filter(p => !p.DIAGNOSTICO && p.ESTADO !== 'ENTREGADO');
+                
+                if(pendientes.length === 0) {
+                     document.getElementById('lista-pendientes').innerHTML = '<p class="text-center py-10 text-gray-400 font-bold">No hay equipos por presupuestar.</p>';
+                     return;
+                }
+
+                pendientes.forEach(p => {
+                    const dias = calcularDiasHabiles(p.FECHA);
                     let sh = "sh-dia-1"; if(dias === 2) sh = "sh-dia-2"; if(dias >= 3) sh = "sh-dia-3";
                     const div = document.createElement('div');
                     div.className = `bg-white p-5 rounded-2xl border-l-8 border-azul transition active:scale-95 cursor-pointer ${sh}`;
                     div.onclick = () => { 
-                        otActiva = p; document.getElementById('ot-numero').innerText = p.ot;
-                        document.getElementById('det-cliente').innerText = p.NOMBRE || p.nombre;
-                        document.getElementById('det-equipo').innerText = (p.MARCA || p.marca) + " " + (p.MODELO || p.modelo);
-                        document.getElementById('det-guia-ref').innerText = p.GUIA || p.guia || 'S/G';
-                        document.getElementById('det-falla').innerText = p.FALLA || p.falla;
+                        otActiva = p; 
+                        document.getElementById('ot-numero').innerText = p.ot;
+                        document.getElementById('det-cliente').innerText = p.NOMBRE;
+                        document.getElementById('det-equipo').innerText = p.MARCA + " " + p.MODELO;
+                        document.getElementById('det-guia-ref').innerText = p.GUIA;
+                        document.getElementById('det-falla').innerText = p.FALLA;
                         repuestosActuales = []; renderRep(); showScreen('presupuesto-detail-screen');
                     };
-                    div.innerHTML = `<div><div class="flex justify-between items-center mb-1"><span class="text-[10px] font-black text-azul uppercase">OT-${p.ot}</span><span class="text-[9px] font-black text-gray-400 uppercase">${dias} DÍA(S) HÁBIL(ES)</span></div><h3 class="font-black text-gray-800 leading-tight">${p.NOMBRE || p.nombre}</h3><p class="text-xs text-gray-500 font-black">${p.MARCA || p.marca} ${p.MODELO || p.modelo}</p></div>`;
+                    div.innerHTML = `<div><div class="flex justify-between items-center mb-1"><span class="text-[10px] font-black text-azul uppercase">OT-${p.ot}</span><span class="text-[9px] font-black text-gray-400 uppercase tracking-tighter">${dias} DÍA(S) HÁBIL(ES)</span></div><h3 class="font-black text-gray-900 leading-tight">${p.NOMBRE}</h3><p class="text-xs text-gray-500 font-black">${p.MARCA} ${p.MODELO}</p></div>`;
                     document.getElementById('lista-pendientes').appendChild(div);
                 });
-            } catch (e) { alert("Error."); }
+            } catch (e) { alert("Error de conexión. Revisa internet o el Excel."); }
         }
 
         // --- FUNCIONES DE APOYO ---
@@ -543,7 +601,12 @@
             const fil = [...dbFull, ...clientesLocales].filter(c => (c.NOMBRE || c.nombre || "").toString().toLowerCase().includes(t.toLowerCase()));
             if(fil.length === 0) { ul.classList.add('hidden'); return; }
             ul.classList.remove('hidden');
-            fil.forEach(c => {
+            
+            // Eliminar duplicados en sugerencias
+            const unicos = [];
+            fil.forEach(c => { if(!unicos.find(u => (u.NOMBRE || u.nombre) === (c.NOMBRE || c.nombre))) unicos.push(c); });
+
+            unicos.forEach(c => {
                 const li = document.createElement('li'); li.className = "p-4 border-b font-bold text-gray-900"; li.innerText = c.NOMBRE || c.nombre;
                 li.onclick = () => {
                     document.getElementById('nombre').value = c.NOMBRE || c.nombre;
@@ -569,7 +632,7 @@
             });
         }
         function agregarRepuestoLista() { const n = document.getElementById('buscador-repuesto').value; const c = document.getElementById('cantidad-repuesto').value; if(!n) return; repuestosActuales.push({ nombre: n, cantidad: parseInt(c) }); renderRep(); document.getElementById('buscador-repuesto').value = ''; }
-        function renderRep() { document.getElementById('lista-repuestos-seleccionados').innerHTML = repuestosActuales.map((r, i) => `<li class="flex justify-between bg-white p-2 border rounded-xl text-xs font-bold text-gray-900"><span>${r.nombre} <b>x${r.cantidad}</b></span><button onclick="repuestosActuales.splice(${i},1);renderRep()" class="text-red-500 px-2"><i class="fa-solid fa-trash"></i></button></li>`).join(''); }
+        function renderRep() { document.getElementById('lista-repuestos-seleccionados').innerHTML = repuestosActuales.map((r, i) => `<li class="flex justify-between bg-white p-2 border rounded-xl text-xs font-bold text-gray-900 shadow-sm"><span>${r.nombre} <b>x${r.cantidad}</b></span><button onclick="repuestosActuales.splice(${i},1);renderRep()" class="text-red-500 px-2"><i class="fa-solid fa-trash"></i></button></li>`).join(''); }
         function importarRepuestosMasivo() { const t = document.getElementById('import-repuestos').value; if(!t.trim()) return; const l = t.split('\n').map(x => x.trim()).filter(x => x !== ""); repuestosDB = [...new Set([...repuestosDB, ...l])]; localStorage.setItem('wm_repuestos', JSON.stringify(repuestosDB)); alert("✅ Repuestos listos."); }
         function importarClientesMasivo() { 
             const t = document.getElementById('import-clientes').value; if(!t.trim()) return;
