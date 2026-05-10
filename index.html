@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Welding Manager Pro V24.0 - ERA GEMINI</title>
+    <title>Welding Manager Pro V24.1 - ERA GEMINI</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -188,7 +188,7 @@
             </div>
             
             <div class="app-header-content absolute bottom-6 left-6 z-40">
-                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v24.0 ERA GEMINI</span>
+                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v24.1 ERA GEMINI</span>
                 <h1 class="text-4xl font-black uppercase tracking-tighter mt-1 leading-none text-white drop-shadow-md">Welding</h1>
                 <h1 class="text-4xl font-black uppercase tracking-tighter leading-none text-blue-200 drop-shadow-md">Servicio</h1>
                 <div class="mt-1 text-white drop-shadow-md">
@@ -495,7 +495,7 @@
     </div>
 
     <script>
-        // URL DE IMPLEMENTACIÓN LEY ABSOLUTA V24.0 (GEMINI)
+        // URL DE IMPLEMENTACIÓN LEY ABSOLUTA V24.1 (GEMINI CORREGIDO)
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyxytLde1CRlxQnYyUbuc2Entjr9FJ1L93Cl5JpdAm4pRAjlVl_vOnP2x3_kDP2Ba6i/exec"; 
         
         let dbFull = [];
@@ -513,7 +513,7 @@
             sincronizarBaseAlInicio();
         };
 
-        // --- MOTOR IA SETECSI (AHORA POTENCIADO POR GEMINI API - V24.0) ---
+        // --- MOTOR IA SETECSI (AHORA POTENCIADO POR GEMINI API 1.5 LATEST - V24.1) ---
         async function mejorarConIA() {
             const apiKey = localStorage.getItem('wm_ia_key');
             
@@ -549,8 +549,8 @@
             5. Usa terminología técnica profesional.`;
 
             try {
-                // Nueva llamada directa a los servidores de Gemini AI
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+                // LLAMADA CORREGIDA AL MODELO GEMINI 1.5 FLASH LATEST (V24.1)
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
                 
                 const response = await fetch(url, {
                     method: "POST",
