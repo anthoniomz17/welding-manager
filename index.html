@@ -3,37 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Manager Pro V20.9 - Triple Identidad Corporativa</title>
+    <title>Welding Manager Pro V21.1 - Triple Identidad Corporativa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        :root { --azul: #0070f3; }
-        .bg-azul { background-color: var(--azul); }
-        .text-azul { color: var(--azul); }
-        input:focus, textarea:focus, select:focus { outline: 2px solid var(--azul); border-color: transparent; }
-        .loader { border-top-color: var(--azul); animation: spinner 0.6s linear infinite; }
-        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .autocomplete-dropdown { max-height: 200px; overflow-y: auto; z-index: 100; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
-        .checkbox-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .btn-menu-gestion { transition: 0.3s; border-left: 8px solid var(--azul); }
-        .btn-menu-gestion:active { scale: 0.95; }
-        .status-pill { font-size: 10px; padding: 2px 8px; border-radius: 99px; text-transform: uppercase; font-weight: 800; }
-        .counter-pill { font-weight: 900; padding: 4px 10px; border-radius: 8px; font-size: 11px; display: inline-flex; align-items: center; gap: 4px; }
-        .tabla-entregados { width: 100%; border-collapse: collapse; font-size: 11px; }
-        .tabla-entregados th { background: #f3f4f6; padding: 10px; text-align: left; text-transform: uppercase; }
-        .tabla-entregados td { padding: 10px; border-bottom: 1px solid #eee; }
+        :root { 
+            --azul: #0070f3; 
+        }
+        .bg-azul { 
+            background-color: var(--azul); 
+        }
+        .text-azul { 
+            color: var(--azul); 
+        }
+        input:focus, textarea:focus, select:focus { 
+            outline: 2px solid var(--azul); 
+            border-color: transparent; 
+        }
+        .loader { 
+            border-top-color: var(--azul); 
+            animation: spinner 0.6s linear infinite; 
+        }
+        @keyframes spinner { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
+        .autocomplete-dropdown { 
+            max-height: 200px; 
+            overflow-y: auto; 
+            z-index: 100; 
+            border-radius: 8px; 
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); 
+        }
+        .checkbox-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 10px; 
+        }
+        .btn-menu-gestion { 
+            transition: 0.3s; 
+            border-left: 8px solid var(--azul); 
+        }
+        .btn-menu-gestion:active { 
+            scale: 0.95; 
+        }
+        .status-pill { 
+            font-size: 10px; 
+            padding: 2px 8px; 
+            border-radius: 99px; 
+            text-transform: uppercase; 
+            font-weight: 800; 
+        }
+        .counter-pill { 
+            font-weight: 900; 
+            padding: 4px 10px; 
+            border-radius: 8px; 
+            font-size: 11px; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 4px; 
+        }
+        .tabla-entregados { 
+            width: 100%; 
+            border-collapse: collapse; 
+            font-size: 11px; 
+        }
+        .tabla-entregados th { 
+            background: #f3f4f6; 
+            padding: 10px; 
+            text-align: left; 
+            text-transform: uppercase; 
+        }
+        .tabla-entregados td { 
+            padding: 10px; 
+            border-bottom: 1px solid #eee; 
+        }
         
         /* SOMBRAS DINÁMICAS (DÍAS HÁBILES) */
-        .sh-dia-1 { box-shadow: 0 15px 30px -5px rgba(34, 197, 94, 0.4); border: 1px solid rgba(34, 197, 94, 0.2); }
-        .sh-dia-2 { box-shadow: 0 15px 30px -5px rgba(234, 179, 8, 0.4); border: 1px solid rgba(234, 179, 8, 0.2); }
-        .sh-dia-3 { box-shadow: 0 15px 30px -5px rgba(239, 68, 68, 0.5); border: 1px solid rgba(239, 68, 68, 0.3); }
-        .sh-abandono { box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.5); border: 2px solid #000; }
+        .sh-dia-1 { 
+            box-shadow: 0 15px 30px -5px rgba(34, 197, 94, 0.4); 
+            border: 1px solid rgba(34, 197, 94, 0.2); 
+        }
+        .sh-dia-2 { 
+            box-shadow: 0 15px 30px -5px rgba(234, 179, 8, 0.4); 
+            border: 1px solid rgba(234, 179, 8, 0.2); 
+        }
+        .sh-dia-3 { 
+            box-shadow: 0 15px 30px -5px rgba(239, 68, 68, 0.5); 
+            border: 1px solid rgba(239, 68, 68, 0.3); 
+        }
+        .sh-abandono { 
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.5); 
+            border: 2px solid #000; 
+        }
         
         /* ESTILO PARA HEADERS CON BANNER */
-        .app-header-bg { position: relative; background-color: var(--azul); color: white; overflow: hidden; }
-        .app-header-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%); z-index: 1; }
-        .app-header-content { position: relative; z-index: 2; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
+        .app-header-bg { 
+            position: relative; 
+            background-color: var(--azul); 
+            color: white; 
+            overflow: hidden; 
+        }
+        .app-header-overlay { 
+            position: absolute; 
+            inset: 0; 
+            background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%); 
+            z-index: 1; 
+        }
+        .app-header-content { 
+            position: relative; 
+            z-index: 2; 
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5); 
+        }
     </style>
 </head>
 <body class="bg-gray-100 font-sans pb-10 text-gray-800">
@@ -49,7 +131,7 @@
             </div>
             
             <div class="app-header-content absolute bottom-8 left-6 z-40">
-                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v20.9 Premium</span>
+                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v21.1 Premium</span>
                 <h1 class="text-4xl font-black uppercase tracking-tighter mt-1 leading-none text-white drop-shadow-md">Welding</h1>
                 <h1 class="text-4xl font-black uppercase tracking-tighter leading-none text-blue-200 drop-shadow-md">Servicio</h1>
                 <div class="mt-1 text-white drop-shadow-md">
@@ -332,8 +414,8 @@
     </div>
 
     <script>
-        // PEGA AQUÍ TU NUEVA URL DE IMPLEMENTACIÓN DE GOOGLE SCRIPT (O MANTÉN ESTA SI ES LA ÚLTIMA)
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwxOLwFImTsVVH2WrrPmSDuhCedOARgMeYvQqSJtoKcmH1z7w3n0xFcOiO5aUNYc5f2/exec"; 
+        // URL DE IMPLEMENTACIÓN V21.1 (ACTUALIZADA)
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyxytLde1CRlxQnYyUbuc2Entjr9FJ1L93Cl5JpdAm4pRAjlVl_vOnP2x3_kDP2Ba6i/exec"; 
         
         let dbFull = [];
         let clientesLocales = JSON.parse(localStorage.getItem('wm_clientes_locales')) || [];
@@ -350,7 +432,7 @@
             sincronizarBaseAlInicio();
         };
 
-        // --- SISTEMA DE FOTO COTIZACIÓN V20.9 (CON COMPRESOR INTELIGENTE) ---
+        // --- SISTEMA DE FOTO COTIZACIÓN V21.1 (MOTOR DE COMPRESIÓN AVANZADO) ---
         function procesarFotoCotizacion(input) {
             const file = input.files[0];
             if (!file) {
@@ -367,7 +449,7 @@
                 const img = new Image();
                 img.src = event.target.result;
                 img.onload = function() {
-                    // Lógica de Compresión
+                    // Dimensiones máximas para optimizar memoria RAM del móvil
                     const MAX_WIDTH = 1200;
                     const MAX_HEIGHT = 1200;
                     let width = img.width;
@@ -385,18 +467,19 @@
                         }
                     }
 
+                    // Renderizado en Canvas para compresión física
                     const canvas = document.createElement('canvas');
                     canvas.width = width;
                     canvas.height = height;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
 
-                    // Reducir calidad al 70% (0.7) para que pese muy poco
+                    // Reducción drástica de peso (JPG a 0.7 de calidad)
                     const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
                     const base64Data = dataUrl.split(',')[1];
                     const fileName = `FOTO_OT${otActiva.ot}_${new Date().getTime()}.jpg`;
                     
-                    statusDiv.innerText = "SUBIENDO A LA NUBE...";
+                    statusDiv.innerText = "SUBIENDO A LA GALERÍA...";
                     statusDiv.className = "text-[10px] font-black uppercase mt-2 text-center text-blue-500 block";
                     
                     const payload = { 
@@ -412,7 +495,7 @@
                         mode: 'no-cors', 
                         body: JSON.stringify(payload) 
                     }).then(() => {
-                        statusDiv.innerText = "✅ FOTO ENVIADA A LA GALERÍA";
+                        statusDiv.innerText = "✅ FOTO SUBIDA CORRECTAMENTE";
                         statusDiv.className = "text-[10px] font-black uppercase mt-2 text-center text-green-600 block";
                     }).catch(e => {
                         statusDiv.innerText = "❌ ERROR AL SUBIR FOTO";
@@ -448,7 +531,6 @@
             const mainImgData = localStorage.getItem('wm_main_img');
             const bannerData = localStorage.getItem('wm_banner');
 
-            // 1. Aplicar Logo a las esquinas
             const logoContainers = document.querySelectorAll('.app-logo-container');
             logoContainers.forEach(c => {
                 if(logoData) {
@@ -458,7 +540,6 @@
                 }
             });
 
-            // 2. Aplicar Imagen Central
             const mainImgContainer = document.getElementById('home-main-img-container');
             if (mainImgData) {
                 mainImgContainer.innerHTML = `<img src="${mainImgData}" class="h-24 mx-auto object-contain drop-shadow-lg rounded-xl">`;
@@ -466,7 +547,6 @@
                 mainImgContainer.innerHTML = `<i class="fa-solid fa-bolt-lightning text-azul text-6xl mb-2 drop-shadow-md"></i>`;
             }
 
-            // 3. Aplicar Banner a los Encabezados
             const headerContainers = document.querySelectorAll('.app-header-bg');
             const overlays = document.querySelectorAll('.banner-overlay');
             headerContainers.forEach((c, index) => {
@@ -486,7 +566,6 @@
             });
         }
 
-        // NORMALIZADOR DE DATOS: Asegura encontrar la columna sin importar mayúsculas/espacios.
         function gV(obj, k) {
             if (!obj) {
                 return "";
@@ -501,7 +580,7 @@
                 const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime()); 
                 dbFull = await res.json(); 
             } catch(e) {
-                
+                console.error("Error de sincronización.");
             } 
         }
 
@@ -560,7 +639,7 @@
             return count;
         }
 
-        // --- GESTIÓN NUBE DIRECTA V20.6 ---
+        // --- GESTIÓN NUBE DIRECTA V21.1 (VISUALIZACIÓN DE ARCHIVOS) ---
         function abrirListaGestion(f) {
             showScreen('lista-gestion-screen');
             document.getElementById('titulo-lista-gestion').innerText = f + "S";
@@ -573,7 +652,6 @@
             
             await sincronizarBaseAlInicio();
             
-            // FILTRO DE ABANDONO LEGAL (180 DÍAS CORRIDOS DESDE ÚLTIMO MOVIMIENTO)
             const abandonados = dbFull.filter(p => {
                 const fEvaluar = gV(p, 'FECHA_MOVIMIENTO') || gV(p, 'FECHA') || gV(p, 'FECHA_INGRESO');
                 return obtenerDiasCorridos(fEvaluar) > 180 && gV(p, 'ESTADO') !== 'ENTREGADO';
@@ -585,7 +663,6 @@
                 filtrados = abandonados;
             } else {
                 filtrados = dbFull.filter(p => !abandonados.includes(p) && gV(p, 'ESTADO') === filtro);
-                // REGLA 90 DÍAS PARA ENTREGADOS
                 if(filtro === 'ENTREGADO') {
                     filtrados = filtrados.filter(p => {
                         const fEvaluar = gV(p, 'FECHA_MOVIMIENTO') || gV(p, 'FECHA') || gV(p, 'FECHA_INGRESO');
@@ -607,6 +684,7 @@
                 const nmb = gV(item, 'NOMBRE') || gV(item, 'CLIENTE') || 'Sin Nombre';
                 const wp = gV(item, 'WHATSAPP') || gV(item, 'CELULAR') || '';
 
+                // Columnas de Enlace para PDF y Galería
                 const linkPdf = gV(item, 'LINK_PDF');
                 const linkFoto = gV(item, 'LINK_FOTO');
 
@@ -623,6 +701,7 @@
                     color = "bg-yellow-500 text-black";
                 }
 
+                // Generación de botones de archivos adjuntos (V21.1)
                 let docsBtns = '';
                 if(linkPdf || linkFoto) {
                     docsBtns += `<div class="flex gap-2 mt-3 border-t pt-2">`;
@@ -637,14 +716,14 @@
 
                 let btns = '';
                 if(filtro === 'PRESUPUESTADO') {
-                    btns = `<div class="grid grid-cols-2 gap-2 mt-4">
-                        <button onclick="cambiarEstadoNube('${otN}', 'APROBADO')" class="bg-green-600 text-white py-3 rounded-xl text-[10px] font-black uppercase shadow-md">Aceptar</button>
-                        <button onclick="cambiarEstadoNube('${otN}', 'RECHAZADO')" class="bg-red-500 text-white py-3 rounded-xl text-[10px] font-black uppercase shadow-md">Rechazar</button>
+                    btns = `<div class="grid grid-cols-2 gap-2 mt-3">
+                        <button onclick="cambiarEstadoNube('${otN}', 'APROBADO')" class="bg-green-600 text-white py-3 rounded-xl text-[10px] font-black uppercase shadow-md active:scale-95 transition">Aceptar</button>
+                        <button onclick="cambiarEstadoNube('${otN}', 'RECHAZADO')" class="bg-red-500 text-white py-3 rounded-xl text-[10px] font-black uppercase shadow-md active:scale-95 transition">Rechazar</button>
                     </div>`;
                 } else if(filtro === 'APROBADO') {
-                    btns = `<button onclick="cambiarEstadoNube('${otN}', 'REPARADO')" class="w-full bg-azul text-white py-4 rounded-xl text-[11px] font-black uppercase mt-4 shadow-md">Equipo Reparado</button>`;
+                    btns = `<button onclick="cambiarEstadoNube('${otN}', 'REPARADO')" class="w-full bg-azul text-white py-4 rounded-xl text-[11px] font-black uppercase mt-3 shadow-md active:scale-95 transition">Equipo Reparado</button>`;
                 } else if(filtro === 'REPARADO' || filtro === 'RECHAZADO') {
-                    btns = `<button onclick="cambiarEstadoNube('${otN}', 'ENTREGADO')" class="w-full bg-gray-900 text-white py-4 rounded-xl text-[11px] font-black uppercase mt-4 shadow-md">Marcar Entregado</button>`;
+                    btns = `<button onclick="cambiarEstadoNube('${otN}', 'ENTREGADO')" class="w-full bg-gray-900 text-white py-4 rounded-xl text-[11px] font-black uppercase mt-3 shadow-md active:scale-95 transition">Marcar Entregado</button>`;
                 }
 
                 return `
@@ -925,7 +1004,7 @@
                 });
             }
             
-            // Envío a Drive
+            // Envío a Drive para registro en columna R
             try {
                 const blob = doc.output('blob');
                 subirArchivoANube(ot.ot, blob, `${tipo}_OT${ot.ot}_${N}.pdf`, 'application/pdf');
@@ -986,7 +1065,7 @@
                 const clienteAviso = otActiva.NOMBRE || "Cliente";
                 const whatsAviso = otActiva.WHATSAPP || "";
                 const msg = `Estimado(a) *${clienteAviso}*, le saludamos de Soluciones Integrales. Adjuntamos la Cotización Técnica formal de su equipo correspondiente a la *OT ${otActiva.ot}*. Quedamos atentos a sus comentarios. Saludos cordiales.`;
-                window.open(`https://wa.me/${whatsAviso}?text=${msg}`, '_blank');
+                window.open(`https://wa.me/${whatsAviso}?text=${encodeURIComponent(msg)}`, '_blank');
                 
                 setTimeout(() => {
                     location.reload();
@@ -1118,6 +1197,7 @@
             }
         }
 
+        // --- BÚSQUEDAS Y CONFIGURACIÓN ---
         function buscarCliente(t) {
             const ul = document.getElementById('sugerencias-cliente'); 
             ul.innerHTML = '';
