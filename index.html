@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Manager Pro V20.8 - Triple Identidad Corporativa</title>
+    <title>Welding Manager Pro V20.9 - Triple Identidad Corporativa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -49,7 +49,7 @@
             </div>
             
             <div class="app-header-content absolute bottom-8 left-6 z-40">
-                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v20.8 Premium</span>
+                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v20.9 Premium</span>
                 <h1 class="text-4xl font-black uppercase tracking-tighter mt-1 leading-none text-white drop-shadow-md">Welding</h1>
                 <h1 class="text-4xl font-black uppercase tracking-tighter leading-none text-blue-200 drop-shadow-md">Servicio</h1>
                 <div class="mt-1 text-white drop-shadow-md">
@@ -231,12 +231,12 @@
                 <label class="font-bold text-purple-700 uppercase text-[10px] tracking-widest"><i class="fa-solid fa-camera"></i> Evidencia Fotográfica</label>
                 <input type="file" accept="image/*" capture="environment" id="foto-falla-input" class="hidden" onchange="procesarFotoCotizacion(this)">
                 <button type="button" onclick="document.getElementById('foto-falla-input').click()" class="w-full bg-purple-600 text-white py-4 rounded-xl shadow-md mt-2 font-black uppercase text-xs transition active:scale-95 flex justify-center items-center gap-2">
-                    <i class="fa-solid fa-camera text-lg"></i> Capturar Foto de Falla
+                    <i class="fa-solid fa-camera text-lg"></i> Agregar Foto a Galería
                 </button>
                 <div id="foto-status" class="text-[10px] font-black uppercase mt-2 text-center hidden"></div>
             </div>
 
-            <div class="bg-gray-50 p-5 rounded-3xl border border-gray-200 shadow-sm relative">
+            <div class="bg-gray-50 p-5 rounded-3xl border border-gray-200 shadow-sm relative mt-4">
                 <label class="font-bold text-azul uppercase text-[10px] tracking-widest px-1">Repuestos y Servicios</label>
                 <div class="flex gap-2 mt-2">
                     <div class="flex-1 relative">
@@ -332,8 +332,8 @@
     </div>
 
     <script>
-        // PEGA AQUÍ TU NUEVA URL DE IMPLEMENTACIÓN DE GOOGLE SCRIPT
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzWkWZCir5QcpzExvE2IvxJjYVK5KA-YS5rEV31b8tDaDyxbUrzk0ydPJzmHtqvIU1A/exec"; 
+        // PEGA AQUÍ TU NUEVA URL DE IMPLEMENTACIÓN DE GOOGLE SCRIPT (O MANTÉN ESTA SI ES LA ÚLTIMA)
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwxOLwFImTsVVH2WrrPmSDuhCedOARgMeYvQqSJtoKcmH1z7w3n0xFcOiO5aUNYc5f2/exec"; 
         
         let dbFull = [];
         let clientesLocales = JSON.parse(localStorage.getItem('wm_clientes_locales')) || [];
@@ -350,7 +350,7 @@
             sincronizarBaseAlInicio();
         };
 
-        // --- SISTEMA DE FOTO COTIZACIÓN V20.8 ---
+        // --- SISTEMA DE FOTO COTIZACIÓN V20.9 (CON COMPRESOR INTELIGENTE) ---
         function procesarFotoCotizacion(input) {
             const file = input.files[0];
             if (!file) {
@@ -358,37 +358,68 @@
             }
             
             const statusDiv = document.getElementById('foto-status');
-            statusDiv.innerText = "PROCESANDO IMAGEN...";
+            statusDiv.innerText = "COMPRIMIENDO IMAGEN...";
             statusDiv.className = "text-[10px] font-black uppercase mt-2 text-center text-orange-500 block";
             
             const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64Data = reader.result.split(',')[1];
-                const fileName = `FOTO_OT${otActiva.ot}_${new Date().getTime()}.jpg`;
-                
-                statusDiv.innerText = "SUBIENDO FOTO A LA NUBE...";
-                
-                const payload = { 
-                    action: "upload_file", 
-                    ot: otActiva.ot, 
-                    base64: base64Data, 
-                    fileName: fileName, 
-                    mimeType: "image/jpeg" 
-                };
-                
-                fetch(WEB_APP_URL, { 
-                    method: 'POST', 
-                    mode: 'no-cors', 
-                    body: JSON.stringify(payload) 
-                }).then(() => {
-                    statusDiv.innerText = "✅ FOTO SUBIDA CORRECTAMENTE";
-                    statusDiv.className = "text-[10px] font-black uppercase mt-2 text-center text-green-600 block";
-                }).catch(e => {
-                    statusDiv.innerText = "❌ ERROR AL SUBIR FOTO";
-                    statusDiv.className = "text-[10px] font-black uppercase mt-2 text-center text-red-600 block";
-                });
-            };
             reader.readAsDataURL(file);
+            reader.onload = function(event) {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = function() {
+                    // Lógica de Compresión
+                    const MAX_WIDTH = 1200;
+                    const MAX_HEIGHT = 1200;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Reducir calidad al 70% (0.7) para que pese muy poco
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                    const base64Data = dataUrl.split(',')[1];
+                    const fileName = `FOTO_OT${otActiva.ot}_${new Date().getTime()}.jpg`;
+                    
+                    statusDiv.innerText = "SUBIENDO A LA NUBE...";
+                    statusDiv.className = "text-[10px] font-black uppercase mt-2 text-center text-blue-500 block";
+                    
+                    const payload = { 
+                        action: "upload_file", 
+                        ot: otActiva.ot, 
+                        base64: base64Data, 
+                        fileName: fileName, 
+                        mimeType: "image/jpeg" 
+                    };
+                    
+                    fetch(WEB_APP_URL, { 
+                        method: 'POST', 
+                        mode: 'no-cors', 
+                        body: JSON.stringify(payload) 
+                    }).then(() => {
+                        statusDiv.innerText = "✅ FOTO ENVIADA A LA GALERÍA";
+                        statusDiv.className = "text-[10px] font-black uppercase mt-2 text-center text-green-600 block";
+                    }).catch(e => {
+                        statusDiv.innerText = "❌ ERROR AL SUBIR FOTO";
+                        statusDiv.className = "text-[10px] font-black uppercase mt-2 text-center text-red-600 block";
+                    });
+                };
+            };
         }
 
         // --- SISTEMA TRIPLE IDENTIDAD VISUAL V20.6 ---
@@ -599,7 +630,7 @@
                         docsBtns += `<a href="${linkPdf}" target="_blank" class="flex-1 bg-gray-50 text-gray-700 py-2 rounded-lg text-[9px] font-black uppercase text-center border shadow-sm active:scale-95 transition"><i class="fa-solid fa-file-pdf text-red-500"></i> Ver PDF</a>`;
                     }
                     if(linkFoto) {
-                        docsBtns += `<a href="${linkFoto}" target="_blank" class="flex-1 bg-gray-50 text-gray-700 py-2 rounded-lg text-[9px] font-black uppercase text-center border shadow-sm active:scale-95 transition"><i class="fa-solid fa-image text-purple-500"></i> Ver Foto</a>`;
+                        docsBtns += `<a href="${linkFoto}" target="_blank" class="flex-1 bg-gray-50 text-gray-700 py-2 rounded-lg text-[9px] font-black uppercase text-center border shadow-sm active:scale-95 transition"><i class="fa-solid fa-images text-purple-500"></i> Ver Galería</a>`;
                     }
                     docsBtns += `</div>`;
                 }
