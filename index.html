@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Welding Manager Pro V22.1 - Triple Identidad Corporativa</title>
+    <title>Welding Manager Pro V22.2 - Triple Identidad Corporativa</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -120,7 +120,7 @@
             </div>
             
             <div class="app-header-content absolute bottom-6 left-6 z-40">
-                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v22.1 Premium</span>
+                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v22.2 Premium</span>
                 <h1 class="text-4xl font-black uppercase tracking-tighter mt-1 leading-none text-white drop-shadow-md">Welding</h1>
                 <h1 class="text-4xl font-black uppercase tracking-tighter leading-none text-blue-200 drop-shadow-md">Servicio</h1>
             </div>
@@ -435,7 +435,7 @@
             sincronizarBaseAlInicio();
         };
 
-        // --- SISTEMA DE DICTADO CONTINUO (V22.1) ---
+        // --- SISTEMA DE DICTADO CONTINUO (V22.2) ---
         let recognition;
         let isRecording = false;
 
@@ -449,7 +449,9 @@
             }
 
             if (isRecording) {
+                isRecording = false; // Desactivar la bandera ANTES de parar
                 recognition.stop();
+                btn.classList.remove('mic-active');
                 return;
             }
 
@@ -473,20 +475,25 @@
                 input.value += (input.value ? " " : "") + finalTranscript;
             };
 
-            recognition.onerror = () => {
-                detenerDictado(btn);
+            recognition.onerror = (event) => {
+                console.error("Error de micrófono:", event.error);
             };
 
             recognition.onend = () => {
-                detenerDictado(btn);
+                if (isRecording) {
+                    // Si se cortó solo por silencio, lo volvemos a encender
+                    try {
+                        recognition.start();
+                    } catch(e) {
+                        isRecording = false;
+                        btn.classList.remove('mic-active');
+                    }
+                } else {
+                    btn.classList.remove('mic-active');
+                }
             };
 
             recognition.start();
-        }
-
-        function detenerDictado(btn) {
-            isRecording = false;
-            btn.classList.remove('mic-active');
         }
 
         // --- SISTEMA DE FOTO CON COMPRESIÓN ---
@@ -674,7 +681,7 @@
             return count;
         }
 
-        // --- GESTIÓN LISTAS ---
+        // --- GESTIÓN LISTAS Y WHATSAPP PERSONALIZADO ---
         function abrirListaGestion(f) {
             showScreen('lista-gestion-screen');
             document.getElementById('titulo-lista-gestion').innerText = f + "S";
@@ -734,6 +741,13 @@
                     color = "bg-yellow-500 text-black";
                 }
 
+                // Generación Enlace de WhatsApp
+                let wpLink = `https://wa.me/${wp}`;
+                if (filtro === 'REPARADO') {
+                    const wpMsg = `Estimado(a) *${nmb}*, la reparación de su equipo OT *${otN}* se encuentra lista para su retiro. Esperamos que se encuentre bien. Saludos cordiales de SETECSI.`;
+                    wpLink = `https://wa.me/${wp}?text=${encodeURIComponent(wpMsg)}`;
+                }
+
                 let docsBtns = '';
                 if(linkPdf || linkFoto) {
                     docsBtns += `<div class="flex gap-2 mt-3 border-t pt-2">`;
@@ -766,7 +780,7 @@
                             <h4 class="font-black text-lg text-gray-900 mt-1 leading-tight">${nmb}</h4>
                             <p class="text-xs text-gray-500 font-bold">${gV(item, 'MARCA')} ${gV(item, 'MODELO')}</p>
                         </div>
-                        <a href="https://wa.me/${wp}" class="bg-green-100 text-green-600 w-11 h-11 rounded-full flex items-center justify-center text-green-600"><i class="fa-brands fa-whatsapp text-2xl"></i></a>
+                        <a href="${wpLink}" target="_blank" class="bg-green-100 text-green-600 w-11 h-11 rounded-full flex items-center justify-center text-green-600"><i class="fa-brands fa-whatsapp text-2xl"></i></a>
                     </div>
                     <div class="mt-3 flex items-center justify-between border-t pt-3">
                         <span class="counter-pill ${color} uppercase"><i class="fa-regular fa-clock"></i> ${filtro === 'ENTREGADO' || filtro === 'ABANDONADO' ? diasM + ' DÍAS' : diasH + ' DÍAS HÁBILES'}</span>
@@ -791,7 +805,7 @@
             }
         }
 
-        // --- MOTOR PDF (V22.1 - SIN COMPRESIÓN DE LÍNEAS) ---
+        // --- MOTOR PDF V22.2 ---
         async function generarPDFGlobal(tipo, ot, datos) {
             const { jsPDF } = window.jspdf; 
             const doc = new jsPDF(); 
@@ -920,12 +934,35 @@
                 doc.setFontSize(12); 
                 doc.setFont("helvetica", "normal"); 
                 doc.text(fL, 15, cY + 8);
+
+                // TÉRMINOS LEGALES RESTAURADOS EN OT
+                cY = 230; 
+                doc.setFontSize(8.5); 
+                doc.setTextColor(100); 
+                doc.setFont("helvetica", "bold"); 
+                doc.text("TÉRMINOS Y CONDICIONES LEGALES:", 10, cY);
+                
+                doc.setFont("helvetica", "normal");
+                const nOT = [
+                    "1. Plazo de diagnóstico estimado: 3 días hábiles.", 
+                    "2. El rechazo del presupuesto generará un cargo administrativo por revisión de 0,05 UF.", 
+                    "3. Pasados 7 días de aviso de término sin que se retire el equipo, aplicará cargo por bodegaje de 0,07 UF diarios.", 
+                    "4. Equipos no retirados transcurridos 6 meses se considerarán legalmente abandonados, pasando a dominio del taller."
+                ];
+                nOT.forEach((n, i) => { 
+                    doc.text(n, 10, cY + 6 + (i * 4.5)); 
+                });
+                
+                doc.line(30, 275, 80, 275); 
+                doc.text("Firma o Timbre Cliente", 45, 280); 
+                
+                doc.line(130, 275, 180, 275); 
+                doc.text("Firma Recepción Técnica", 145, 280);
                 
                 doc.save(`OT_${ot.ot}_${N}.pdf`);
                 
             } else {
                 
-                // OT restaurada a su tamaño y posicion originales, pero en azul
                 doc.setTextColor(r, g, b); 
                 doc.setFontSize(10); 
                 doc.setFont("helvetica", "bold");
@@ -936,6 +973,7 @@
                 doc.setFont("helvetica", "normal");
                 doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 165, 68);
                 
+                // DATOS COMPLETOS RESTAURADOS EN PRESUPUESTO
                 doc.setFontSize(11); 
                 doc.setFont("helvetica", "bold"); 
                 doc.setTextColor(r, g, b); 
@@ -945,7 +983,10 @@
                 doc.setFont("helvetica", "normal"); 
                 doc.setTextColor(40); 
                 doc.text(`Nombre: ${N}`, 10, 68); 
-                doc.text(`WhatsApp: ${W}`, 10, 73);
+                doc.text(`RUT: ${RT}`, 10, 73); 
+                doc.text(`Dirección: ${D}`, 10, 78); 
+                doc.text(`Email: ${E}`, 10, 83); 
+                doc.text(`WhatsApp: ${W}`, 10, 88);
                 
                 doc.setFontSize(11); 
                 doc.setFont("helvetica", "bold"); 
@@ -957,6 +998,10 @@
                 doc.setTextColor(40); 
                 doc.text(`Equipo: ${M} ${MO}`, 110, 68); 
                 doc.text(`Serie: ${S}`, 110, 73);
+                doc.text(`Guía Cliente: ${GU}`, 110, 78);
+                
+                const accLineCOT = doc.splitTextToSize(`Accesorios: ${AC}`, 90); 
+                doc.text(accLineCOT, 110, 83);
 
                 cY = 105; 
                 doc.setFontSize(10); 
@@ -1008,7 +1053,7 @@
                 doc.setFontSize(12); 
                 doc.setTextColor(r, g, b); 
                 doc.setFont("helvetica", "bold"); 
-                doc.text("TOTAL:", 125, cY + 23); 
+                doc.text("TOTAL A PAGAR:", 125, cY + 23); 
                 doc.text(`$${fmt.format(total)} CLP`, 195, cY + 23, {align:'right'});
                 
                 cY = 240; 
@@ -1070,7 +1115,6 @@
             });
         }
 
-        // --- ACCIONES DE GUARDADO CON ESPERA ---
         async function enviarPresupuesto() {
             const d = document.getElementById('diagnostico').value; 
             const v = document.getElementById('valor-neto').value;
@@ -1099,8 +1143,10 @@
                 
                 await generarPDFGlobal('COT', otActiva, { diagnostico: d, valorNeto: v, plazo: p }); 
                 
-                const msg = `Estimado(a) *${otActiva.NOMBRE}*, le saludamos de Soluciones Integrales. Adjuntamos el Presupuesto Técnico OT ${otActiva.ot}. Quedamos atentos.`;
-                window.open(`https://wa.me/${otActiva.WHATSAPP}?text=${encodeURIComponent(msg)}`, '_blank');
+                const clienteAviso = otActiva.NOMBRE || "Cliente";
+                const whatsAviso = otActiva.WHATSAPP || "";
+                const msg = `Estimado(a) *${clienteAviso}*, le saludamos cordialmente de SETECSI. Le informamos que el Presupuesto Técnico de su equipo correspondiente a la OT *${otActiva.ot}* ya está listo. Adjuntamos el documento en formato PDF con todo el detalle técnico y los valores. Quedamos a su entera disposición por cualquier consulta o para recibir su aprobación y comenzar los trabajos. ¡Saludos cordiales!`;
+                window.open(`https://wa.me/${whatsAviso}?text=${encodeURIComponent(msg)}`, '_blank');
                 
                 location.reload(); 
             } catch (e) { 
