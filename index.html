@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welding Manager Pro V20.6 - Triple Identidad Corporativa</title>
+    <title>Welding Manager Pro V20.8 - Triple Identidad Corporativa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -49,7 +49,7 @@
             </div>
             
             <div class="app-header-content absolute bottom-8 left-6 z-40">
-                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v20.7 Premium</span>
+                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v20.8 Premium</span>
                 <h1 class="text-4xl font-black uppercase tracking-tighter mt-1 leading-none text-white drop-shadow-md">Welding</h1>
                 <h1 class="text-4xl font-black uppercase tracking-tighter leading-none text-blue-200 drop-shadow-md">Servicio</h1>
                 <div class="mt-1 text-white drop-shadow-md">
@@ -227,6 +227,15 @@
                 <button type="button" onclick="iniciarDictado('diagnostico')" class="absolute right-3 bottom-3 bg-azul text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition"><i class="fa-solid fa-microphone text-lg text-white"></i></button>
             </div>
 
+            <div class="mt-4 p-4 bg-purple-50 rounded-2xl border border-purple-100">
+                <label class="font-bold text-purple-700 uppercase text-[10px] tracking-widest"><i class="fa-solid fa-camera"></i> Evidencia Fotográfica</label>
+                <input type="file" accept="image/*" capture="environment" id="foto-falla-input" class="hidden" onchange="procesarFotoCotizacion(this)">
+                <button type="button" onclick="document.getElementById('foto-falla-input').click()" class="w-full bg-purple-600 text-white py-4 rounded-xl shadow-md mt-2 font-black uppercase text-xs transition active:scale-95 flex justify-center items-center gap-2">
+                    <i class="fa-solid fa-camera text-lg"></i> Capturar Foto de Falla
+                </button>
+                <div id="foto-status" class="text-[10px] font-black uppercase mt-2 text-center hidden"></div>
+            </div>
+
             <div class="bg-gray-50 p-5 rounded-3xl border border-gray-200 shadow-sm relative">
                 <label class="font-bold text-azul uppercase text-[10px] tracking-widest px-1">Repuestos y Servicios</label>
                 <div class="flex gap-2 mt-2">
@@ -324,7 +333,7 @@
 
     <script>
         // PEGA AQUÍ TU NUEVA URL DE IMPLEMENTACIÓN DE GOOGLE SCRIPT
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzVENGiRnU40wG1rrKBuXIgoHtnpYvRMtXPUSUShQI_P6NzPedatOsxXf99N2_HwIjM/exec"; 
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzWkWZCir5QcpzExvE2IvxJjYVK5KA-YS5rEV31b8tDaDyxbUrzk0ydPJzmHtqvIU1A/exec"; 
         
         let dbFull = [];
         let clientesLocales = JSON.parse(localStorage.getItem('wm_clientes_locales')) || [];
@@ -340,6 +349,47 @@
             cargarImagenesVisuales(); 
             sincronizarBaseAlInicio();
         };
+
+        // --- SISTEMA DE FOTO COTIZACIÓN V20.8 ---
+        function procesarFotoCotizacion(input) {
+            const file = input.files[0];
+            if (!file) {
+                return;
+            }
+            
+            const statusDiv = document.getElementById('foto-status');
+            statusDiv.innerText = "PROCESANDO IMAGEN...";
+            statusDiv.className = "text-[10px] font-black uppercase mt-2 text-center text-orange-500 block";
+            
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64Data = reader.result.split(',')[1];
+                const fileName = `FOTO_OT${otActiva.ot}_${new Date().getTime()}.jpg`;
+                
+                statusDiv.innerText = "SUBIENDO FOTO A LA NUBE...";
+                
+                const payload = { 
+                    action: "upload_file", 
+                    ot: otActiva.ot, 
+                    base64: base64Data, 
+                    fileName: fileName, 
+                    mimeType: "image/jpeg" 
+                };
+                
+                fetch(WEB_APP_URL, { 
+                    method: 'POST', 
+                    mode: 'no-cors', 
+                    body: JSON.stringify(payload) 
+                }).then(() => {
+                    statusDiv.innerText = "✅ FOTO SUBIDA CORRECTAMENTE";
+                    statusDiv.className = "text-[10px] font-black uppercase mt-2 text-center text-green-600 block";
+                }).catch(e => {
+                    statusDiv.innerText = "❌ ERROR AL SUBIR FOTO";
+                    statusDiv.className = "text-[10px] font-black uppercase mt-2 text-center text-red-600 block";
+                });
+            };
+            reader.readAsDataURL(file);
+        }
 
         // --- SISTEMA TRIPLE IDENTIDAD VISUAL V20.6 ---
         function guardarImagen(inputId, storageKey) {
@@ -526,6 +576,9 @@
                 const nmb = gV(item, 'NOMBRE') || gV(item, 'CLIENTE') || 'Sin Nombre';
                 const wp = gV(item, 'WHATSAPP') || gV(item, 'CELULAR') || '';
 
+                const linkPdf = gV(item, 'LINK_PDF');
+                const linkFoto = gV(item, 'LINK_FOTO');
+
                 let color = "bg-blue-100 text-blue-600";
                 if(filtro === 'PRESUPUESTADO') {
                     if(diasH === 2) {
@@ -537,6 +590,18 @@
                 }
                 if(filtro === 'ABANDONADO') {
                     color = "bg-yellow-500 text-black";
+                }
+
+                let docsBtns = '';
+                if(linkPdf || linkFoto) {
+                    docsBtns += `<div class="flex gap-2 mt-3 border-t pt-2">`;
+                    if(linkPdf) {
+                        docsBtns += `<a href="${linkPdf}" target="_blank" class="flex-1 bg-gray-50 text-gray-700 py-2 rounded-lg text-[9px] font-black uppercase text-center border shadow-sm active:scale-95 transition"><i class="fa-solid fa-file-pdf text-red-500"></i> Ver PDF</a>`;
+                    }
+                    if(linkFoto) {
+                        docsBtns += `<a href="${linkFoto}" target="_blank" class="flex-1 bg-gray-50 text-gray-700 py-2 rounded-lg text-[9px] font-black uppercase text-center border shadow-sm active:scale-95 transition"><i class="fa-solid fa-image text-purple-500"></i> Ver Foto</a>`;
+                    }
+                    docsBtns += `</div>`;
                 }
 
                 let btns = '';
@@ -564,6 +629,7 @@
                     <div class="mt-3 flex items-center justify-between border-t pt-3">
                         <span class="counter-pill ${color} uppercase"><i class="fa-regular fa-clock"></i> ${filtro === 'ENTREGADO' || filtro === 'ABANDONADO' ? diasM + ' DÍAS' : diasH + ' DÍAS HÁBILES'}</span>
                     </div>
+                    ${docsBtns}
                     ${btns}
                 </div>`;
             }).join('');
@@ -1000,6 +1066,9 @@
                             document.getElementById('det-equipo').innerText = mrc + " " + mdl;
                             document.getElementById('det-guia-ref').innerText = gu;
                             document.getElementById('det-falla').innerText = fa;
+                            // Limpiar status foto al abrir otro presupuesto
+                            document.getElementById('foto-status').innerText = "";
+                            document.getElementById('foto-status').className = "hidden";
                             repuestosActuales = []; 
                             renderRep(); 
                             showScreen('presupuesto-detail-screen');
@@ -1018,7 +1087,6 @@
             }
         }
 
-        // --- BÚSQUEDAS Y CONFIGURACIÓN ---
         function buscarCliente(t) {
             const ul = document.getElementById('sugerencias-cliente'); 
             ul.innerHTML = '';
@@ -1026,7 +1094,11 @@
                 ul.classList.add('hidden'); 
                 return; 
             }
-            const fil = [...dbFull, ...clientesLocales].filter(c => (gV(c, 'NOMBRE') || "").toString().toLowerCase().includes(t.toLowerCase()));
+            const fil = [...dbFull, ...clientesLocales].filter(c => {
+                const nombre = gV(c, 'NOMBRE') || "";
+                return nombre.toString().toLowerCase().includes(t.toLowerCase());
+            });
+            
             if(fil.length === 0) { 
                 ul.classList.add('hidden'); 
                 return; 
