@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Welding Manager Pro V23.1 - SETECSI LEY ABSOLUTA</title>
+    <title>Welding Manager Pro V23.3 - SETECSI LEY ABSOLUTA</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -18,24 +18,36 @@
         :root { 
             --azul: #0070f3; 
         }
+
         .bg-azul { 
             background-color: var(--azul); 
         }
+
         .text-azul { 
             color: var(--azul); 
         }
-        input:focus, textarea:focus, select:focus { 
+
+        input:focus, 
+        textarea:focus, 
+        select:focus { 
             outline: 2px solid var(--azul); 
             border-color: transparent; 
         }
+
         .loader { 
             border-top-color: var(--azul); 
             animation: spinner 0.6s linear infinite; 
         }
+
         @keyframes spinner { 
-            0% { transform: rotate(0deg); } 
-            100% { transform: rotate(360deg); } 
+            0% { 
+                transform: rotate(0deg); 
+            } 
+            100% { 
+                transform: rotate(360deg); 
+            } 
         }
+
         .autocomplete-dropdown { 
             max-height: 200px; 
             overflow-y: auto; 
@@ -43,18 +55,22 @@
             border-radius: 8px; 
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); 
         }
+
         .checkbox-grid { 
             display: grid; 
             grid-template-columns: repeat(2, 1fr); 
             gap: 10px; 
         }
+
         .btn-menu-gestion { 
             transition: 0.3s; 
             border-left: 8px solid var(--azul); 
         }
+
         .btn-menu-gestion:active { 
             scale: 0.95; 
         }
+
         .status-pill { 
             font-size: 10px; 
             padding: 2px 8px; 
@@ -62,6 +78,7 @@
             text-transform: uppercase; 
             font-weight: 800; 
         }
+
         .counter-pill { 
             font-weight: 900; 
             padding: 4px 10px; 
@@ -72,7 +89,6 @@
             gap: 4px; 
         }
         
-        /* BOTONES DE INICIO UNIFORMES - MEJORA V22.2 */
         .btn-inicio-main {
             height: 100px;
             display: flex;
@@ -83,48 +99,75 @@
             transition: 0.3s;
         }
 
-        /* MICRÓFONO ACTIVO CONTINUO */
         .mic-active {
             background-color: #ef4444 !important;
             animation: pulse-red 1.5s infinite;
             color: white !important;
         }
+
         @keyframes pulse-red {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            0% { 
+                transform: scale(1); 
+            }
+            50% { 
+                transform: scale(1.1); 
+            }
+            100% { 
+                transform: scale(1); 
+            }
         }
 
-        /* BOTÓN IA PROCESANDO */
         .ai-loading {
             background-color: #9333ea !important;
             animation: pulse-ai 2s infinite linear;
         }
+
         @keyframes pulse-ai {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
+            0% { 
+                opacity: 1; 
+            }
+            50% { 
+                opacity: 0.5; 
+            }
+            100% { 
+                opacity: 1; 
+            }
         }
 
-        /* SOMBRAS DINÁMICAS (DÍAS HÁBILES) */
-        .sh-dia-1 { box-shadow: 0 15px 30px -5px rgba(34, 197, 94, 0.4); border: 1px solid rgba(34, 197, 94, 0.2); }
-        .sh-dia-2 { box-shadow: 0 15px 30px -5px rgba(234, 179, 8, 0.4); border: 1px solid rgba(234, 179, 8, 0.2); }
-        .sh-dia-3 { box-shadow: 0 15px 30px -5px rgba(239, 68, 68, 0.5); border: 1px solid rgba(239, 68, 68, 0.3); }
-        .sh-abandono { box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.5); border: 2px solid #000; }
+        .sh-dia-1 { 
+            box-shadow: 0 15px 30px -5px rgba(34, 197, 94, 0.4); 
+            border: 1px solid rgba(34, 197, 94, 0.2); 
+        }
+
+        .sh-dia-2 { 
+            box-shadow: 0 15px 30px -5px rgba(234, 179, 8, 0.4); 
+            border: 1px solid rgba(234, 179, 8, 0.2); 
+        }
+
+        .sh-dia-3 { 
+            box-shadow: 0 15px 30px -5px rgba(239, 68, 68, 0.5); 
+            border: 1px solid rgba(239, 68, 68, 0.3); 
+        }
+
+        .sh-abandono { 
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.5); 
+            border: 2px solid #000; 
+        }
         
-        /* ESTILO PARA HEADERS CON BANNER TRIPLE IDENTIDAD */
         .app-header-bg { 
             position: relative; 
             background-color: var(--azul); 
             color: white; 
             overflow: hidden; 
         }
+
         .app-header-overlay { 
             position: absolute; 
             inset: 0; 
             background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%); 
             z-index: 1; 
         }
+
         .app-header-content { 
             position: relative; 
             z-index: 2; 
@@ -145,7 +188,7 @@
             </div>
             
             <div class="app-header-content absolute bottom-6 left-6 z-40">
-                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v23.1 Premium</span>
+                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v23.3 Premium</span>
                 <h1 class="text-4xl font-black uppercase tracking-tighter mt-1 leading-none text-white drop-shadow-md">Welding</h1>
                 <h1 class="text-4xl font-black uppercase tracking-tighter leading-none text-blue-200 drop-shadow-md">Servicio</h1>
                 <div class="mt-1 text-white drop-shadow-md">
@@ -281,7 +324,7 @@
                 </div>
             </div>
 
-            <div class="relative">
+            <div class="relative text-gray-900">
                 <label class="font-bold text-gray-400 uppercase text-[10px] px-1">Falla Reportada por Cliente</label>
                 <textarea id="falla" placeholder="Describa el problema reportado..." class="w-full p-4 rounded-2xl border h-32 bg-gray-50 mt-1 shadow-inner text-gray-900"></textarea>
                 <button type="button" id="mic-falla" onclick="toggleDictado('falla', 'mic-falla')" class="absolute right-3 bottom-3 bg-azul text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center active:scale-90 transition">
@@ -303,7 +346,7 @@
         
         <div id="loading-pendientes" class="flex flex-col items-center justify-center py-20 hidden">
             <div class="loader rounded-full border-4 h-12 w-12 mb-4 border-t-azul"></div>
-            <p class="font-bold text-gray-400">Sincronizando con la nube...</p>
+            <p class="font-bold text-gray-400">Sincronizando con SETECSI Cloud...</p>
         </div>
         <div id="lista-pendientes" class="space-y-6 pb-10 px-4"></div>
     </div>
@@ -318,7 +361,7 @@
         </div>
         
         <div class="space-y-5 px-5">
-            <div class="p-2">
+            <div class="p-2 text-gray-900">
                 <p id="det-cliente" class="text-lg font-black text-gray-900"></p>
                 <p id="det-equipo" class="text-gray-500 font-bold"></p>
                 <div class="mt-2 text-azul font-black text-xs uppercase bg-blue-50 inline-block px-3 py-1 rounded-lg">GUÍA CLIENTE: <span id="det-guia-ref"></span></div>
@@ -364,7 +407,7 @@
                 <ul id="lista-repuestos-seleccionados" class="space-y-2 mt-4"></ul>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 gap-4 text-gray-900">
                 <div class="space-y-1">
                     <label class="text-[10px] font-bold text-gray-400 uppercase px-1">Plazo de Entrega</label>
                     <select id="plazo" class="w-full p-4 rounded-xl border bg-gray-50 font-bold text-sm text-gray-700">
@@ -437,13 +480,13 @@
                 </div>
             </div>
             
-            <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 shadow-sm">
+            <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 shadow-sm text-gray-900">
                 <label class="font-bold text-azul uppercase text-xs">Base de Repuestos Maestro</label>
                 <textarea id="import-repuestos" class="w-full p-3 rounded-xl border h-32 text-sm mt-2 text-gray-900" placeholder="Escriba un repuesto por línea..."></textarea>
                 <button onclick="importarRepuestosMasivo()" class="w-full bg-azul text-white py-3 rounded-xl font-bold mt-2 shadow-md">Actualizar Base</button>
             </div>
 
-            <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200 shadow-sm">
+            <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200 shadow-sm text-gray-900">
                 <label class="font-bold text-blue-700 uppercase text-xs">Base de Clientes Habituales</label>
                 <textarea id="import-clientes" class="w-full p-3 rounded-xl border h-32 text-sm mt-2 text-gray-900" placeholder="NOMBRE, RUT, WHATSAPP, DIRECCION, CORREO"></textarea>
                 <button onclick="importarClientesMasivo()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-2 shadow-md">Actualizar Clientes</button>
@@ -452,7 +495,7 @@
     </div>
 
     <script>
-        // URL DE IMPLEMENTACIÓN LEY ABSOLUTA V23.1
+        // URL DE IMPLEMENTACIÓN LEY ABSOLUTA V23.3
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyxytLde1CRlxQnYyUbuc2Entjr9FJ1L93Cl5JpdAm4pRAjlVl_vOnP2x3_kDP2Ba6i/exec"; 
         
         let dbFull = [];
@@ -470,9 +513,10 @@
             sincronizarBaseAlInicio();
         };
 
-        // --- MOTOR IA SETECSI (REDACCIÓN PROFESIONAL V23.1) ---
+        // --- MOTOR IA SETECSI (REDACCIÓN CON DIAGNÓSTICO DE ERRORES V23.3) ---
         async function mejorarConIA() {
             const apiKey = localStorage.getItem('wm_ia_key');
+            
             if (!apiKey) {
                 return alert("⚠️ Primero debes configurar tu llave IA de Groq en Ajustes.");
             }
@@ -482,28 +526,27 @@
             const equipo = document.getElementById('det-equipo').innerText;
 
             if (!notasTecnico) {
-                return alert("⚠️ Primero escribe o dicta algunas notas básicas para que la IA pueda expandirlas.");
+                return alert("⚠️ Primero escribe o dicta algunas notas básicas.");
             }
 
             const btn = document.getElementById('btn-ia-redactar');
             const originalText = btn.innerHTML;
+            
             btn.disabled = true;
             btn.classList.add('ai-loading');
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> PROCESANDO...';
 
-            const prompt = `Eres un Ingeniero especialista en servicio técnico de máquinas de soldar para la empresa SETECSI. 
-            Tu tarea es redactar el "Diagnóstico Técnico Final" profesional basado en la falla reportada por el cliente y las notas preliminares del técnico.
-            
+            const prompt = `Eres un Ingeniero especialista de SETECSI. Redacta un "Diagnóstico Técnico" profesional para una máquina de soldar.
             EQUIPO: ${equipo}
-            FALLA REPORTADA POR CLIENTE: ${fallaReportada}
-            NOTAS DEL TÉCNICO: ${notasTecnico}
-
-            REGLAS:
-            1. Usa un tono extremadamente profesional, técnico y formal.
-            2. Divide el diagnóstico en: Hallazgos, Causa Raíz y Acción Realizada/Sugerida.
-            3. Sé conciso pero detallado (máximo 150 palabras).
-            4. No uses saludos, ve directo al informe técnico.
-            5. Mantén un formato limpio y ordenado para que se lea perfecto en el PDF.`;
+            FALLA CLIENTE: ${fallaReportada}
+            NOTAS TÉCNICAS: ${notasTecnico}
+            
+            REGLAS: 
+            1. Usa tono formal de ingeniería. 
+            2. Divide en: Hallazgos, Causa Raíz y Acción Realizada. 
+            3. Máximo 150 palabras. 
+            4. Sin saludos ni despedidas.
+            5. Si las notas mencionan componentes quemados, usa terminología técnica adecuada.`;
 
             try {
                 const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -513,24 +556,34 @@
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        model: "llama-3.1-70b-versatile",
+                        model: "llama-3.3-70b-versatile",
                         messages: [
-                            { role: "system", content: "Experto en informes técnicos industriales SETECSI." },
-                            { role: "user", content: prompt }
+                            { 
+                                role: "system", 
+                                content: "Experto técnico industrial SETECSI." 
+                            },
+                            { 
+                                role: "user", 
+                                content: prompt 
+                            }
                         ],
-                        temperature: 0.7
+                        temperature: 0.5
                     })
                 });
 
                 const data = await response.json();
-                if (data.choices && data.choices[0]) {
+                
+                if (data.error) {
+                    alert("Error de Groq: " + data.error.message);
+                } else if (data.choices && data.choices[0]) {
                     document.getElementById('diagnostico').value = data.choices[0].message.content.trim();
                 } else {
-                    alert("No se pudo obtener respuesta de la IA.");
+                    alert("Respuesta inesperada de la IA. Verifique su API Key.");
                 }
+
             } catch (error) {
                 console.error("Error IA:", error);
-                alert("Error al conectar con el servidor de Inteligencia Artificial.");
+                alert("Fallo total de conexión con la IA.");
             } finally {
                 btn.disabled = false;
                 btn.classList.remove('ai-loading');
@@ -538,7 +591,7 @@
             }
         }
 
-        // --- SISTEMA DE DICTADO CONTINUO (BLINDADO - NO SE DETIENE CON PAUSAS) ---
+        // --- SISTEMA DE DICTADO CONTINUO (BLINDADO - AUTO REINICIO V22.2) ---
         let recognition;
         let isRecording = false;
 
@@ -547,7 +600,7 @@
             const input = document.getElementById(targetId);
 
             if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                alert("Tu navegador no soporta dictado de voz.");
+                alert("Tu navegador no soporta dictado.");
                 return;
             }
 
@@ -575,13 +628,12 @@
                         finalTranscript += event.results[i][0].transcript;
                     }
                 }
-                // SE AGREGA EL TEXTO SIN BORRAR LO ANTERIOR
+                // SE AGREGA AL FINAL SIN BORRAR NADA
                 input.value += (input.value ? " " : "") + finalTranscript;
             };
 
             recognition.onend = () => {
                 if (isRecording) {
-                    // SI SE APAGA POR SILENCIO, SE REINICIA AUTOMÁTICAMENTE
                     try {
                         recognition.start();
                     } catch(e) {
@@ -596,9 +648,10 @@
             recognition.start();
         }
 
-        // --- SISTEMA DE CÁMARA CON COMPRESIÓN (AHORRO DE MEMORIA) ---
+        // --- SISTEMA DE CÁMARA CON COMPRESIÓN DE MEMORIA ---
         function procesarFotoCotizacion(input) {
             const file = input.files[0];
+            
             if (!file) {
                 return;
             }
@@ -640,7 +693,7 @@
                     const base64Data = dataUrl.split(',')[1];
                     const fileName = `FOTO_OT${otActiva.ot}_${new Date().getTime()}.jpg`;
                     
-                    statusDiv.innerText = "SUBIENDO A LA GALERÍA...";
+                    statusDiv.innerText = "SUBIENDO A SETECSI CLOUD...";
                     statusDiv.className = "text-[10px] font-black uppercase mt-2 text-center text-blue-500 block";
                     
                     const payload = { 
@@ -656,7 +709,7 @@
                         mode: 'no-cors', 
                         body: JSON.stringify(payload) 
                     }).then(() => {
-                        statusDiv.innerText = "✅ FOTO ENVIADA A GOOGLE DRIVE";
+                        statusDiv.innerText = "✅ FOTO SUBIDA CORRECTAMENTE";
                         statusDiv.className = "text-[10px] font-black uppercase mt-2 text-center text-green-600 block";
                     }).catch(e => {
                         statusDiv.innerText = "❌ ERROR AL SUBIR FOTO";
@@ -669,14 +722,16 @@
         // --- SISTEMA TRIPLE IDENTIDAD CORPORATIVA ---
         function guardarImagen(inputId, storageKey) {
             const file = document.getElementById(inputId).files[0];
+            
             if (!file) {
-                return alert("⚠️ Selecciona una imagen primero.");
+                return alert("⚠️ Selecciona una imagen.");
             }
+            
             const reader = new FileReader();
             reader.onload = function(e) {
                 localStorage.setItem(storageKey, e.target.result);
                 cargarImagenesVisuales();
-                alert("✅ Imagen guardada en memoria local.");
+                alert("✅ Imagen guardada correctamente.");
             };
             reader.readAsDataURL(file);
         }
@@ -684,7 +739,7 @@
         function borrarImagen(storageKey) {
             localStorage.removeItem(storageKey);
             cargarImagenesVisuales();
-            alert("🗑️ Imagen eliminada del sistema.");
+            alert("🗑️ Imagen eliminada.");
         }
 
         function cargarImagenesVisuales() {
@@ -718,7 +773,7 @@
             });
         }
 
-        // --- UTILIDADES DE BASE DE DATOS ---
+        // --- UTILIDADES DE DATOS ---
         function gV(obj, k) {
             if (!obj) {
                 return "";
@@ -733,7 +788,7 @@
                 const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime()); 
                 dbFull = await res.json(); 
             } catch(e) {
-                console.error("Fallo de conexión inicial.");
+                console.error("Error de sincronización.");
             } 
         }
 
@@ -751,7 +806,7 @@
 
         function guardarIAKey() { 
             localStorage.setItem('wm_ia_key', document.getElementById('ia-key-input').value.trim()); 
-            alert("✅ Llave IA Guardada exitosamente."); 
+            alert("✅ Llave IA Guardada."); 
         }
 
         function obtenerDiasCorridos(fecha) {
@@ -782,7 +837,7 @@
             return count;
         }
 
-        // --- GESTIÓN DE LISTAS Y WHATSAPP SETECSI ---
+        // --- GESTIÓN DE LISTAS Y WHATSAPP (V22.2) ---
         function abrirListaGestion(f) {
             showScreen('lista-gestion-screen');
             document.getElementById('titulo-lista-gestion').innerText = f + "S";
@@ -814,7 +869,7 @@
             }
 
             if (filtrados.length === 0) { 
-                container.innerHTML = '<p class="text-center py-20 text-gray-400 italic font-bold">No hay registros en esta sección.</p>'; 
+                container.innerHTML = '<p class="text-center py-20 text-gray-400 italic font-bold">No hay registros.</p>'; 
                 return; 
             }
 
@@ -836,7 +891,7 @@
                 }
                 if(filtro === 'ABANDONADO') { color = "bg-yellow-500 text-black"; }
 
-                // MENSAJE WHATSAPP SEGÚN ESTADO (V22.2)
+                // LOGICA WHATSAPP ESPECIAL REPARADOS (V22.2)
                 let wpLink = `https://wa.me/${wp}`;
                 if (filtro === 'REPARADO') {
                     const wpMsg = `Estimado(a) *${nmb}*, la reparación de su equipo OT *${otN}* se encuentra lista para su retiro. Esperamos que se encuentre bien. Saludos cordiales de SETECSI.`;
@@ -900,16 +955,18 @@
             }
         }
 
-        // --- MOTOR PDF LEY ABSOLUTA (V23.1 - EXPANDIDO TOTAL) ---
+        // --- MOTOR PDF LEY ABSOLUTA (V23.3 - 100% EXPANDIDO) ---
         async function generarPDFGlobal(tipo, ot, datos) {
             const { jsPDF } = window.jspdf; 
             const doc = new jsPDF(); 
-            const r = 0;
-            const g = 112;
-            const b = 243; // AZUL SETECSI
+            
+            const r = 0; 
+            const g = 112; 
+            const b = 243; 
             const fmt = new Intl.NumberFormat("es-CL");
             
             const bannerData = localStorage.getItem('wm_banner');
+            
             if(bannerData) {
                 try {
                     const formatB = bannerData.includes("image/png") ? "PNG" : "JPEG";
@@ -968,7 +1025,7 @@
             const FA = ot.FALLA || ot.falla || "Sin descripción.";
 
             if(tipo === 'OT') {
-                // SECCIÓN DE ORDEN DE INGRESO
+                // PDF DE ORDEN DE INGRESO
                 doc.setTextColor(r, g, b); 
                 doc.setFontSize(32); 
                 doc.setFont("helvetica", "bold"); 
@@ -988,16 +1045,12 @@
                 doc.setFont("helvetica", "normal"); 
                 doc.text(`Nombre / Empresa: ${N}`, 12, cY); 
                 cY += 8;
-                
                 doc.text(`RUT: ${RT}`, 12, cY); 
                 cY += 8;
-                
                 doc.text(`WhatsApp: ${W}`, 12, cY); 
                 cY += 8;
-                
-                doc.text(`Correo Electrónico: ${E}`, 12, cY); 
+                doc.text(`Email: ${E}`, 12, cY); 
                 cY += 8;
-                
                 doc.text(`Dirección: ${D}`, 12, cY); 
                 cY += 14;
 
@@ -1012,18 +1065,17 @@
                 doc.setFont("helvetica", "normal"); 
                 doc.text(`Equipo: ${M} ${MO}`, 12, cY); 
                 cY += 8;
-                
-                doc.text(`N° Serie: ${S} | N° Guía Cliente: ${GU}`, 12, cY); 
+                doc.text(`Serie: ${S} | Guía Cliente: ${GU}`, 12, cY); 
                 cY += 10;
                 
-                const acL = doc.splitTextToSize(`Accesorios Recepcionados: ${AC}`, 180); 
+                const acL = doc.splitTextToSize(`Accesorios Recibidos: ${AC}`, 180); 
                 doc.text(acL, 12, cY); 
                 cY += (acL.length * 8) + 10;
 
                 doc.setTextColor(r, g, b); 
                 doc.setFontSize(15); 
                 doc.setFont("helvetica", "bold"); 
-                doc.text("III. FALLA REPORTADA POR EL CLIENTE", 10, cY); 
+                doc.text("III. FALLA REPORTADA POR CLIENTE", 10, cY); 
                 cY += 8;
                 
                 const fL = doc.splitTextToSize(FA, 185); 
@@ -1035,7 +1087,7 @@
                 doc.setFont("helvetica", "normal"); 
                 doc.text(fL, 15, cY + 8);
 
-                // TÉRMINOS LEGALES RESTAURADOS EN ORDEN DE INGRESO
+                // TÉRMINOS LEGALES RESTAURADOS V22.2
                 cY = 230; 
                 doc.setFontSize(8.5); 
                 doc.setTextColor(100); 
@@ -1062,7 +1114,7 @@
                 doc.save(`OT_${ot.ot}_${N}.pdf`);
                 
             } else {
-                // SECCIÓN DE PRESUPUESTO TÉCNICO (V23.1)
+                // PDF DE PRESUPUESTO TÉCNICO
                 doc.setTextColor(r, g, b); 
                 doc.setFontSize(10); 
                 doc.setFont("helvetica", "bold");
@@ -1073,7 +1125,6 @@
                 doc.setFont("helvetica", "normal");
                 doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 165, 68);
                 
-                // DATOS COMPLETOS RESTAURADOS EN PRESUPUESTO
                 doc.setFontSize(11); 
                 doc.setFont("helvetica", "bold"); 
                 doc.setTextColor(r, g, b); 
@@ -1167,7 +1218,7 @@
                     "- Pago vía Transferencia Bancaria, Tarjeta de Débito, Crédito o Efectivo.", 
                     `- Plazo de entrega estimado: ${datos.plazo} días hábiles tras aprobación formal.`, 
                     "- Validez de esta Cotización: 7 días corridos.", 
-                    "- Para aprobar este presupuesto, envíe mensaje por WhatsApp al correo amsetecsi@gmail.com"
+                    "- Para aprobar este presupuesto, envíe WhatsApp al correo amsetecsi@gmail.com"
                 ];
                 nC.forEach((n, i) => { 
                     doc.text(n, 10, cY + 6 + (i * 4.5)); 
@@ -1215,7 +1266,7 @@
             });
         }
 
-        // --- ACCIONES DE GUARDADO Y ENVÍO ---
+        // --- ACCIONES DE GUARDADO ---
         async function enviarPresupuesto() {
             const d = document.getElementById('diagnostico').value; 
             const v = document.getElementById('valor-neto').value;
@@ -1246,7 +1297,8 @@
                 
                 const clienteAviso = otActiva.NOMBRE || "Cliente";
                 const whatsAviso = otActiva.WHATSAPP || "";
-                const msg = `Estimado(a) *${clienteAviso}*, le saludamos cordialmente de SETECSI. Le informamos que el Presupuesto Técnico de su equipo correspondiente a la OT *${otActiva.ot}* ya está listo. Adjuntamos el documento en formato PDF con todo el detalle técnico y los valores. Quedamos a su entera disposición por cualquier consulta o para recibir su aprobación y comenzar los trabajos. ¡Saludos cordiales!`;
+                const msg = `Estimado(a) *${clienteAviso}*, le saludamos cordialmente de SETECSI. Le informamos que el Presupuesto Técnico de su equipo correspondiente a la OT *${otActiva.ot}* ya está listo. Adjuntamos el documento en formato PDF con todo el detalle técnico y los valores. Quedamos a su entera disposición. ¡Saludos cordiales!`;
+                
                 window.open(`https://wa.me/${whatsAviso}?text=${encodeURIComponent(msg)}`, '_blank');
                 
                 location.reload(); 
@@ -1299,7 +1351,6 @@
             }
         });
 
-        // --- CARGA DE PENDIENTES ---
         async function cargarPendientes() {
             showScreen('presupuesto-list-screen'); 
             document.getElementById('lista-pendientes').innerHTML = ''; 
@@ -1377,11 +1428,11 @@
                     document.getElementById('lista-pendientes').innerHTML = '<p class="text-center py-10 text-gray-400 font-bold">No hay equipos por presupuestar.</p>';
                 }
             } catch (e) { 
-                alert("Error de conexión al servidor de Google."); 
+                alert("Error de conexión al servidor."); 
             }
         }
 
-        // --- BÚSQUEDA Y AUTOCLIENTE ---
+        // --- BUSCADORES ---
         function buscarCliente(t) {
             const ul = document.getElementById('sugerencias-cliente'); 
             ul.innerHTML = ''; 
