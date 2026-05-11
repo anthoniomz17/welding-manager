@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Welding Manager Pro V23.4 - SETECSI LEY ABSOLUTA</title>
+    <title>Welding Manager Pro V23.4 - ARCHIVO MAESTRO MODULAR</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -13,7 +13,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    
     <style>
         :root { 
             --azul: #0070f3; 
@@ -174,7 +173,7 @@
             text-shadow: 1px 1px 3px rgba(0,0,0,0.5); 
         }
     </style>
-</head>
+    </head>
 <body class="bg-gray-100 font-sans pb-10 text-gray-800">
 
     <div id="home-screen" class="max-w-md mx-auto h-screen flex flex-col relative bg-white overflow-hidden">
@@ -230,7 +229,6 @@
             </div>
         </div>
     </div>
-
     <div id="menu-gestion-screen" class="hidden max-w-md mx-auto bg-white min-h-screen">
         <div class="app-header-bg p-5 shadow-md flex items-center mb-6 sticky top-0 z-50">
             <div class="app-header-overlay hidden banner-overlay"></div>
@@ -266,7 +264,6 @@
             </button>
         </div>
     </div>
-
     <div id="lista-gestion-screen" class="hidden p-0 max-w-md mx-auto bg-gray-50 min-h-screen text-gray-900">
         <div class="app-header-bg p-4 sticky top-0 z-50 flex items-center justify-between shadow-md">
             <div class="app-header-overlay hidden banner-overlay"></div>
@@ -277,7 +274,6 @@
         </div>
         <div id="contenedor-items-gestion" class="p-4 space-y-4"></div>
     </div>
-
     <div id="ingreso-screen" class="hidden max-w-md mx-auto bg-white min-h-screen text-gray-900">
         <div class="app-header-bg p-5 shadow-md flex items-center mb-6 sticky top-0 z-50">
             <div class="app-header-overlay hidden banner-overlay"></div>
@@ -334,7 +330,6 @@
             <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition uppercase tracking-widest text-white">Registrar Ingreso</button>
         </form>
     </div>
-
     <div id="presupuesto-list-screen" class="hidden max-w-md mx-auto bg-gray-50 min-h-screen text-gray-900">
         <div class="app-header-bg p-5 shadow-md flex items-center mb-6 sticky top-0 z-50">
             <div class="app-header-overlay hidden banner-overlay"></div>
@@ -350,7 +345,6 @@
         </div>
         <div id="lista-pendientes" class="space-y-6 pb-10 px-4"></div>
     </div>
-
     <div id="presupuesto-detail-screen" class="hidden max-w-md mx-auto bg-white min-h-screen pb-20 shadow-2xl text-gray-900">
         <div class="app-header-bg p-5 shadow-md flex items-center mb-6 sticky top-0 z-50">
             <div class="app-header-overlay hidden banner-overlay"></div>
@@ -427,7 +421,6 @@
             <button id="btn-enviar-presupuesto" onclick="enviarPresupuesto()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-xl shadow-xl active:scale-95 transition uppercase tracking-widest text-center text-white">Guardar y Enviar al Cliente</button>
         </div>
     </div>
-
     <div id="config-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen text-gray-900">
         <div class="flex items-center mb-6 border-b pb-4 mt-2">
             <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 transition active:scale-90"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
@@ -493,7 +486,6 @@
             </div>
         </div>
     </div>
-
     <script>
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyxytLde1CRlxQnYyUbuc2Entjr9FJ1L93Cl5JpdAm4pRAjlVl_vOnP2x3_kDP2Ba6i/exec"; 
         
@@ -511,7 +503,13 @@
             cargarImagenesVisuales(); 
             sincronizarBaseAlInicio();
         };
+    // =========================================================================
+    // 🛑 FIN: VARIABLES GLOBALES Y SINCRONIZACIÓN INICIAL
+    // =========================================================================
 
+    // =========================================================================
+    // 🚀 INICIO: MOTOR IA SETECSI (GROQ)
+    // =========================================================================
         async function mejorarConIA() {
             const apiKey = localStorage.getItem('wm_ia_key');
             
@@ -539,12 +537,12 @@
             FALLA CLIENTE: ${fallaReportada}
             NOTAS TÉCNICAS: ${notasTecnico}
             
-            REGLAS: 
+            REGLAS ESTRICTAS: 
             1. Usa tono formal de ingeniería. 
-            2. Divide en: Hallazgos, Causa Raíz y Acción Realizada. 
-            3. Máximo 150 palabras. 
-            4. Sin saludos ni despedidas.
-            5. Si las notas mencionan componentes quemados, usa terminología técnica adecuada.`;
+            2. Divide en 3 secciones. Los encabezados deben ser EXACTAMENTE: HALLAZGOS:, CAUSA RAÍZ: y ACCIÓN REALIZADA:.
+            3. ESTÁ ESTRICTAMENTE PROHIBIDO usar símbolos de formato (NO uses asteriscos **, ni numerales ##, ni guiones). Escribe los encabezados únicamente en MAYÚSCULAS para resaltarlos.
+            4. Máximo 150 palabras, sin saludos ni despedidas.
+            5. Usa terminología técnica profesional.`;
 
             try {
                 const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -588,7 +586,13 @@
                 btn.innerHTML = originalText;
             }
         }
+    // =========================================================================
+    // 🛑 FIN: MOTOR IA SETECSI
+    // =========================================================================
 
+    // =========================================================================
+    // 🚀 INICIO: SISTEMA DE DICTADO CONTINUO (MICRÓFONO)
+    // =========================================================================
         let recognition;
         let isRecording = false;
 
@@ -643,7 +647,13 @@
 
             recognition.start();
         }
+    // =========================================================================
+    // 🛑 FIN: SISTEMA DE DICTADO CONTINUO (MICRÓFONO)
+    // =========================================================================
 
+    // =========================================================================
+    // 🚀 INICIO: PROCESAMIENTO DE FOTOGRAFÍAS A DRIVE
+    // =========================================================================
         function procesarFotoCotizacion(input) {
             const file = input.files[0];
             
@@ -713,7 +723,13 @@
                 };
             };
         }
+    // =========================================================================
+    // 🛑 FIN: PROCESAMIENTO DE FOTOGRAFÍAS A DRIVE
+    // =========================================================================
 
+    // =========================================================================
+    // 🚀 INICIO: SISTEMA TRIPLE IDENTIDAD CORPORATIVA (IMÁGENES)
+    // =========================================================================
         function guardarImagen(inputId, storageKey) {
             const file = document.getElementById(inputId).files[0];
             
@@ -766,7 +782,13 @@
                 }
             });
         }
+    // =========================================================================
+    // 🛑 FIN: SISTEMA TRIPLE IDENTIDAD CORPORATIVA (IMÁGENES)
+    // =========================================================================
 
+    // =========================================================================
+    // 🚀 INICIO: FUNCIONES UTILITARIAS Y DE TIEMPO
+    // =========================================================================
         function gV(obj, k) {
             if (!obj) {
                 return "";
@@ -829,7 +851,13 @@
             }
             return count;
         }
+    // =========================================================================
+    // 🛑 FIN: FUNCIONES UTILITARIAS Y DE TIEMPO
+    // =========================================================================
 
+    // =========================================================================
+    // 🚀 INICIO: GESTIÓN DE LISTAS Y WHATSAPP
+    // =========================================================================
         function abrirListaGestion(f) {
             showScreen('lista-gestion-screen');
             document.getElementById('titulo-lista-gestion').innerText = f + "S";
@@ -871,7 +899,10 @@
                 const diasH = calcularDiasHabiles(fechaBase);
                 const otN = gV(item, 'OT') || gV(item, 'N° OT');
                 const nmb = gV(item, 'NOMBRE') || gV(item, 'CLIENTE') || 'Sin Nombre';
-                const wp = gV(item, 'WHATSAPP') || gV(item, 'CELULAR') || '';
+                let wp = gV(item, 'WHATSAPP') || gV(item, 'CELULAR') || '';
+                
+                // Limpiador básico de número
+                wp = wp.replace(/\+/g, '').replace(/\s/g, ''); 
                 
                 const linkPdf = gV(item, 'LINK_PDF');
                 const linkFoto = gV(item, 'LINK_FOTO');
@@ -883,10 +914,10 @@
                 }
                 if(filtro === 'ABANDONADO') { color = "bg-yellow-500 text-black"; }
 
-                let wpLink = `https://wa.me/${wp}`;
+                let wpLink = `https://api.whatsapp.com/send?phone=${wp}`;
                 if (filtro === 'REPARADO') {
                     const wpMsg = `Estimado(a) *${nmb}*, la reparación de su equipo OT *${otN}* se encuentra lista para su retiro. Esperamos que se encuentre bien. Saludos cordiales de SETECSI.`;
-                    wpLink = `https://wa.me/${wp}?text=${encodeURIComponent(wpMsg)}`;
+                    wpLink = `https://api.whatsapp.com/send?phone=${wp}&text=${encodeURIComponent(wpMsg)}`;
                 }
 
                 let docsBtns = '';
@@ -945,7 +976,13 @@
                 alert("Error al conectar con la nube."); 
             }
         }
+    // =========================================================================
+    // 🛑 FIN: GESTIÓN DE LISTAS Y WHATSAPP
+    // =========================================================================
 
+    // =========================================================================
+    // 🚀 INICIO: MOTOR PDF (GENERACIÓN DE DOCUMENTOS)
+    // =========================================================================
         async function generarPDFGlobal(tipo, ot, datos) {
             const { jsPDF } = window.jspdf; 
             const doc = new jsPDF(); 
@@ -1252,8 +1289,13 @@
                 };
             });
         }
+    // =========================================================================
+    // 🛑 FIN: MOTOR PDF (GENERACIÓN DE DOCUMENTOS)
+    // =========================================================================
 
-        // --- ACCIONES DE GUARDADO ---
+    // =========================================================================
+    // 🚀 INICIO: GUARDADO DE INGRESO Y ENVÍO DE PRESUPUESTOS
+    // =========================================================================
         async function enviarPresupuesto() {
             const d = document.getElementById('diagnostico').value; 
             const v = document.getElementById('valor-neto').value;
@@ -1285,12 +1327,10 @@
                 const clienteAviso = otActiva.NOMBRE || "Cliente";
                 let whatsAviso = otActiva.WHATSAPP || "";
                 
-                // Limpiamos el número de símbolos y espacios para evitar fallos en la redirección móvil
                 whatsAviso = whatsAviso.replace(/\+/g, '').replace(/\s/g, ''); 
 
                 const msg = `Estimado(a) *${clienteAviso}*, le saludamos cordialmente de SETECSI. Le informamos que el Presupuesto Técnico de su equipo correspondiente a la OT *${otActiva.ot}* ya está listo. Adjuntamos el documento en formato PDF con todo el detalle técnico y los valores. Quedamos a su entera disposición. ¡Saludos cordiales!`;
                 
-                // Usar api.whatsapp.com fuerza mejor la apertura de WhatsApp Business en teléfonos
                 const urlWa = `https://api.whatsapp.com/send?phone=${whatsAviso}&text=${encodeURIComponent(msg)}`;
                 
                 const linkObj = document.createElement('a');
@@ -1300,7 +1340,6 @@
                 linkObj.click();
                 document.body.removeChild(linkObj);
                 
-                // RETRASO CRÍTICO: Esperamos 2.5 segundos antes de recargar la página para que la app se abra
                 setTimeout(() => {
                     location.reload(); 
                 }, 2500);
@@ -1434,7 +1473,13 @@
                 alert("Error de conexión al servidor."); 
             }
         }
+    // =========================================================================
+    // 🛑 FIN: GUARDADO DE INGRESO Y ENVÍO DE PRESUPUESTOS
+    // =========================================================================
 
+    // =========================================================================
+    // 🚀 INICIO: BÚSQUEDA, AUTOCOMPLETADO Y BASES DE DATOS
+    // =========================================================================
         function buscarCliente(t) {
             const ul = document.getElementById('sugerencias-cliente'); 
             ul.innerHTML = ''; 
@@ -1544,6 +1589,9 @@
             localStorage.setItem('wm_clientes_locales', JSON.stringify(l)); 
             alert("✅ Base de clientes habituales actualizada."); 
         }
+    // =========================================================================
+    // 🛑 FIN: BÚSQUEDA, AUTOCOMPLETADO Y BASES DE DATOS
+    // =========================================================================
     </script>
 </body>
 </html>
