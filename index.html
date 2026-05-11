@@ -1327,22 +1327,22 @@
                 const clienteAviso = otActiva.NOMBRE || "Cliente";
                 let whatsAviso = otActiva.WHATSAPP || "";
                 
+                // Limpiamos los espacios y símbolos del número para evitar bloqueos
                 whatsAviso = whatsAviso.replace(/\+/g, '').replace(/\s/g, ''); 
 
                 const msg = `Estimado(a) *${clienteAviso}*, le saludamos cordialmente de SETECSI. Le informamos que el Presupuesto Técnico de su equipo correspondiente a la OT *${otActiva.ot}* ya está listo. Adjuntamos el documento en formato PDF con todo el detalle técnico y los valores. Quedamos a su entera disposición. ¡Saludos cordiales!`;
                 
-                const urlWa = `https://api.whatsapp.com/send?phone=${whatsAviso}&text=${encodeURIComponent(msg)}`;
+                // Generamos el enlace universal de WhatsApp
+                const urlWa = `https://wa.me/${whatsAviso}?text=${encodeURIComponent(msg)}`;
                 
-                const linkObj = document.createElement('a');
-                linkObj.href = urlWa;
-                linkObj.target = '_blank';
-                document.body.appendChild(linkObj);
-                linkObj.click();
-                document.body.removeChild(linkObj);
+                // SOLUCIÓN: Redirigimos la ventana actual en lugar de usar un Pop-Up (window.open)
+                // Esto fuerza al sistema operativo del celular a interceptar el enlace y abrir la App.
+                window.location.href = urlWa;
                 
+                // Damos un tiempo de gracia más largo (3.5 seg) para que WhatsApp se abra antes de recargar la App
                 setTimeout(() => {
                     location.reload(); 
-                }, 2500);
+                }, 3500);
 
             } catch (e) { 
                 btn.disabled = false; 
