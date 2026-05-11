@@ -1331,180 +1331,18 @@
 
                 const msg = `Estimado(a) *${clienteAviso}*, le saludamos cordialmente de SETECSI. Le informamos que el Presupuesto Técnico de su equipo correspondiente a la OT *${otActiva.ot}* ya está listo. Adjuntamos el documento en formato PDF con todo el detalle técnico y los valores. Quedamos a su entera disposición. ¡Saludos cordiales!`;
                 
-                // SOLUCIÓN: Volvemos a "wa.me" que fuerza la apertura directa de la App en móviles
-                const urlWa = `https://wa.me/${whatsAviso}?text=${encodeURIComponent(msg)}`;
+                const urlWa = `https://api.whatsapp.com/send?phone=${whatsAviso}&text=${encodeURIComponent(msg)}`;
                 
-                window.open(urlWa, '_blank');
+                const linkObj = document.createElement('a');
+                linkObj.href = urlWa;
+                linkObj.target = '_blank';
+                document.body.appendChild(linkObj);
+                linkObj.click();
+                document.body.removeChild(linkObj);
                 
-                // Mantenemos el retraso vital de 2.5 segundos para no cortar a WhatsApp
                 setTimeout(() => {
                     location.reload(); 
                 }, 2500);
-
-            } catch (e) { 
-                btn.disabled = false; 
-                btn.innerText = "Guardar y Enviar al Cliente"; 
-            }
-        }
-
-        document.getElementById('ingreso-form').addEventListener('submit', async (e) => {
-            e.preventDefault(); 
-            const btn = document.getElementById('btn-submit'); 
-            btn.disabled = true; 
-            btn.innerText = "PROCESANDO... NO CERRAR";
-            
-            const accs = Array.from(document.querySelectorAll('.acc:checked')).map(el => el.value).join(', ');
-            const otros = document.getElementById('otros-acc').value;
-            const tA = accs + (otros ? ', ' + otros : '');
-            
-            const d = { 
-                action: "ingreso", 
-                NOMBRE: document.getElementById('nombre').value, 
-                RUT: document.getElementById('rut').value, 
-                WHATSAPP: document.getElementById('whatsapp').value, 
-                DIRECCION: document.getElementById('direccion').value, 
-                CORREO: document.getElementById('correo').value, 
-                MARCA: document.getElementById('marca').value, 
-                MODELO: document.getElementById('modelo').value, 
-                SERIE: document.getElementById('serie').value, 
-                ACCESORIOS: tA, 
-                FALLA: document.getElementById('falla').value, 
-                GUIA: document.getElementById('guia').value 
-            };
-            
-            try { 
-                const res = await fetch(WEB_APP_URL, { 
-                    method: 'POST', 
-                    body: JSON.stringify(d) 
-                });
-                
-                const r = await res.json(); 
-                
-                await generarPDFGlobal('OT', { ...d, ot: r.ot }, {});
-                
-                alert("✅ OT #" + r.ot + " Registrada exitosamente."); 
-                location.reload(); 
-            } catch (e) { 
-                btn.disabled = false; 
-                btn.innerText = "Registrar Ingreso"; 
-            }
-        });
-
-        async function cargarPendientes() {
-            showScreen('presupuesto-list-screen'); 
-            document.getElementById('lista-pendientes').innerHTML = ''; 
-            document.getElementById('loading-pendientes').classList.remove('hidden');
-            
-            try {
-                const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime(), { cache: "no-store" }); 
-                const dataCruda = await res.json(); 
-                document.getElementById('loading-pendientes').classList.add('hidden');
-                
-                dbFull = dataCruda; 
-                let conteo = 0;
-                
-                dbFull.forEach(p => {
-                    const diag = gV(p, 'DIAGNOSTICO'); 
-                    const est = gV(p, 'ESTADO').toUpperCase();
-                    const otNum = gV(p, 'OT') || gV(p, 'N° OT') || (p.fila ? p.fila - 1 : 0);
-                    
-                    if (!diag && est !== 'ENTREGADO' && otNum != 0) {
-                        conteo++; 
-                        const fechaB = gV(p, 'FECHA_MOVIMIENTO') || gV(p, 'FECHA') || gV(p, 'FECHA_INGRESO');
-                        const dias = calcularDiasHabiles(fechaB); 
-                        
-                        let sh = "sh-dia-1"; 
-                        if(dias === 2) { sh = "sh-dia-2"; }
-                        if(dias >= 3) { sh = "sh-dia-3"; }
-                        
-                        const div = document.createElement('div'); 
-                        div.className = `bg-white p-5 rounded-2xl border-l-8 border-azul transition active:scale-95 cursor-pointer shadow-sm ${sh}`;
-                        
-                        div.onclick = () => { 
-                            otActiva = { 
-                                fila: p.fila, 
-                                ot: otNum, 
-                                NOMBRE: gV(p, 'NOMBRE'), 
-                                RUT: gV(p, 'RUT'), 
-                                WHATSAPP: gV(p, 'WHATSAPP'), 
-                                CORREO: gV(p, 'CORREO'), 
-                                DIRECCION: gV(p, 'DIRECCION'), 
-                                MARCA: gV(p, 'MARCA'), 
-                                MODELO: gV(p, 'MODELO'), 
-                                SERIE: gV(p, 'SERIE'), 
-                                GUIA: gV(p, 'GUIA'), 
-                                ACCESORIOS: gV(p, 'ACCESORIOS'), 
-                                FALLA: gV(p, 'FALLA') 
-                            }; 
-                            
-                            document.getElementById('ot-numero').innerText = otNum; 
-                            document.getElementById('det-cliente').innerText = otActiva.NOMBRE; 
-                            document.getElementById('det-equipo').innerText = otActiva.MARCA + " " + otActiva.MODELO; 
-                            document.getElementById('det-guia-ref').innerText = otActiva.GUIA; 
-                            document.getElementById('det-falla').innerText = otActiva.FALLA;
-                            document.getElementById('foto-status').innerText = ""; 
-                            document.getElementById('foto-status').className = "hidden";
-                            
-                            repuestosActuales = []; 
-                            renderRep(); 
-                            showScreen('presupuesto-detail-screen');
-                        };
-                        
-                        div.innerHTML = `
-                        <div>
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-[10px] font-black text-azul uppercase">OT-${otNum}</span>
-                                <span class="text-[9px] font-black text-gray-400 uppercase tracking-tighter">${dias} DÍA(S) HÁBIL(ES)</span>
-              // =========================================================================
-    // 🚀 INICIO: GUARDADO DE INGRESO Y ENVÍO DE PRESUPUESTOS
-    // =========================================================================
-        async function enviarPresupuesto() {
-            const d = document.getElementById('diagnostico').value; 
-            const v = document.getElementById('valor-neto').value;
-            const p = document.getElementById('plazo').value; 
-            
-            if(!d || !v) {
-                return alert("⚠️ Complete el Diagnóstico y el Valor Neto.");
-            }
-            
-            const btn = document.getElementById('btn-enviar-presupuesto'); 
-            btn.disabled = true; 
-            btn.innerText = "PROCESANDO... NO CERRAR";
-            
-            try { 
-                await fetch(WEB_APP_URL, { 
-                    method: 'POST', 
-                    mode: 'no-cors', 
-                    body: JSON.stringify({ 
-                        action: "update_presupuesto", 
-                        ot: otActiva.ot, 
-                        DIAGNOSTICO: d, 
-                        NETO: v, 
-                        estado: 'PRESUPUESTADO' 
-                    }) 
-                }); 
-                
-                await generarPDFGlobal('COT', otActiva, { diagnostico: d, valorNeto: v, plazo: p }); 
-                
-                const clienteAviso = otActiva.NOMBRE || "Cliente";
-                let whatsAviso = otActiva.WHATSAPP || "";
-                
-                // Limpiamos los espacios y símbolos del número para evitar bloqueos
-                whatsAviso = whatsAviso.replace(/\+/g, '').replace(/\s/g, ''); 
-
-                const msg = `Estimado(a) *${clienteAviso}*, le saludamos cordialmente de SETECSI. Le informamos que el Presupuesto Técnico de su equipo correspondiente a la OT *${otActiva.ot}* ya está listo. Adjuntamos el documento en formato PDF con todo el detalle técnico y los valores. Quedamos a su entera disposición. ¡Saludos cordiales!`;
-                
-                // Generamos el enlace universal de WhatsApp
-                const urlWa = `https://wa.me/${whatsAviso}?text=${encodeURIComponent(msg)}`;
-                
-                // SOLUCIÓN: Redirigimos la ventana actual en lugar de usar un Pop-Up (window.open)
-                // Esto fuerza al sistema operativo del celular a interceptar el enlace y abrir la App.
-                window.location.href = urlWa;
-                
-                // Damos un tiempo de gracia más largo (3.5 seg) para que WhatsApp se abra antes de recargar la App
-                setTimeout(() => {
-                    location.reload(); 
-                }, 3500);
 
             } catch (e) { 
                 btn.disabled = false; 
