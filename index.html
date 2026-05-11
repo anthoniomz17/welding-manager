@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Welding Manager Pro V23.3 - SETECSI LEY ABSOLUTA</title>
+    <title>Welding Manager Pro V23.4 - SETECSI LEY ABSOLUTA</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -188,7 +188,7 @@
             </div>
             
             <div class="app-header-content absolute bottom-6 left-6 z-40">
-                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v23.3 Premium</span>
+                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v23.4 Premium</span>
                 <h1 class="text-4xl font-black uppercase tracking-tighter mt-1 leading-none text-white drop-shadow-md">Welding</h1>
                 <h1 class="text-4xl font-black uppercase tracking-tighter leading-none text-blue-200 drop-shadow-md">Servicio</h1>
                 <div class="mt-1 text-white drop-shadow-md">
@@ -495,7 +495,6 @@
     </div>
 
     <script>
-        // URL DE IMPLEMENTACIÓN LEY ABSOLUTA V23.3
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyxytLde1CRlxQnYyUbuc2Entjr9FJ1L93Cl5JpdAm4pRAjlVl_vOnP2x3_kDP2Ba6i/exec"; 
         
         let dbFull = [];
@@ -513,7 +512,6 @@
             sincronizarBaseAlInicio();
         };
 
-        // --- MOTOR IA SETECSI (REDACCIÓN CON DIAGNÓSTICO DE ERRORES V23.3) ---
         async function mejorarConIA() {
             const apiKey = localStorage.getItem('wm_ia_key');
             
@@ -591,7 +589,6 @@
             }
         }
 
-        // --- SISTEMA DE DICTADO CONTINUO (BLINDADO - AUTO REINICIO V22.2) ---
         let recognition;
         let isRecording = false;
 
@@ -628,7 +625,6 @@
                         finalTranscript += event.results[i][0].transcript;
                     }
                 }
-                // SE AGREGA AL FINAL SIN BORRAR NADA
                 input.value += (input.value ? " " : "") + finalTranscript;
             };
 
@@ -648,7 +644,6 @@
             recognition.start();
         }
 
-        // --- SISTEMA DE CÁMARA CON COMPRESIÓN DE MEMORIA ---
         function procesarFotoCotizacion(input) {
             const file = input.files[0];
             
@@ -719,7 +714,6 @@
             };
         }
 
-        // --- SISTEMA TRIPLE IDENTIDAD CORPORATIVA ---
         function guardarImagen(inputId, storageKey) {
             const file = document.getElementById(inputId).files[0];
             
@@ -773,7 +767,6 @@
             });
         }
 
-        // --- UTILIDADES DE DATOS ---
         function gV(obj, k) {
             if (!obj) {
                 return "";
@@ -837,7 +830,6 @@
             return count;
         }
 
-        // --- GESTIÓN DE LISTAS Y WHATSAPP (V22.2) ---
         function abrirListaGestion(f) {
             showScreen('lista-gestion-screen');
             document.getElementById('titulo-lista-gestion').innerText = f + "S";
@@ -891,7 +883,6 @@
                 }
                 if(filtro === 'ABANDONADO') { color = "bg-yellow-500 text-black"; }
 
-                // LOGICA WHATSAPP ESPECIAL REPARADOS (V22.2)
                 let wpLink = `https://wa.me/${wp}`;
                 if (filtro === 'REPARADO') {
                     const wpMsg = `Estimado(a) *${nmb}*, la reparación de su equipo OT *${otN}* se encuentra lista para su retiro. Esperamos que se encuentre bien. Saludos cordiales de SETECSI.`;
@@ -955,7 +946,6 @@
             }
         }
 
-        // --- MOTOR PDF LEY ABSOLUTA (V23.3 - 100% EXPANDIDO) ---
         async function generarPDFGlobal(tipo, ot, datos) {
             const { jsPDF } = window.jspdf; 
             const doc = new jsPDF(); 
@@ -1025,7 +1015,6 @@
             const FA = ot.FALLA || ot.falla || "Sin descripción.";
 
             if(tipo === 'OT') {
-                // PDF DE ORDEN DE INGRESO
                 doc.setTextColor(r, g, b); 
                 doc.setFontSize(32); 
                 doc.setFont("helvetica", "bold"); 
@@ -1087,7 +1076,6 @@
                 doc.setFont("helvetica", "normal"); 
                 doc.text(fL, 15, cY + 8);
 
-                // TÉRMINOS LEGALES RESTAURADOS V22.2
                 cY = 230; 
                 doc.setFontSize(8.5); 
                 doc.setTextColor(100); 
@@ -1114,7 +1102,6 @@
                 doc.save(`OT_${ot.ot}_${N}.pdf`);
                 
             } else {
-                // PDF DE PRESUPUESTO TÉCNICO
                 doc.setTextColor(r, g, b); 
                 doc.setFontSize(10); 
                 doc.setFont("helvetica", "bold");
@@ -1296,12 +1283,28 @@
                 await generarPDFGlobal('COT', otActiva, { diagnostico: d, valorNeto: v, plazo: p }); 
                 
                 const clienteAviso = otActiva.NOMBRE || "Cliente";
-                const whatsAviso = otActiva.WHATSAPP || "";
+                let whatsAviso = otActiva.WHATSAPP || "";
+                
+                // Limpiamos el número de símbolos y espacios para evitar fallos en la redirección móvil
+                whatsAviso = whatsAviso.replace(/\+/g, '').replace(/\s/g, ''); 
+
                 const msg = `Estimado(a) *${clienteAviso}*, le saludamos cordialmente de SETECSI. Le informamos que el Presupuesto Técnico de su equipo correspondiente a la OT *${otActiva.ot}* ya está listo. Adjuntamos el documento en formato PDF con todo el detalle técnico y los valores. Quedamos a su entera disposición. ¡Saludos cordiales!`;
                 
-                window.open(`https://wa.me/${whatsAviso}?text=${encodeURIComponent(msg)}`, '_blank');
+                // Usar api.whatsapp.com fuerza mejor la apertura de WhatsApp Business en teléfonos
+                const urlWa = `https://api.whatsapp.com/send?phone=${whatsAviso}&text=${encodeURIComponent(msg)}`;
                 
-                location.reload(); 
+                const linkObj = document.createElement('a');
+                linkObj.href = urlWa;
+                linkObj.target = '_blank';
+                document.body.appendChild(linkObj);
+                linkObj.click();
+                document.body.removeChild(linkObj);
+                
+                // RETRASO CRÍTICO: Esperamos 2.5 segundos antes de recargar la página para que la app se abra
+                setTimeout(() => {
+                    location.reload(); 
+                }, 2500);
+
             } catch (e) { 
                 btn.disabled = false; 
                 btn.innerText = "Guardar y Enviar al Cliente"; 
@@ -1432,7 +1435,6 @@
             }
         }
 
-        // --- BUSCADORES ---
         function buscarCliente(t) {
             const ul = document.getElementById('sugerencias-cliente'); 
             ul.innerHTML = ''; 
@@ -1545,6 +1547,3 @@
     </script>
 </body>
 </html>
-
-
-
