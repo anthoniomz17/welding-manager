@@ -497,26 +497,15 @@
 
         window.onload = () => {
             const iaK = localStorage.getItem('wm_ia_key');
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Welding Manager Pro V23.4</title>
-    
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="SETECSI">
-
-    <link rel="apple-touch-icon" href="https://anthoniomz17.github.io/logo.png">
-    <link rel="icon" type="image/png" href="https://anthoniomz17.github.io/logo.png">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    ```
-
-*(Nota: Este código asume que subiste la imagen con el nombre exacto de `logo.png`. Si la subiste como `logo.jpg`, solo cámbiale el `.png` por `.jpg` en las dos líneas donde aparece el link).*
-
-¡Copia, pega ese bloque, guarda los cambios y cuéntame si ya te aparece la opción de instalarla en tu pantalla de inicio!
+            if(iaK) {
+                document.getElementById('ia-key-input').value = iaK;
+            }
+            cargarImagenesVisuales(); 
+            sincronizarBaseAlInicio();
+        };
+    // =========================================================================
+    // 🛑 FIN: VARIABLES GLOBALES Y SINCRONIZACIÓN INICIAL
+    // =========================================================================
 
 
     // =========================================================================
