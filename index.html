@@ -515,7 +515,7 @@
 
 
 
-    // =========================================================================
+        // =========================================================================
     // 🚀 INICIO: MOTOR IA SETECSI (GROQ)
     // =========================================================================
         async function mejorarConIA() {
@@ -540,17 +540,21 @@
             btn.classList.add('ai-loading');
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> PROCESANDO...';
 
-            const prompt = `Eres un Ingeniero especialista de SETECSI. Redacta un "Diagnóstico Técnico" profesional para una máquina de soldar.
-            EQUIPO: ${equipo}
-            FALLA CLIENTE: ${fallaReportada}
-            NOTAS TÉCNICAS: ${notasTecnico}
-            
-            REGLAS ESTRICTAS: 
-            1. Usa tono formal de ingeniería. 
-            2. Divide en 3 secciones. Los encabezados deben ser EXACTAMENTE: HALLAZGOS:, CAUSA RAÍZ: y ACCIÓN REALIZADA:.
-            3. ESTÁ ESTRICTAMENTE PROHIBIDO usar símbolos de formato (NO uses asteriscos **, ni numerales ##, ni guiones). Escribe los encabezados únicamente en MAYÚSCULAS para resaltarlos.
-            4. Máximo 150 palabras, sin saludos ni despedidas.
-            5. Usa terminología técnica profesional.`;
+            const prompt = `Actúa como un Ingeniero Consultor Senior de SETECSI. Tu tarea es transformar las notas rápidas del técnico en un "Diagnóstico Técnico" de excelencia, redactado con una prosa impecable, clara, profesional y directa, tal como lo haría un asistente de inteligencia artificial avanzado.
+
+            DATOS DEL INGRESO:
+            - EQUIPO: ${equipo}
+            - FALLA SEGÚN CLIENTE: ${fallaReportada}
+            - NOTAS TÉCNICAS DEL TALLER: ${notasTecnico}
+
+            INSTRUCCIONES DE REDACCIÓN (OBLIGATORIAS):
+            1. Tono: Experto, fluido y resolutivo. Muestra alto valor técnico pero explícalo de forma que el cliente entienda perfectamente por qué falló su equipo y qué se hizo para solucionarlo.
+            2. Estructura: Usa EXACTAMENTE estos tres encabezados (solo en MAYÚSCULAS, sin símbolos):
+            HALLAZGOS:
+            CAUSA RAÍZ:
+            ACCIÓN REALIZADA:
+            3. Formato Limpio: ESTÁ ESTRICTAMENTE PROHIBIDO usar asteriscos (**), numerales (##), guiones (-) o cualquier otro símbolo de Markdown. Solo texto plano y saltos de línea.
+            4. Regla de Oro: No inventes fallas ni repuestos que no estén en las notas técnicas. Solo toma las notas, amplíalas con lenguaje profesional de ingeniería y entrégalas listas para el informe del cliente. Cero saludos iniciales ni despedidas.`;
 
             try {
                 const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -597,6 +601,7 @@
     // =========================================================================
     // 🛑 FIN: MOTOR IA SETECSI
     // =========================================================================
+
 
     // =========================================================================
     // 🚀 INICIO: SISTEMA DE DICTADO CONTINUO (MICRÓFONO)
