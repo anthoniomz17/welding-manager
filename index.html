@@ -1463,7 +1463,7 @@
     // 🛑 FIN: GUARDADO DE INGRESO Y ENVÍO DE PRESUPUESTOS
     // =========================================================================
 
-    // =========================================================================
+        // =========================================================================
     // 🚀 INICIO: BÚSQUEDA, AUTOCOMPLETADO Y BASES DE DATOS
     // =========================================================================
         function buscarCliente(t) {
@@ -1485,22 +1485,40 @@
             ul.classList.remove('hidden'); 
             const unicos = [];
             
-            fil.forEach(c => { 
-                if(!unicos.find(u => gV(u, 'NOMBRE') === gV(c, 'NOMBRE'))) {
-                    unicos.push(c); 
+            // Invertimos la lista para revisar los ingresos MÁS RECIENTES primero.
+            const filRecientes = [...fil].reverse();
+            
+            filRecientes.forEach(c => { 
+                let existente = unicos.find(u => gV(u, 'NOMBRE') === gV(c, 'NOMBRE'));
+                
+                if(!existente) {
+                    // Si no existe en la lista de sugerencias, lo agregamos como un objeto nuevo modificable
+                    unicos.push({
+                        NOMBRE: gV(c, 'NOMBRE'),
+                        RUT: gV(c, 'RUT'),
+                        WHATSAPP: gV(c, 'WHATSAPP') || gV(c, 'CELULAR') || gV(c, 'TELEFONO'),
+                        DIRECCION: gV(c, 'DIRECCION') || gV(c, 'DOMICILIO'),
+                        CORREO: gV(c, 'CORREO') || gV(c, 'EMAIL')
+                    }); 
+                } else {
+                    // FUSIÓN INTELIGENTE: Si ya lo encontró, pero le faltan datos, los rescata de OTs más antiguas.
+                    if (!existente.WHATSAPP) existente.WHATSAPP = gV(c, 'WHATSAPP') || gV(c, 'CELULAR') || gV(c, 'TELEFONO');
+                    if (!existente.DIRECCION) existente.DIRECCION = gV(c, 'DIRECCION') || gV(c, 'DOMICILIO');
+                    if (!existente.CORREO) existente.CORREO = gV(c, 'CORREO') || gV(c, 'EMAIL');
+                    if (!existente.RUT) existente.RUT = gV(c, 'RUT');
                 }
             });
             
             unicos.forEach(c => {
                 const li = document.createElement('li'); 
                 li.className = "p-4 border-b font-bold text-gray-900"; 
-                li.innerText = gV(c, 'NOMBRE');
+                li.innerText = c.NOMBRE;
                 li.onclick = () => { 
-                    document.getElementById('nombre').value = gV(c, 'NOMBRE'); 
-                    document.getElementById('rut').value = gV(c, 'RUT'); 
-                    document.getElementById('whatsapp').value = gV(c, 'WHATSAPP') || gV(c, 'CELULAR'); 
-                    document.getElementById('direccion').value = gV(c, 'DIRECCION'); 
-                    document.getElementById('correo').value = gV(c, 'CORREO') || gV(c, 'EMAIL'); 
+                    document.getElementById('nombre').value = c.NOMBRE || ''; 
+                    document.getElementById('rut').value = c.RUT || ''; 
+                    document.getElementById('whatsapp').value = c.WHATSAPP || ''; 
+                    document.getElementById('direccion').value = c.DIRECCION || ''; 
+                    document.getElementById('correo').value = c.CORREO || ''; 
                     ul.classList.add('hidden'); 
                 };
                 ul.appendChild(li);
@@ -1578,6 +1596,7 @@
     // =========================================================================
     // 🛑 FIN: BÚSQUEDA, AUTOCOMPLETADO Y BASES DE DATOS
     // =========================================================================
+
     </script>
 </body>
 </html>
