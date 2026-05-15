@@ -996,7 +996,359 @@
     // 🛑 FIN: GESTIÓN DE LISTAS Y WHATSAPP
     // =========================================================================
 
-    
+        // =========================================================================
+    // 🚀 INICIO: MOTOR PDF (GENERACIÓN DE DOCUMENTOS)
+    // =========================================================================
+        async function generarPDFGlobal(tipo, ot, datos) {
+            const { jsPDF } = window.jspdf; 
+            const doc = new jsPDF(); 
+            
+            const r = 0; 
+            const g = 112; 
+            const b = 243; 
+            const fmt = new Intl.NumberFormat("es-CL");
+            
+            const bannerData = localStorage.getItem('wm_banner');
+            
+            if(bannerData) {
+                try {
+                    const formatB = bannerData.includes("image/png") ? "PNG" : "JPEG";
+                    doc.addImage(bannerData, formatB, 0, 0, 210, 52);
+                    doc.setFillColor(0, 0, 0); 
+                    doc.setGState(new doc.GState({opacity: 0.6}));
+                    doc.rect(0, 0, 210, 52, 'F'); 
+                    doc.setGState(new doc.GState({opacity: 1}));
+                } catch(e) { 
+                    doc.setFillColor(r, g, b); 
+                    doc.rect(0, 0, 210, 52, 'F'); 
+                }
+            } else {
+                doc.setFillColor(r, g, b); 
+                doc.rect(0, 0, 210, 52, 'F');
+            }
+
+            doc.setTextColor(255); 
+            doc.setFontSize(14); 
+            doc.setFont("helvetica", "bold"); 
+            doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 15);
+            
+            doc.setFontSize(26); 
+            if (tipo === 'OT') {
+                doc.text("ORDEN DE INGRESO", 10, 30);
+            } else {
+                doc.text("PRESUPUESTO TÉCNICO", 10, 30);
+            }
+            
+            doc.setFontSize(9); 
+            doc.setFont("helvetica", "normal"); 
+            doc.text(`RUT: 76.349.984-7 | amsetecsi@gmail.com`, 10, 40);
+            doc.text(`Fono: +56 9 95412322 | Santiago, Chile`, 10, 45);
+            
+            const logoData = localStorage.getItem('wm_logo');
+            if (logoData) {
+                try {
+                    doc.setFillColor(255, 255, 255); 
+                    doc.roundedRect(163, 6, 39, 39, 2, 2, 'F');
+                    const formatL = logoData.includes("image/png") ? "PNG" : "JPEG";
+                    doc.addImage(logoData, formatL, 165, 8, 35, 35);
+                } catch(e) {}
+            }
+            
+            let cY = 65;
+            const N = ot.NOMBRE || ot.nombre || "No registrado";
+            const RT = ot.RUT || ot.rut || "No registrado";
+            const W = ot.WHATSAPP || ot.whatsapp || "No registrado";
+            const D = ot.DIRECCION || ot.direccion || "No registrada";
+            const E = ot.CORREO || ot.correo || "No registrado";
+            const M = ot.MARCA || ot.marca || "Sin Marca";
+            const MO = ot.MODELO || ot.modelo || "Sin Modelo";
+            const S = ot.SERIE || ot.serie || "S/N";
+            const GU = ot.GUIA || ot.guia || "S/G";
+            const AC = ot.ACCESORIOS || ot.accesorios || "Ninguno";
+            const FA = ot.FALLA || ot.falla || "Sin descripción.";
+
+            if(tipo === 'OT') {
+                doc.setTextColor(r, g, b); 
+                doc.setFontSize(32); 
+                doc.setFont("helvetica", "bold"); 
+                doc.text(`OT: ${ot.ot}`, 130, 75);
+                
+                doc.setTextColor(40); 
+                doc.setFontSize(10); 
+                doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 130, 82);
+                
+                doc.setTextColor(r, g, b); 
+                doc.setFontSize(15); 
+                doc.text("I. DATOS DEL CLIENTE", 10, cY); 
+                cY += 10;
+                
+                doc.setTextColor(40); 
+                doc.setFontSize(12); 
+                doc.setFont("helvetica", "normal"); 
+                doc.text(`Nombre / Empresa: ${N}`, 12, cY); 
+                cY += 8;
+                doc.text(`RUT: ${RT}`, 12, cY); 
+                cY += 8;
+                doc.text(`WhatsApp: ${W}`, 12, cY); 
+                cY += 8;
+                doc.text(`Email: ${E}`, 12, cY); 
+                cY += 8;
+                doc.text(`Dirección: ${D}`, 12, cY); 
+                cY += 14;
+
+                doc.setTextColor(r, g, b); 
+                doc.setFontSize(15); 
+                doc.setFont("helvetica", "bold"); 
+                doc.text("II. DETALLES DEL EQUIPO", 10, cY); 
+                cY += 10;
+                
+                doc.setTextColor(40); 
+                doc.setFontSize(12); 
+                doc.setFont("helvetica", "normal"); 
+                doc.text(`Equipo: ${M} ${MO}`, 12, cY); 
+                cY += 8;
+                doc.text(`Serie: ${S} | Guía Cliente: ${GU}`, 12, cY); 
+                cY += 10;
+                
+                const acL = doc.splitTextToSize(`Accesorios Recibidos: ${AC}`, 180); 
+                doc.text(acL, 12, cY); 
+                cY += (acL.length * 8) + 10;
+
+                doc.setTextColor(r, g, b); 
+                doc.setFontSize(15); 
+                doc.setFont("helvetica", "bold"); 
+                doc.text("III. FALLA REPORTADA POR CLIENTE", 10, cY); 
+                cY += 8;
+                
+                const fL = doc.splitTextToSize(FA, 185); 
+                doc.setFillColor(248); 
+                doc.roundedRect(10, cY, 190, (fL.length * 8) + 8, 1, 1, 'F');
+                
+                doc.setTextColor(40); 
+                doc.setFontSize(12); 
+                doc.setFont("helvetica", "normal"); 
+                doc.text(fL, 15, cY + 8);
+
+                cY = 230; 
+                doc.setFontSize(8.5); 
+                doc.setTextColor(100); 
+                doc.setFont("helvetica", "bold"); 
+                doc.text("TÉRMINOS Y CONDICIONES LEGALES:", 10, cY);
+                
+                doc.setFont("helvetica", "normal");
+                const nOT = [
+                    "1. Plazo de diagnóstico estimado: 3 días hábiles.", 
+                    "2. El rechazo del presupuesto generará un cargo administrativo por revisión de 0,05 UF.", 
+                    "3. Pasados 7 días de aviso de término sin que se retire el equipo, aplicará cargo por bodegaje de 0,07 UF diarios.", 
+                    "4. Equipos no retirados transcurridos 6 meses se considerarán legalmente abandonados, pasando a dominio del taller."
+                ];
+                nOT.forEach((n, i) => { 
+                    doc.text(n, 10, cY + 6 + (i * 4.5)); 
+                });
+                
+                doc.line(30, 275, 80, 275); 
+                doc.text("Firma o Timbre Cliente", 45, 280); 
+                
+                doc.line(130, 275, 180, 275); 
+                doc.text("Firma Recepción Técnica", 145, 280);
+                
+                doc.save(`OT_${ot.ot}_${N}.pdf`);
+                
+            } else {
+                // ==========================================
+                // ZONA DE PRESUPUESTO CON AUTO-ESCALADO
+                // ==========================================
+                doc.setTextColor(r, g, b); 
+                doc.setFontSize(10); 
+                doc.setFont("helvetica", "bold");
+                doc.text(`OT N°: ${ot.ot}`, 165, 62); 
+
+                doc.setTextColor(40); 
+                doc.setFontSize(10); 
+                doc.setFont("helvetica", "normal");
+                doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 165, 68);
+                
+                doc.setFontSize(11); 
+                doc.setFont("helvetica", "bold"); 
+                doc.setTextColor(r, g, b); 
+                doc.text("DATOS DEL CLIENTE", 10, 62); 
+                
+                doc.setFontSize(10); 
+                doc.setFont("helvetica", "normal"); 
+                doc.setTextColor(40); 
+                doc.text(`Nombre: ${N}`, 10, 68); 
+                doc.text(`RUT: ${RT}`, 10, 73); 
+                doc.text(`Dirección: ${D}`, 10, 78); 
+                doc.text(`Email: ${E}`, 10, 83); 
+                doc.text(`WhatsApp: ${W}`, 10, 88);
+                
+                doc.setFontSize(11); 
+                doc.setFont("helvetica", "bold"); 
+                doc.setTextColor(r, g, b); 
+                doc.text("DATOS DEL EQUIPO", 110, 62); 
+                
+                doc.setFontSize(10); 
+                doc.setFont("helvetica", "normal"); 
+                doc.setTextColor(40); 
+                doc.text(`Equipo: ${M} ${MO}`, 110, 68); 
+                doc.text(`Serie: ${S}`, 110, 73);
+                doc.text(`Guía Cliente: ${GU}`, 110, 78);
+                
+                const accLineCOT = doc.splitTextToSize(`Accesorios: ${AC}`, 90); 
+                doc.text(accLineCOT, 110, 83);
+
+                cY = 100; // Iniciamos un poco más arriba para dar más espacio
+                
+                const diagText = datos.diagnostico || "Sin diagnóstico registrado.";
+                const rT = repuestosActuales.length > 0 ? repuestosActuales.map(r => `• ${r.nombre} (x${r.cantidad})`).join('\n') : "Servicios técnicos especializados y mano de obra.";
+                
+                let dynFontSize = 10;
+                let lineHeight = 6;
+                let dL, rL;
+                let maxEspacioDisponible = 100; // Límite de altura antes de tocar el cuadro de valores
+                
+                // MAGIA: Achicar la letra automáticamente hasta que todo calce
+                while (dynFontSize >= 5) {
+                    doc.setFontSize(dynFontSize);
+                    dL = doc.splitTextToSize(diagText, 185);
+                    rL = doc.splitTextToSize(rT, 185);
+                    
+                    let diagH = (dL.length * lineHeight) + 6;
+                    let repH = (rL.length * lineHeight) + 6;
+                    
+                    // 10px del título de Diagnóstico + altura cuadro + 10px margen + 10px título Repuestos + altura cuadro
+                    let espacioRequerido = 10 + diagH + 10 + repH;
+                    
+                    if (espacioRequerido <= maxEspacioDisponible) {
+                        break; // Si cabe en el espacio, rompemos el bucle y avanzamos
+                    }
+                    // Si no cabe, achicamos la letra y el interlineado un poco
+                    dynFontSize -= 0.5;
+                    lineHeight = dynFontSize * 0.6;
+                }
+
+                // DIBUJAR DIAGNÓSTICO
+                doc.setFontSize(10); // Títulos siempre en tamaño normal
+                doc.setFont("helvetica", "bold"); 
+                doc.setTextColor(r, g, b); 
+                doc.text("DIAGNÓSTICO TÉCNICO ESPECIALIZADO:", 10, cY); 
+                cY += 5;
+                
+                let boxDiagH = (dL.length * lineHeight) + 6;
+                doc.setFillColor(248); 
+                doc.roundedRect(10, cY, 190, boxDiagH, 1, 1, 'F');
+                
+                doc.setFontSize(dynFontSize); // Texto dinámico (normal o achicado)
+                doc.setFont("helvetica", "normal"); 
+                doc.setTextColor(40); 
+                doc.text(dL, 14, cY + 4 + (lineHeight * 0.8)); 
+                cY += boxDiagH + 8; // Saltamos hacia la zona de repuestos
+                
+                // DIBUJAR REPUESTOS
+                doc.setFontSize(10); // Título normal
+                doc.setFont("helvetica", "bold"); 
+                doc.setTextColor(r, g, b); 
+                doc.text("DETALLE DE REPUESTOS Y SERVICIOS", 10, cY); 
+                cY += 5;
+                
+                let boxRepH = (rL.length * lineHeight) + 6;
+                doc.setFillColor(242); 
+                doc.roundedRect(10, cY, 190, boxRepH, 1, 1, 'F');
+                
+                doc.setFontSize(dynFontSize); // Texto dinámico
+                doc.setFont("helvetica", "normal"); 
+                doc.setTextColor(40); 
+                doc.text(rL, 14, cY + 4 + (lineHeight * 0.8)); 
+                
+                // ==========================================
+                // CUADROS FIJOS EN LA PARTE INFERIOR (ANCLADOS)
+                // ==========================================
+                const boxY = 210; // Posición fija, NUNCA se mueve de aquí
+                
+                const neto = parseInt(datos.valorNeto); 
+                const iva = Math.round(neto * 0.19); 
+                const total = neto + iva;
+                
+                doc.setFillColor(250); 
+                doc.rect(120, boxY, 80, 28);
+                
+                doc.setFontSize(10); 
+                doc.setFont("helvetica", "normal"); 
+                doc.setTextColor(40); 
+                doc.text("VALOR NETO:", 125, boxY + 8); 
+                doc.text(`$${fmt.format(neto)}`, 195, boxY + 8, {align:'right'});
+                
+                doc.text("IVA (19%):", 125, boxY + 15); 
+                doc.text(`$${fmt.format(iva)}`, 195, boxY + 15, {align:'right'});
+                
+                doc.setFontSize(12); 
+                doc.setTextColor(r, g, b); 
+                doc.setFont("helvetica", "bold"); 
+                doc.text("TOTAL A PAGAR:", 125, boxY + 23); 
+                doc.text(`$${fmt.format(total)} CLP`, 195, boxY + 23, {align:'right'});
+                
+                const termsY = 245; // Términos anclados al fondo
+                doc.setFontSize(8.5); 
+                doc.setTextColor(100); 
+                doc.setFont("helvetica", "bold"); 
+                doc.text("MEDIOS DE PAGO Y CONDICIONES COMERCIALES:", 10, termsY);
+                
+                doc.setFont("helvetica", "normal");
+                const nC = [
+                    "- Pago vía Transferencia Bancaria, Tarjeta de Débito, Crédito o Efectivo.", 
+                    `- Plazo de entrega estimado: ${datos.plazo} días hábiles tras aprobación formal.`, 
+                    "- Validez de esta Cotización: 7 días corridos.", 
+                    "- Para aprobar este presupuesto, envíe WhatsApp al correo amsetecsi@gmail.com"
+                ];
+                nC.forEach((n, i) => { 
+                    doc.text(n, 10, termsY + 6 + (i * 4.5)); 
+                });
+                
+                doc.save(`Presupuesto_OT${ot.ot}_${N}.pdf`);
+            }
+            
+            return new Promise((resolve) => {
+                try {
+                    const blob = doc.output('blob');
+                    subirArchivoANube(ot.ot, blob, `${tipo}_OT${ot.ot}_${N}.pdf`, 'application/pdf')
+                        .then(resolve)
+                        .catch(resolve);
+                } catch(e) { 
+                    resolve(); 
+                }
+            });
+        }
+
+        function subirArchivoANube(ot, blob, fileName, mime) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = async () => {
+                    const base64 = reader.result.split(',')[1];
+                    const payload = { 
+                        action: "upload_file", 
+                        ot: ot, 
+                        base64: base64, 
+                        fileName: fileName, 
+                        mimeType: mime 
+                    };
+                    try {
+                        await fetch(WEB_APP_URL, { 
+                            method: 'POST', 
+                            mode: 'no-cors', 
+                            body: JSON.stringify(payload) 
+                        });
+                        resolve();
+                    } catch(e) { 
+                        resolve(); 
+                    }
+                };
+            });
+        }
+    // =========================================================================
+    // 🛑 FIN: MOTOR PDF (GENERACIÓN DE DOCUMENTOS)
+    // =========================================================================
+
 
     // =========================================================================
     // 🚀 INICIO: GUARDADO DE INGRESO Y ENVÍO DE PRESUPUESTOS
