@@ -754,12 +754,47 @@
             }
             
             const reader = new FileReader();
-            reader.onload = function(e) {
-                localStorage.setItem(storageKey, e.target.result);
-                cargarImagenesVisuales();
-                alert("✅ Imagen guardada correctamente.");
-            };
             reader.readAsDataURL(file);
+            reader.onload = function(event) {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = function() {
+                    // Redimensiona y comprime la imagen para evitar colapsar la memoria
+                    const MAX_WIDTH = 800;
+                    const MAX_HEIGHT = 800;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) { 
+                            height *= MAX_WIDTH / width; 
+                            width = MAX_WIDTH; 
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) { 
+                            width *= MAX_HEIGHT / height; 
+                            height = MAX_HEIGHT; 
+                        }
+                    }
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Lo convierte a JPEG comprimido al 80% de calidad
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    
+                    try {
+                        localStorage.setItem(storageKey, dataUrl);
+                        cargarImagenesVisuales();
+                        alert("✅ Imagen guardada correctamente.");
+                    } catch (e) {
+                        alert("❌ Error: La memoria del navegador está llena. Borra el caché e intenta de nuevo.");
+                    }
+                };
+            };
         }
 
         function borrarImagen(storageKey) {
