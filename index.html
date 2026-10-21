@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Welding Manager Pro V23.4 - ARCHIVO MAESTRO MODULAR</title>
+    <title>Welding Manager Pro V23.5 - ARCHIVO MAESTRO MODULAR</title>
     
     <link rel="manifest" href="./manifest.json">
     
@@ -21,8 +21,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
-
-
         :root { 
             --azul: #0070f3; 
         }
@@ -48,12 +46,8 @@
         }
 
         @keyframes spinner { 
-            0% { 
-                transform: rotate(0deg); 
-            } 
-            100% { 
-                transform: rotate(360deg); 
-            } 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
         }
 
         .autocomplete-dropdown { 
@@ -114,15 +108,9 @@
         }
 
         @keyframes pulse-red {
-            0% { 
-                transform: scale(1); 
-            }
-            50% { 
-                transform: scale(1.1); 
-            }
-            100% { 
-                transform: scale(1); 
-            }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
         .ai-loading {
@@ -131,36 +119,15 @@
         }
 
         @keyframes pulse-ai {
-            0% { 
-                opacity: 1; 
-            }
-            50% { 
-                opacity: 0.5; 
-            }
-            100% { 
-                opacity: 1; 
-            }
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
 
-        .sh-dia-1 { 
-            box-shadow: 0 15px 30px -5px rgba(34, 197, 94, 0.4); 
-            border: 1px solid rgba(34, 197, 94, 0.2); 
-        }
-
-        .sh-dia-2 { 
-            box-shadow: 0 15px 30px -5px rgba(234, 179, 8, 0.4); 
-            border: 1px solid rgba(234, 179, 8, 0.2); 
-        }
-
-        .sh-dia-3 { 
-            box-shadow: 0 15px 30px -5px rgba(239, 68, 68, 0.5); 
-            border: 1px solid rgba(239, 68, 68, 0.3); 
-        }
-
-        .sh-abandono { 
-            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.5); 
-            border: 2px solid #000; 
-        }
+        .sh-dia-1 { box-shadow: 0 15px 30px -5px rgba(34, 197, 94, 0.4); border: 1px solid rgba(34, 197, 94, 0.2); }
+        .sh-dia-2 { box-shadow: 0 15px 30px -5px rgba(234, 179, 8, 0.4); border: 1px solid rgba(234, 179, 8, 0.2); }
+        .sh-dia-3 { box-shadow: 0 15px 30px -5px rgba(239, 68, 68, 0.5); border: 1px solid rgba(239, 68, 68, 0.3); }
+        .sh-abandono { box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.5); border: 2px solid #000; }
         
         .app-header-bg { 
             position: relative; 
@@ -196,7 +163,7 @@
             </div>
             
             <div class="app-header-content absolute bottom-6 left-6 z-40">
-                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v23.4 Premium</span>
+                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v23.5 Premium</span>
                 <h1 class="text-4xl font-black uppercase tracking-tighter mt-1 leading-none text-white drop-shadow-md">Welding</h1>
                 <h1 class="text-4xl font-black uppercase tracking-tighter leading-none text-blue-200 drop-shadow-md">Servicio</h1>
                 <div class="mt-1 text-white drop-shadow-md">
@@ -238,6 +205,7 @@
             </div>
         </div>
     </div>
+
     <div id="menu-gestion-screen" class="hidden max-w-md mx-auto bg-white min-h-screen">
         <div class="app-header-bg p-5 shadow-md flex items-center mb-6 sticky top-0 z-50">
             <div class="app-header-overlay hidden banner-overlay"></div>
@@ -273,6 +241,7 @@
             </button>
         </div>
     </div>
+
     <div id="lista-gestion-screen" class="hidden p-0 max-w-md mx-auto bg-gray-50 min-h-screen text-gray-900">
         <div class="app-header-bg p-4 sticky top-0 z-50 flex items-center justify-between shadow-md">
             <div class="app-header-overlay hidden banner-overlay"></div>
@@ -283,6 +252,7 @@
         </div>
         <div id="contenedor-items-gestion" class="p-4 space-y-4"></div>
     </div>
+
     <div id="ingreso-screen" class="hidden max-w-md mx-auto bg-white min-h-screen text-gray-900">
         <div class="app-header-bg p-5 shadow-md flex items-center mb-6 sticky top-0 z-50">
             <div class="app-header-overlay hidden banner-overlay"></div>
@@ -339,6 +309,7 @@
             <button type="submit" id="btn-submit" class="w-full bg-azul text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition uppercase tracking-widest text-white">Registrar Ingreso</button>
         </form>
     </div>
+
     <div id="presupuesto-list-screen" class="hidden max-w-md mx-auto bg-gray-50 min-h-screen text-gray-900">
         <div class="app-header-bg p-5 shadow-md flex items-center mb-6 sticky top-0 z-50">
             <div class="app-header-overlay hidden banner-overlay"></div>
@@ -354,6 +325,7 @@
         </div>
         <div id="lista-pendientes" class="space-y-6 pb-10 px-4"></div>
     </div>
+
     <div id="presupuesto-detail-screen" class="hidden max-w-md mx-auto bg-white min-h-screen pb-20 shadow-2xl text-gray-900">
         <div class="app-header-bg p-5 shadow-md flex items-center mb-6 sticky top-0 z-50">
             <div class="app-header-overlay hidden banner-overlay"></div>
@@ -430,6 +402,7 @@
             <button id="btn-enviar-presupuesto" onclick="enviarPresupuesto()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-xl shadow-xl active:scale-95 transition uppercase tracking-widest text-center text-white">Guardar y Enviar al Cliente</button>
         </div>
     </div>
+
     <div id="config-screen" class="hidden p-4 max-w-md mx-auto bg-white min-h-screen text-gray-900">
         <div class="flex items-center mb-6 border-b pb-4 mt-2">
             <button onclick="showScreen('home-screen')" class="text-gray-600 mr-4 p-2 transition active:scale-90"><i class="fa-solid fa-arrow-left text-2xl"></i></button>
@@ -493,8 +466,16 @@
                 <textarea id="import-clientes" class="w-full p-3 rounded-xl border h-32 text-sm mt-2 text-gray-900" placeholder="NOMBRE, RUT, WHATSAPP, DIRECCION, CORREO"></textarea>
                 <button onclick="importarClientesMasivo()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-2 shadow-md">Actualizar Clientes</button>
             </div>
+
+            <!-- NUEVO: BOTÓN DE EMERGENCIA -->
+            <div class="bg-red-50 p-4 rounded-2xl border border-red-200 shadow-sm text-gray-900 mt-6">
+                <label class="font-bold text-red-700 uppercase text-xs"><i class="fa-solid fa-triangle-exclamation"></i> Zona de Emergencia</label>
+                <p class="text-[10px] text-gray-600 mt-1 mb-2">Si la aplicación se queda pegada o no carga información, usa este botón para destrabar el motor. No perderás tus fotos ni logos.</p>
+                <button onclick="limpiarMotorApp()" class="w-full bg-red-600 text-white py-3 rounded-xl font-bold shadow-md active:scale-95 transition">Reparar y Destrabar App</button>
+            </div>
         </div>
     </div>
+
     <script>
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyxytLde1CRlxQnYyUbuc2Entjr9FJ1L93Cl5JpdAm4pRAjlVl_vOnP2x3_kDP2Ba6i/exec"; 
         
@@ -504,15 +485,15 @@
         let otActiva = null; 
         let repuestosActuales = [];
 
-        // 🛡️ ESCUDO ANTIBASURA: Evita que la app muera si la caché está corrupta
+        // 🛡️ ESCUDO ANTIBASURA GLOBAL (Protege contra códigos corruptos en caché)
         try {
             const cl = localStorage.getItem('wm_clientes_locales');
-            if (cl) clientesLocales = JSON.parse(cl);
+            if (cl && cl !== "undefined" && cl !== "null") clientesLocales = JSON.parse(cl);
         } catch(e) { localStorage.removeItem('wm_clientes_locales'); }
 
         try {
             const rep = localStorage.getItem('wm_repuestos');
-            if (rep) repuestosDB = JSON.parse(rep);
+            if (rep && rep !== "undefined" && rep !== "null") repuestosDB = JSON.parse(rep);
         } catch(e) { localStorage.removeItem('wm_repuestos'); }
 
         window.onload = () => {
@@ -523,15 +504,23 @@
             cargarImagenesVisuales(); 
             sincronizarBaseAlInicio();
         };
-    // =========================================================================
-    // 🛑 FIN: VARIABLES GLOBALES Y SINCRONIZACIÓN INICIAL
-    // =========================================================================
-
-
 
         // =========================================================================
-    // 🚀 INICIO: MOTOR IA SETECSI (GROQ)
-    // =========================================================================
+        // 🚀 NUEVO: FUNCIÓN PARA DESTRABAR EL MOTOR DE LA APLICACIÓN
+        // =========================================================================
+        function limpiarMotorApp() {
+            if(confirm("¿Seguro que deseas destrabar el motor? Esto resolverá cualquier problema de lentitud o bloqueo.")) {
+                localStorage.removeItem('wm_db_cache');
+                localStorage.removeItem('wm_clientes_locales');
+                localStorage.removeItem('wm_repuestos');
+                alert("✅ Sistema destrabado exitosamente. La aplicación se reiniciará ahora.");
+                location.reload();
+            }
+        }
+
+        // =========================================================================
+        // 🚀 INICIO: MOTOR IA SETECSI (GROQ)
+        // =========================================================================
         async function mejorarConIA() {
             const apiKey = localStorage.getItem('wm_ia_key');
             
@@ -580,14 +569,8 @@
                     body: JSON.stringify({
                         model: "llama-3.3-70b-versatile",
                         messages: [
-                            { 
-                                role: "system", 
-                                content: "Experto técnico industrial SETECSI." 
-                            },
-                            { 
-                                role: "user", 
-                                content: prompt 
-                            }
+                            { role: "system", content: "Experto técnico industrial SETECSI." },
+                            { role: "user", content: prompt }
                         ],
                         temperature: 0.5
                     })
@@ -612,14 +595,10 @@
                 btn.innerHTML = originalText;
             }
         }
-    // =========================================================================
-    // 🛑 FIN: MOTOR IA SETECSI
-    // =========================================================================
 
-
-    // =========================================================================
-    // 🚀 INICIO: SISTEMA DE DICTADO CONTINUO (MICRÓFONO)
-    // =========================================================================
+        // =========================================================================
+        // 🚀 INICIO: SISTEMA DE DICTADO CONTINUO (MICRÓFONO)
+        // =========================================================================
         let recognition;
         let isRecording = false;
 
@@ -674,19 +653,13 @@
 
             recognition.start();
         }
-    // =========================================================================
-    // 🛑 FIN: SISTEMA DE DICTADO CONTINUO (MICRÓFONO)
-    // =========================================================================
 
-    // =========================================================================
-    // 🚀 INICIO: PROCESAMIENTO DE FOTOGRAFÍAS A DRIVE
-    // =========================================================================
+        // =========================================================================
+        // 🚀 INICIO: PROCESAMIENTO DE FOTOGRAFÍAS A DRIVE
+        // =========================================================================
         function procesarFotoCotizacion(input) {
             const file = input.files[0];
-            
-            if (!file) {
-                return;
-            }
+            if (!file) return;
             
             const statusDiv = document.getElementById('foto-status');
             statusDiv.innerText = "COMPRIMIENDO IMAGEN...";
@@ -750,19 +723,13 @@
                 };
             };
         }
-    // =========================================================================
-    // 🛑 FIN: PROCESAMIENTO DE FOTOGRAFÍAS A DRIVE
-    // =========================================================================
 
-    // =========================================================================
-    // 🚀 INICIO: SISTEMA TRIPLE IDENTIDAD CORPORATIVA (IMÁGENES)
-    // =========================================================================
+        // =========================================================================
+        // 🚀 INICIO: SISTEMA TRIPLE IDENTIDAD CORPORATIVA (IMÁGENES)
+        // =========================================================================
         function guardarImagen(inputId, storageKey) {
             const file = document.getElementById(inputId).files[0];
-            
-            if (!file) {
-                return alert("⚠️ Selecciona una imagen.");
-            }
+            if (!file) return alert("⚠️ Selecciona una imagen.");
             
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -770,22 +737,15 @@
                 const img = new Image();
                 img.src = event.target.result;
                 img.onload = function() {
-                    // Redimensiona y comprime la imagen para evitar colapsar la memoria
                     const MAX_WIDTH = 800;
                     const MAX_HEIGHT = 800;
                     let width = img.width;
                     let height = img.height;
 
                     if (width > height) {
-                        if (width > MAX_WIDTH) { 
-                            height *= MAX_WIDTH / width; 
-                            width = MAX_WIDTH; 
-                        }
+                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
                     } else {
-                        if (height > MAX_HEIGHT) { 
-                            width *= MAX_HEIGHT / height; 
-                            height = MAX_HEIGHT; 
-                        }
+                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
                     }
 
                     const canvas = document.createElement('canvas');
@@ -794,7 +754,6 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
 
-                    // Lo convierte a JPEG comprimido al 80% de calidad
                     const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
                     
                     try {
@@ -802,7 +761,7 @@
                         cargarImagenesVisuales();
                         alert("✅ Imagen guardada correctamente.");
                     } catch (e) {
-                        alert("❌ Error: La memoria del navegador está llena. Borra el caché e intenta de nuevo.");
+                        alert("❌ Error: La memoria del navegador está llena. Usa el Botón de Emergencia en Ajustes.");
                     }
                 };
             };
@@ -833,58 +792,48 @@
                     c.style.backgroundImage = `url(${bannerData})`;
                     c.style.backgroundSize = 'cover';
                     c.style.backgroundPosition = 'center';
-                    if(overlays[index]) {
-                        overlays[index].classList.remove('hidden'); 
-                    }
+                    if(overlays[index]) overlays[index].classList.remove('hidden'); 
                 } else {
                     c.style.backgroundImage = 'none';
-                    if(overlays[index]) {
-                        overlays[index].classList.add('hidden');
-                    }
+                    if(overlays[index]) overlays[index].classList.add('hidden');
                 }
             });
         }
-    // =========================================================================
-    // 🛑 FIN: SISTEMA TRIPLE IDENTIDAD CORPORATIVA (IMÁGENES)
-    // =========================================================================
 
-    // =========================================================================
-    // 🚀 INICIO: FUNCIONES UTILITARIAS Y DE TIEMPO
-    // =========================================================================
+        // =========================================================================
+        // 🚀 INICIO: FUNCIONES UTILITARIAS Y DE TIEMPO
+        // =========================================================================
         function gV(obj, k) {
-            if (!obj) {
-                return "";
-            }
+            if (!obj) return "";
             const keys = Object.keys(obj);
             const f = keys.find(x => x.trim().toUpperCase() === k.toUpperCase());
             return f ? obj[f] : "";
         }
 
-       async function sincronizarBaseAlInicio(forzarEspera = false) {
-            // 1. Lee la memoria ultrarrápida del teléfono primero
+        async function sincronizarBaseAlInicio(forzarEspera = false) {
             const cache = localStorage.getItem('wm_db_cache');
-            if (cache) {
+            if (cache && cache !== "undefined" && cache !== "null") {
                 try { 
                     const datosCache = JSON.parse(cache); 
-                    // Defensa: Solo usa la memoria si es una lista real, sino la ignora
                     if (Array.isArray(datosCache)) {
                         dbFull = datosCache;
+                    } else {
+                        localStorage.removeItem('wm_db_cache');
                     }
-                } catch(e) {}
+                } catch(e) {
+                    localStorage.removeItem('wm_db_cache');
+                }
             }
 
-            // 2. Prepara la sincronización con Google en segundo plano
             const peticionNube = fetch(WEB_APP_URL + "?t=" + new Date().getTime())
                 .then(res => res.json())
                 .then(data => {
-                    // Defensa: Solo guardamos la actualización si Google nos envía la lista correcta
                     if (Array.isArray(data)) {
                         dbFull = data;
                         localStorage.setItem('wm_db_cache', JSON.stringify(dbFull));
                     }
                 }).catch(e => console.log("Modo sin conexión o red lenta."));
 
-            // 3. Solo congela la pantalla si es la primera vez que se abre la app
             if (forzarEspera || dbFull.length === 0) {
                 await peticionNube;
             }
@@ -908,18 +857,14 @@
         }
 
         function obtenerDiasCorridos(fecha) {
-            if(!fecha) {
-                return 0;
-            }
+            if(!fecha) return 0;
             const fechaValida = fecha.replace(" ", "T");
             const diff = new Date() - new Date(fechaValida);
             return Math.floor(diff / (1000 * 60 * 60 * 24));
         }
 
         function calcularDiasHabiles(fechaInicio) {
-            if (!fechaInicio) {
-                return 0;
-            }
+            if (!fechaInicio) return 0;
             const fechaValida = fechaInicio.replace(" ", "T");
             let start = new Date(fechaValida); 
             let end = new Date(); 
@@ -927,20 +872,15 @@
             let current = new Date(start);
             while (current <= end) {
                 let day = current.getDay(); 
-                if (day !== 0 && day !== 6) {
-                    count++; 
-                }
+                if (day !== 0 && day !== 6) count++; 
                 current.setDate(current.getDate() + 1);
             }
             return count;
         }
-    // =========================================================================
-    // 🛑 FIN: FUNCIONES UTILITARIAS Y DE TIEMPO
-    // =========================================================================
 
-    // =========================================================================
-    // 🚀 INICIO: GESTIÓN DE LISTAS Y WHATSAPP
-    // =========================================================================
+        // =========================================================================
+        // 🚀 INICIO: GESTIÓN DE LISTAS Y WHATSAPP
+        // =========================================================================
         function abrirListaGestion(f) {
             showScreen('lista-gestion-screen');
             document.getElementById('titulo-lista-gestion').innerText = f + "S";
@@ -950,7 +890,6 @@
         async function renderizarListaGestion(filtro) {
             const container = document.getElementById('contenedor-items-gestion');
 
-            // Mismo principio: Carga instantánea si ya tenemos la base de datos en memoria
             if (dbFull.length === 0) {
                 container.innerHTML = '<div class="text-center py-20"><div class="loader rounded-full border-4 h-10 w-10 mx-auto"></div><p class="text-xs font-bold mt-2 text-gray-400">Consultando SETECSI Cloud...</p></div>';
                 await sincronizarBaseAlInicio(true);
@@ -989,18 +928,18 @@
                 const nmb = gV(item, 'NOMBRE') || gV(item, 'CLIENTE') || 'Sin Nombre';
                 let wp = gV(item, 'WHATSAPP') || gV(item, 'CELULAR') || '';
                 
-                // Limpiador básico de número (BLINDADO)
-                wp = String(wp).replace(/\+/g, '').replace(/\s/g, '');
+                // Limpiador básico de número blindado
+                wp = String(wp).replace(/\+/g, '').replace(/\s/g, ''); 
                 
                 const linkPdf = gV(item, 'LINK_PDF');
                 const linkFoto = gV(item, 'LINK_FOTO');
 
                 let color = "bg-blue-100 text-blue-600";
                 if(filtro === 'PRESUPUESTADO') {
-                    if(diasH === 2) { color = "bg-orange-100 text-orange-600"; }
-                    if(diasH >= 3) { color = "bg-red-100 text-red-600"; }
+                    if(diasH === 2) color = "bg-orange-100 text-orange-600";
+                    if(diasH >= 3) color = "bg-red-100 text-red-600";
                 }
-                if(filtro === 'ABANDONADO') { color = "bg-yellow-500 text-black"; }
+                if(filtro === 'ABANDONADO') color = "bg-yellow-500 text-black";
 
                 let wpLink = `https://api.whatsapp.com/send?phone=${wp}`;
                 if (filtro === 'REPARADO') {
@@ -1011,12 +950,8 @@
                 let docsBtns = '';
                 if(linkPdf || linkFoto) {
                     docsBtns += `<div class="flex gap-2 mt-3 border-t pt-2">`;
-                    if(linkPdf) {
-                        docsBtns += `<a href="${linkPdf}" target="_blank" class="flex-1 bg-gray-50 text-gray-700 py-2 rounded-lg text-[9px] font-black uppercase text-center border shadow-sm active:scale-95 transition"><i class="fa-solid fa-file-pdf text-red-500"></i> Ver PDF</a>`;
-                    }
-                    if(linkFoto) {
-                        docsBtns += `<a href="${linkFoto}" target="_blank" class="flex-1 bg-gray-50 text-gray-700 py-2 rounded-lg text-[9px] font-black uppercase text-center border shadow-sm active:scale-95 transition"><i class="fa-solid fa-images text-purple-500"></i> Ver Galería</a>`;
-                    }
+                    if(linkPdf) docsBtns += `<a href="${linkPdf}" target="_blank" class="flex-1 bg-gray-50 text-gray-700 py-2 rounded-lg text-[9px] font-black uppercase text-center border shadow-sm active:scale-95 transition"><i class="fa-solid fa-file-pdf text-red-500"></i> Ver PDF</a>`;
+                    if(linkFoto) docsBtns += `<a href="${linkFoto}" target="_blank" class="flex-1 bg-gray-50 text-gray-700 py-2 rounded-lg text-[9px] font-black uppercase text-center border shadow-sm active:scale-95 transition"><i class="fa-solid fa-images text-purple-500"></i> Ver Galería</a>`;
                     docsBtns += `</div>`;
                 }
 
@@ -1053,14 +988,12 @@
 
        async function cambiarEstadoNube(ot, nE) {
             try {
-                // Truco de velocidad: Actualizamos la memoria del teléfono al instante
                 const index = dbFull.findIndex(p => gV(p, 'OT') == ot || gV(p, 'N° OT') == ot || p.fila - 1 == ot);
                 if (index !== -1) {
                     dbFull[index].ESTADO = nE;
                     localStorage.setItem('wm_db_cache', JSON.stringify(dbFull));
                 }
 
-                // Desaparece la tarjeta visualmente al instante (BUG DE LETRA "S" CORREGIDO)
                 let fActual = document.getElementById('titulo-lista-gestion').innerText;
                 if (fActual.endsWith("S")) {
                     fActual = fActual.slice(0, -1);
@@ -1068,7 +1001,6 @@
                 
                 renderizarListaGestion(fActual); 
 
-                // Enviamos los datos a Google en segundo plano sin interrumpir al usuario
                 await fetch(WEB_APP_URL, { 
                     method: 'POST', 
                     mode: 'no-cors', 
@@ -1078,13 +1010,10 @@
                 alert("Error al conectar con la nube."); 
             }
         }
-    // =========================================================================
-    // 🛑 FIN: GESTIÓN DE LISTAS Y WHATSAPP
-    // =========================================================================
 
         // =========================================================================
-    // 🚀 INICIO: MOTOR PDF (GENERACIÓN DE DOCUMENTOS)
-    // =========================================================================
+        // 🚀 INICIO: MOTOR PDF (GENERACIÓN DE DOCUMENTOS)
+        // =========================================================================
         async function generarPDFGlobal(tipo, ot, datos) {
             const { jsPDF } = window.jspdf; 
             const doc = new jsPDF(); 
@@ -1100,7 +1029,6 @@
                 try {
                     const formatB = bannerData.includes("image/png") ? "PNG" : "JPEG";
                     doc.addImage(bannerData, formatB, 0, 0, 210, 52);
-                    // AQUÍ ELIMINAMOS EL CUADRO NEGRO TRASLÚCIDO PARA QUE EL BANNER BRILLE
                 } catch(e) { 
                     doc.setFillColor(r, g, b); 
                     doc.rect(0, 0, 210, 52, 'F'); 
@@ -1112,22 +1040,16 @@
 
             doc.setTextColor(255); 
             doc.setFont("helvetica", "bold"); 
-            
-            // MISMO TAMAÑO PARA AMBOS, PERO EN 14 PARA QUE QUEPA COMPLETO
             doc.setFontSize(14); 
 
-            // TÍTULO SUPERIOR (Lo subimos al margen de arriba, Y=12)
             if (tipo === 'OT') {
                 doc.text("ORDEN DE INGRESO", 10, 12);
             } else {
                 doc.text("PRESUPUESTO TÉCNICO", 10, 12);
             }
             
-            // TÍTULO INFERIOR (Justo debajo, Y=18)
             doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 18);
             
-            // DATOS DE CONTACTO (Los bajamos casi al borde inferior del banner, Y=42 y 47)
-            // Esto deja todo el espacio entre el 18 y el 42 libre para que se vea tu neón "SETECSI"
             doc.setFontSize(9); 
             doc.setFont("helvetica", "normal"); 
             doc.text(`RUT: 76.349.984-7 | amsetecsi@gmail.com`, 10, 42);
@@ -1231,9 +1153,7 @@
                     "3. Pasados 7 días de aviso de término sin que se retire el equipo, aplicará cargo por bodegaje de 0,07 UF diarios.", 
                     "4. Equipos no retirados transcurridos 6 meses se considerarán legalmente abandonados, pasando a dominio del taller."
                 ];
-                nOT.forEach((n, i) => { 
-                    doc.text(n, 10, cY + 6 + (i * 4.5)); 
-                });
+                nOT.forEach((n, i) => { doc.text(n, 10, cY + 6 + (i * 4.5)); });
                 
                 doc.line(30, 275, 80, 275); 
                 doc.text("Firma o Timbre Cliente", 45, 280); 
@@ -1244,9 +1164,6 @@
                 doc.save(`OT_${ot.ot}_${N}.pdf`);
                 
             } else {
-                // ==========================================
-                // ZONA DE PRESUPUESTO CON AUTO-ESCALADO
-                // ==========================================
                 doc.setTextColor(r, g, b); 
                 doc.setFontSize(10); 
                 doc.setFont("helvetica", "bold");
@@ -1286,7 +1203,7 @@
                 const accLineCOT = doc.splitTextToSize(`Accesorios: ${AC}`, 90); 
                 doc.text(accLineCOT, 110, 83);
 
-                cY = 100; // Iniciamos un poco más arriba para dar más espacio
+                cY = 100; 
                 
                 const diagText = datos.diagnostico || "Sin diagnóstico registrado.";
                 const rT = repuestosActuales.length > 0 ? repuestosActuales.map(r => `• ${r.nombre} (x${r.cantidad})`).join('\n') : "Servicios técnicos especializados y mano de obra.";
@@ -1294,9 +1211,8 @@
                 let dynFontSize = 10;
                 let lineHeight = 6;
                 let dL, rL;
-                let maxEspacioDisponible = 100; // Límite de altura antes de tocar el cuadro de valores
+                let maxEspacioDisponible = 100; 
                 
-                // MAGIA: Achicar la letra automáticamente hasta que todo calce
                 while (dynFontSize >= 5) {
                     doc.setFontSize(dynFontSize);
                     dL = doc.splitTextToSize(diagText, 185);
@@ -1305,19 +1221,16 @@
                     let diagH = (dL.length * lineHeight) + 6;
                     let repH = (rL.length * lineHeight) + 6;
                     
-                    // 10px del título de Diagnóstico + altura cuadro + 10px margen + 10px título Repuestos + altura cuadro
                     let espacioRequerido = 10 + diagH + 10 + repH;
                     
                     if (espacioRequerido <= maxEspacioDisponible) {
-                        break; // Si cabe en el espacio, rompemos el bucle y avanzamos
+                        break; 
                     }
-                    // Si no cabe, achicamos la letra y el interlineado un poco
                     dynFontSize -= 0.5;
                     lineHeight = dynFontSize * 0.6;
                 }
 
-                // DIBUJAR DIAGNÓSTICO
-                doc.setFontSize(10); // Títulos siempre en tamaño normal
+                doc.setFontSize(10); 
                 doc.setFont("helvetica", "bold"); 
                 doc.setTextColor(r, g, b); 
                 doc.text("DIAGNÓSTICO TÉCNICO ESPECIALIZADO:", 10, cY); 
@@ -1327,14 +1240,13 @@
                 doc.setFillColor(248); 
                 doc.roundedRect(10, cY, 190, boxDiagH, 1, 1, 'F');
                 
-                doc.setFontSize(dynFontSize); // Texto dinámico (normal o achicado)
+                doc.setFontSize(dynFontSize); 
                 doc.setFont("helvetica", "normal"); 
                 doc.setTextColor(40); 
                 doc.text(dL, 14, cY + 4 + (lineHeight * 0.8)); 
-                cY += boxDiagH + 8; // Saltamos hacia la zona de repuestos
+                cY += boxDiagH + 8; 
                 
-                // DIBUJAR REPUESTOS
-                doc.setFontSize(10); // Título normal
+                doc.setFontSize(10); 
                 doc.setFont("helvetica", "bold"); 
                 doc.setTextColor(r, g, b); 
                 doc.text("DETALLE DE REPUESTOS Y SERVICIOS", 10, cY); 
@@ -1344,15 +1256,12 @@
                 doc.setFillColor(242); 
                 doc.roundedRect(10, cY, 190, boxRepH, 1, 1, 'F');
                 
-                doc.setFontSize(dynFontSize); // Texto dinámico
+                doc.setFontSize(dynFontSize); 
                 doc.setFont("helvetica", "normal"); 
                 doc.setTextColor(40); 
                 doc.text(rL, 14, cY + 4 + (lineHeight * 0.8)); 
                 
-                // ==========================================
-                // CUADROS FIJOS EN LA PARTE INFERIOR (ANCLADOS)
-                // ==========================================
-                const boxY = 210; // Posición fija, NUNCA se mueve de aquí
+                const boxY = 210; 
                 
                 const neto = parseInt(datos.valorNeto); 
                 const iva = Math.round(neto * 0.19); 
@@ -1376,7 +1285,7 @@
                 doc.text("TOTAL A PAGAR:", 125, boxY + 23); 
                 doc.text(`$${fmt.format(total)} CLP`, 195, boxY + 23, {align:'right'});
                 
-                const termsY = 245; // Términos anclados al fondo
+                const termsY = 245; 
                 doc.setFontSize(8.5); 
                 doc.setTextColor(100); 
                 doc.setFont("helvetica", "bold"); 
@@ -1389,9 +1298,7 @@
                     "- Validez de esta Cotización: 7 días corridos.", 
                     "- Para aprobar este presupuesto, envíe WhatsApp al correo amsetecsi@gmail.com"
                 ];
-                nC.forEach((n, i) => { 
-                    doc.text(n, 10, termsY + 6 + (i * 4.5)); 
-                });
+                nC.forEach((n, i) => { doc.text(n, 10, termsY + 6 + (i * 4.5)); });
                 
                 doc.save(`Presupuesto_OT${ot.ot}_${N}.pdf`);
             }
@@ -1402,9 +1309,7 @@
                     subirArchivoANube(ot.ot, blob, `${tipo}_OT${ot.ot}_${N}.pdf`, 'application/pdf')
                         .then(resolve)
                         .catch(resolve);
-                } catch(e) { 
-                    resolve(); 
-                }
+                } catch(e) { resolve(); }
             });
         }
 
@@ -1428,20 +1333,14 @@
                             body: JSON.stringify(payload) 
                         });
                         resolve();
-                    } catch(e) { 
-                        resolve(); 
-                    }
+                    } catch(e) { resolve(); }
                 };
             });
         }
-    // =========================================================================
-    // 🛑 FIN: MOTOR PDF (GENERACIÓN DE DOCUMENTOS)
-    // =========================================================================
 
-
-    // =========================================================================
-    // 🚀 INICIO: GUARDADO DE INGRESO Y ENVÍO DE PRESUPUESTOS
-    // =========================================================================
+        // =========================================================================
+        // 🚀 INICIO: GUARDADO DE INGRESO Y ENVÍO DE PRESUPUESTOS
+        // =========================================================================
         async function enviarPresupuesto() {
             const d = document.getElementById('diagnostico').value; 
             const v = document.getElementById('valor-neto').value;
@@ -1470,9 +1369,7 @@
                 
                 await generarPDFGlobal('COT', otActiva, { diagnostico: d, valorNeto: v, plazo: p }); 
                 
-                // YA NO abrimos WhatsApp aquí automáticamente. Damos aviso al usuario y recargamos.
                 alert("✅ Presupuesto guardado y PDF generado.\n\nVe a 'Gestión > Presupuestos' para enviarlo por WhatsApp.");
-                
                 location.reload(); 
 
             } catch (e) { 
@@ -1513,7 +1410,6 @@
                 });
                 
                 const r = await res.json(); 
-                
                 await generarPDFGlobal('OT', { ...d, ot: r.ot }, {});
                 
                 alert("✅ OT #" + r.ot + " Registrada exitosamente."); 
@@ -1528,7 +1424,6 @@
             showScreen('presupuesto-list-screen');
             document.getElementById('lista-pendientes').innerHTML = '';
 
-            // Si no hay memoria, espera. Si hay memoria, carga al instante y actualiza invisiblemente.
             if (dbFull.length === 0) {
                 document.getElementById('loading-pendientes').classList.remove('hidden');
                 await sincronizarBaseAlInicio(true);
@@ -1551,8 +1446,8 @@
                         const dias = calcularDiasHabiles(fechaB); 
                         
                         let sh = "sh-dia-1"; 
-                        if(dias === 2) { sh = "sh-dia-2"; }
-                        if(dias >= 3) { sh = "sh-dia-3"; }
+                        if(dias === 2) sh = "sh-dia-2";
+                        if(dias >= 3) sh = "sh-dia-3";
                         
                         const div = document.createElement('div'); 
                         div.className = `bg-white p-5 rounded-2xl border-l-8 border-azul transition active:scale-95 cursor-pointer shadow-sm ${sh}`;
@@ -1603,17 +1498,11 @@
                 if(conteo === 0) {
                     document.getElementById('lista-pendientes').innerHTML = '<p class="text-center py-10 text-gray-400 font-bold">No hay equipos por presupuestar.</p>';
                 }
-            } catch (e) { 
-                alert("Error de conexión al servidor."); 
-            }
         }
-    // =========================================================================
-    // 🛑 FIN: GUARDADO DE INGRESO Y ENVÍO DE PRESUPUESTOS
-    // =========================================================================
 
         // =========================================================================
-    // 🚀 INICIO: BÚSQUEDA, AUTOCOMPLETADO Y BASES DE DATOS
-    // =========================================================================
+        // 🚀 INICIO: BÚSQUEDA, AUTOCOMPLETADO Y BASES DE DATOS
+        // =========================================================================
         function buscarCliente(t) {
             const ul = document.getElementById('sugerencias-cliente'); 
             ul.innerHTML = ''; 
@@ -1633,14 +1522,12 @@
             ul.classList.remove('hidden'); 
             const unicos = [];
             
-            // Invertimos la lista para revisar los ingresos MÁS RECIENTES primero.
             const filRecientes = [...fil].reverse();
             
             filRecientes.forEach(c => { 
                 let existente = unicos.find(u => gV(u, 'NOMBRE') === gV(c, 'NOMBRE'));
                 
                 if(!existente) {
-                    // Si no existe en la lista de sugerencias, lo agregamos como un objeto nuevo modificable
                     unicos.push({
                         NOMBRE: gV(c, 'NOMBRE'),
                         RUT: gV(c, 'RUT'),
@@ -1649,7 +1536,6 @@
                         CORREO: gV(c, 'CORREO') || gV(c, 'EMAIL')
                     }); 
                 } else {
-                    // FUSIÓN INTELIGENTE: Si ya lo encontró, pero le faltan datos, los rescata de OTs más antiguas.
                     if (!existente.WHATSAPP) existente.WHATSAPP = gV(c, 'WHATSAPP') || gV(c, 'CELULAR') || gV(c, 'TELEFONO');
                     if (!existente.DIRECCION) existente.DIRECCION = gV(c, 'DIRECCION') || gV(c, 'DOMICILIO');
                     if (!existente.CORREO) existente.CORREO = gV(c, 'CORREO') || gV(c, 'EMAIL');
@@ -1706,7 +1592,7 @@
         function agregarRepuestoLista() { 
             const n = document.getElementById('buscador-repuesto').value; 
             const c = document.getElementById('cantidad-repuesto').value; 
-            if(!n) { return; }
+            if(!n) return; 
             repuestosActuales.push({ nombre: n, cantidad: parseInt(c) }); 
             renderRep(); 
             document.getElementById('buscador-repuesto').value = ''; 
@@ -1723,7 +1609,7 @@
         
         function importarRepuestosMasivo() { 
             const t = document.getElementById('import-repuestos').value; 
-            if(!t.trim()) { return; }
+            if(!t.trim()) return; 
             const l = t.split('\n').map(x => x.trim()).filter(x => x !== ""); 
             repuestosDB = [...new Set([...repuestosDB, ...l])]; 
             localStorage.setItem('wm_repuestos', JSON.stringify(repuestosDB)); 
@@ -1732,7 +1618,7 @@
         
         function importarClientesMasivo() { 
             const t = document.getElementById('import-clientes').value; 
-            if(!t.trim()) { return; }
+            if(!t.trim()) return; 
             const l = t.split('\n').map(x => { 
                 const p = x.split(',').map(s => s.trim()); 
                 return { NOMBRE: p[0], RUT: p[1] || '', WHATSAPP: p[2] || '', DIRECCION: p[3] || '', CORREO: p[4] || '' }; 
@@ -1741,10 +1627,6 @@
             localStorage.setItem('wm_clientes_locales', JSON.stringify(l)); 
             alert("✅ Base de clientes habituales actualizada."); 
         }
-    // =========================================================================
-    // 🛑 FIN: BÚSQUEDA, AUTOCOMPLETADO Y BASES DE DATOS
-    // =========================================================================
-
     </script>
 </body>
 </html>
