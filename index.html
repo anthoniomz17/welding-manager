@@ -1049,10 +1049,7 @@
                 try {
                     const formatB = bannerData.includes("image/png") ? "PNG" : "JPEG";
                     doc.addImage(bannerData, formatB, 0, 0, 210, 52);
-                    doc.setFillColor(0, 0, 0); 
-                    doc.setGState(new doc.GState({opacity: 0.6}));
-                    doc.rect(0, 0, 210, 52, 'F'); 
-                    doc.setGState(new doc.GState({opacity: 1}));
+                    // AQUÍ ELIMINAMOS EL CUADRO NEGRO TRASLÚCIDO PARA QUE EL BANNER BRILLE
                 } catch(e) { 
                     doc.setFillColor(r, g, b); 
                     doc.rect(0, 0, 210, 52, 'F'); 
@@ -1063,17 +1060,22 @@
             }
 
             doc.setTextColor(255); 
-            doc.setFontSize(14); 
             doc.setFont("helvetica", "bold"); 
-            doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 15);
             
-            doc.setFontSize(26); 
+            // MISMO TAMAÑO EXACTO PARA AMBOS TÍTULOS
+            doc.setFontSize(20); 
+
+            // TÍTULO SUPERIOR (DINÁMICO: CAMBIA SI ES INGRESO O PRESUPUESTO)
             if (tipo === 'OT') {
-                doc.text("ORDEN DE INGRESO", 10, 30);
+                doc.text("ORDEN DE INGRESO", 10, 18);
             } else {
-                doc.text("PRESUPUESTO TÉCNICO", 10, 30);
+                doc.text("PRESUPUESTO TÉCNICO", 10, 18);
             }
             
+            // TÍTULO INFERIOR (NOMBRE DE TU EMPRESA)
+            doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 28);
+            
+            // DATOS DE CONTACTO MÁS PEQUEÑOS
             doc.setFontSize(9); 
             doc.setFont("helvetica", "normal"); 
             doc.text(`RUT: 76.349.984-7 | amsetecsi@gmail.com`, 10, 40);
