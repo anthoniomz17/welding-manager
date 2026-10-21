@@ -1062,24 +1062,25 @@
             doc.setTextColor(255); 
             doc.setFont("helvetica", "bold"); 
             
-            // MISMO TAMAÑO EXACTO PARA AMBOS TÍTULOS
-            doc.setFontSize(20); 
+            // MISMO TAMAÑO PARA AMBOS, PERO EN 14 PARA QUE QUEPA COMPLETO
+            doc.setFontSize(14); 
 
-            // TÍTULO SUPERIOR (DINÁMICO: CAMBIA SI ES INGRESO O PRESUPUESTO)
+            // TÍTULO SUPERIOR (Lo subimos al margen de arriba, Y=12)
             if (tipo === 'OT') {
-                doc.text("ORDEN DE INGRESO", 10, 18);
+                doc.text("ORDEN DE INGRESO", 10, 12);
             } else {
-                doc.text("PRESUPUESTO TÉCNICO", 10, 18);
+                doc.text("PRESUPUESTO TÉCNICO", 10, 12);
             }
             
-            // TÍTULO INFERIOR (NOMBRE DE TU EMPRESA)
-            doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 28);
+            // TÍTULO INFERIOR (Justo debajo, Y=18)
+            doc.text("SERVICIO TÉCNICO SOLUCIONES INTEGRALES", 10, 18);
             
-            // DATOS DE CONTACTO MÁS PEQUEÑOS
+            // DATOS DE CONTACTO (Los bajamos casi al borde inferior del banner, Y=42 y 47)
+            // Esto deja todo el espacio entre el 18 y el 42 libre para que se vea tu neón "SETECSI"
             doc.setFontSize(9); 
             doc.setFont("helvetica", "normal"); 
-            doc.text(`RUT: 76.349.984-7 | amsetecsi@gmail.com`, 10, 40);
-            doc.text(`Fono: +56 9 95412322 | Santiago, Chile`, 10, 45);
+            doc.text(`RUT: 76.349.984-7 | amsetecsi@gmail.com`, 10, 42);
+            doc.text(`Fono: +56 9 95412322 | Santiago, Chile`, 10, 47);
             
             const logoData = localStorage.getItem('wm_logo');
             if (logoData) {
