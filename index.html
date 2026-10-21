@@ -853,18 +853,27 @@
             // 1. Lee la memoria ultrarrápida del teléfono primero
             const cache = localStorage.getItem('wm_db_cache');
             if (cache) {
-                try { dbFull = JSON.parse(cache); } catch(e) {}
+                try { 
+                    const datosCache = JSON.parse(cache); 
+                    // Defensa: Solo usa la memoria si es una lista real, sino la ignora
+                    if (Array.isArray(datosCache)) {
+                        dbFull = datosCache;
+                    }
+                } catch(e) {}
             }
 
             // 2. Prepara la sincronización con Google en segundo plano
             const peticionNube = fetch(WEB_APP_URL + "?t=" + new Date().getTime())
                 .then(res => res.json())
                 .then(data => {
-                    dbFull = data;
-                    localStorage.setItem('wm_db_cache', JSON.stringify(dbFull));
+                    // Defensa: Solo guardamos la actualización si Google nos envía la lista correcta
+                    if (Array.isArray(data)) {
+                        dbFull = data;
+                        localStorage.setItem('wm_db_cache', JSON.stringify(dbFull));
+                    }
                 }).catch(e => console.log("Modo sin conexión o red lenta."));
 
-            // 3. Solo congela la pantalla si es la primera vez que se abre la app en la vida
+            // 3. Solo congela la pantalla si es la primera vez que se abre la app
             if (forzarEspera || dbFull.length === 0) {
                 await peticionNube;
             }
@@ -1040,8 +1049,12 @@
                     localStorage.setItem('wm_db_cache', JSON.stringify(dbFull));
                 }
 
-                // Desaparece la tarjeta visualmente al instante
-                const fActual = document.getElementById('titulo-lista-gestion').innerText.replace("S", "");
+                // Desaparece la tarjeta visualmente al instante (BUG DE LETRA "S" CORREGIDO)
+                let fActual = document.getElementById('titulo-lista-gestion').innerText;
+                if (fActual.endsWith("S")) {
+                    fActual = fActual.slice(0, -1);
+                }
+                
                 renderizarListaGestion(fActual); 
 
                 // Enviamos los datos a Google en segundo plano sin interrumpir al usuario
