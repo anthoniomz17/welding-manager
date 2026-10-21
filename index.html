@@ -499,10 +499,21 @@
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyxytLde1CRlxQnYyUbuc2Entjr9FJ1L93Cl5JpdAm4pRAjlVl_vOnP2x3_kDP2Ba6i/exec"; 
         
         let dbFull = [];
-        let clientesLocales = JSON.parse(localStorage.getItem('wm_clientes_locales')) || [];
-        let repuestosDB = JSON.parse(localStorage.getItem('wm_repuestos')) || [];
+        let clientesLocales = [];
+        let repuestosDB = [];
         let otActiva = null; 
         let repuestosActuales = [];
+
+        // 🛡️ ESCUDO ANTIBASURA: Evita que la app muera si la caché está corrupta
+        try {
+            const cl = localStorage.getItem('wm_clientes_locales');
+            if (cl) clientesLocales = JSON.parse(cl);
+        } catch(e) { localStorage.removeItem('wm_clientes_locales'); }
+
+        try {
+            const rep = localStorage.getItem('wm_repuestos');
+            if (rep) repuestosDB = JSON.parse(rep);
+        } catch(e) { localStorage.removeItem('wm_repuestos'); }
 
         window.onload = () => {
             const iaK = localStorage.getItem('wm_ia_key');
@@ -978,8 +989,8 @@
                 const nmb = gV(item, 'NOMBRE') || gV(item, 'CLIENTE') || 'Sin Nombre';
                 let wp = gV(item, 'WHATSAPP') || gV(item, 'CELULAR') || '';
                 
-                // Limpiador básico de número
-                wp = wp.replace(/\+/g, '').replace(/\s/g, ''); 
+                // Limpiador básico de número (BLINDADO)
+                wp = String(wp).replace(/\+/g, '').replace(/\s/g, '');
                 
                 const linkPdf = gV(item, 'LINK_PDF');
                 const linkFoto = gV(item, 'LINK_FOTO');
