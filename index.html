@@ -849,13 +849,25 @@
             return f ? obj[f] : "";
         }
 
-        async function sincronizarBaseAlInicio() { 
-            try { 
-                const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime()); 
-                dbFull = await res.json(); 
-            } catch(e) {
-                console.error("Error de sincronización.");
-            } 
+       async function sincronizarBaseAlInicio(forzarEspera = false) {
+            // 1. Lee la memoria ultrarrápida del teléfono primero
+            const cache = localStorage.getItem('wm_db_cache');
+            if (cache) {
+                try { dbFull = JSON.parse(cache); } catch(e) {}
+            }
+
+            // 2. Prepara la sincronización con Google en segundo plano
+            const peticionNube = fetch(WEB_APP_URL + "?t=" + new Date().getTime())
+                .then(res => res.json())
+                .then(data => {
+                    dbFull = data;
+                    localStorage.setItem('wm_db_cache', JSON.stringify(dbFull));
+                }).catch(e => console.log("Modo sin conexión o red lenta."));
+
+            // 3. Solo congela la pantalla si es la primera vez que se abre la app en la vida
+            if (forzarEspera || dbFull.length === 0) {
+                await peticionNube;
+            }
         }
 
         function showScreen(id) { 
@@ -917,10 +929,15 @@
 
         async function renderizarListaGestion(filtro) {
             const container = document.getElementById('contenedor-items-gestion');
-            container.innerHTML = '<div class="text-center py-20"><div class="loader rounded-full border-4 h-10 w-10 mx-auto"></div><p class="text-xs font-bold mt-2 text-gray-400">Consultando SETECSI Cloud...</p></div>';
-            
-            await sincronizarBaseAlInicio();
-            
+
+            // Mismo principio: Carga instantánea si ya tenemos la base de datos en memoria
+            if (dbFull.length === 0) {
+                container.innerHTML = '<div class="text-center py-20"><div class="loader rounded-full border-4 h-10 w-10 mx-auto"></div><p class="text-xs font-bold mt-2 text-gray-400">Consultando SETECSI Cloud...</p></div>';
+                await sincronizarBaseAlInicio(true);
+            } else {
+                sincronizarBaseAlInicio(false);
+            }
+
             const abandonados = dbFull.filter(p => {
                 const fEvaluar = gV(p, 'FECHA_MOVIMIENTO') || gV(p, 'FECHA') || gV(p, 'FECHA_INGRESO');
                 return obtenerDiasCorridos(fEvaluar) > 180 && gV(p, 'ESTADO') !== 'ENTREGADO';
@@ -1014,15 +1031,25 @@
             }).join('');
         }
 
-        async function cambiarEstadoNube(ot, nE) {
+       async function cambiarEstadoNube(ot, nE) {
             try {
+                // Truco de velocidad: Actualizamos la memoria del teléfono al instante
+                const index = dbFull.findIndex(p => gV(p, 'OT') == ot || gV(p, 'N° OT') == ot || p.fila - 1 == ot);
+                if (index !== -1) {
+                    dbFull[index].ESTADO = nE;
+                    localStorage.setItem('wm_db_cache', JSON.stringify(dbFull));
+                }
+
+                // Desaparece la tarjeta visualmente al instante
+                const fActual = document.getElementById('titulo-lista-gestion').innerText.replace("S", "");
+                renderizarListaGestion(fActual); 
+
+                // Enviamos los datos a Google en segundo plano sin interrumpir al usuario
                 await fetch(WEB_APP_URL, { 
                     method: 'POST', 
                     mode: 'no-cors', 
                     body: JSON.stringify({ action: "update_status", ot: ot, estado: nE }) 
                 });
-                const fActual = document.getElementById('titulo-lista-gestion').innerText.replace("S", "");
-                renderizarListaGestion(fActual);
             } catch(e) { 
                 alert("Error al conectar con la nube."); 
             }
@@ -1474,17 +1501,20 @@
         });
 
         async function cargarPendientes() {
-            showScreen('presupuesto-list-screen'); 
-            document.getElementById('lista-pendientes').innerHTML = ''; 
-            document.getElementById('loading-pendientes').classList.remove('hidden');
-            
-            try {
-                const res = await fetch(WEB_APP_URL + "?t=" + new Date().getTime(), { cache: "no-store" }); 
-                const dataCruda = await res.json(); 
-                document.getElementById('loading-pendientes').classList.add('hidden');
-                
-                dbFull = dataCruda; 
-                let conteo = 0;
+            showScreen('presupuesto-list-screen');
+            document.getElementById('lista-pendientes').innerHTML = '';
+
+            // Si no hay memoria, espera. Si hay memoria, carga al instante y actualiza invisiblemente.
+            if (dbFull.length === 0) {
+                document.getElementById('loading-pendientes').classList.remove('hidden');
+                await sincronizarBaseAlInicio(true);
+            } else {
+                sincronizarBaseAlInicio(false); 
+            }
+
+            document.getElementById('loading-pendientes').classList.add('hidden');
+
+            let conteo = 0;
                 
                 dbFull.forEach(p => {
                     const diag = gV(p, 'DIAGNOSTICO'); 
