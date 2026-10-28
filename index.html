@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Welding Manager Pro V23.5 - ARCHIVO MAESTRO MODULAR</title>
+    <title>Welding Manager Pro V23.6 - ARCHIVO MAESTRO MODULAR</title>
     
     <link rel="manifest" href="./manifest.json">
     
@@ -163,7 +163,7 @@
             </div>
             
             <div class="app-header-content absolute bottom-6 left-6 z-40">
-                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v23.5 Premium</span>
+                <span class="text-[10px] font-black text-white bg-black bg-opacity-50 px-2 py-1 rounded uppercase tracking-widest">v23.6 Premium</span>
                 <h1 class="text-4xl font-black uppercase tracking-tighter mt-1 leading-none text-white drop-shadow-md">Welding</h1>
                 <h1 class="text-4xl font-black uppercase tracking-tighter leading-none text-blue-200 drop-shadow-md">Servicio</h1>
                 <div class="mt-1 text-white drop-shadow-md">
@@ -960,7 +960,8 @@
                     btns = `<div class="grid grid-cols-2 gap-2 mt-4">
                                 <button onclick="cambiarEstadoNube('${otN}', 'APROBADO')" class="bg-green-600 text-white py-3 rounded-xl text-[10px] font-black uppercase shadow-md active:scale-95 transition">Aceptar</button>
                                 <button onclick="cambiarEstadoNube('${otN}', 'RECHAZADO')" class="bg-red-500 text-white py-3 rounded-xl text-[10px] font-black uppercase shadow-md active:scale-95 transition">Rechazar</button>
-                            </div>`;
+                            </div>
+                            <button onclick="abrirEdicionPresupuesto('${otN}')" class="w-full bg-blue-500 text-white py-3 rounded-xl text-[11px] font-black uppercase mt-2 shadow-md active:scale-95 transition"><i class="fa-solid fa-pen-to-square"></i> Modificar Presupuesto</button>`;
                 } else if(filtro === 'APROBADO') {
                     btns = `<button onclick="cambiarEstadoNube('${otN}', 'REPARADO')" class="w-full bg-azul text-white py-4 rounded-xl text-[11px] font-black uppercase mt-3 shadow-md active:scale-95 transition">Equipo Reparado</button>`;
                 } else if(filtro === 'REPARADO' || filtro === 'RECHAZADO') {
@@ -1009,6 +1010,53 @@
             } catch(e) { 
                 alert("Error al conectar con la nube."); 
             }
+        }
+
+        // =========================================================================
+        // 🚀 NUEVO: FUNCIÓN PARA EDITAR PRESUPUESTOS EXISTENTES (v23.6)
+        // =========================================================================
+        function abrirEdicionPresupuesto(otN) {
+            // Buscamos la OT en la base de datos
+            const p = dbFull.find(x => gV(x, 'OT') == otN || gV(x, 'N° OT') == otN || x.fila - 1 == otN);
+            if(!p) return alert("⚠️ Error al encontrar la OT en la base de datos.");
+
+            // Armamos la OT activa para el visualizador
+            otActiva = { 
+                fila: p.fila, 
+                ot: otN, 
+                NOMBRE: gV(p, 'NOMBRE'), 
+                RUT: gV(p, 'RUT'), 
+                WHATSAPP: gV(p, 'WHATSAPP'), 
+                CORREO: gV(p, 'CORREO'), 
+                DIRECCION: gV(p, 'DIRECCION'), 
+                MARCA: gV(p, 'MARCA'), 
+                MODELO: gV(p, 'MODELO'), 
+                SERIE: gV(p, 'SERIE'), 
+                GUIA: gV(p, 'GUIA'), 
+                ACCESORIOS: gV(p, 'ACCESORIOS'), 
+                FALLA: gV(p, 'FALLA') 
+            }; 
+            
+            // Llenamos los datos visuales del encabezado
+            document.getElementById('ot-numero').innerText = otN; 
+            document.getElementById('det-cliente').innerText = otActiva.NOMBRE || 'Sin Nombre'; 
+            document.getElementById('det-equipo').innerText = (otActiva.MARCA || '') + " " + (otActiva.MODELO || ''); 
+            document.getElementById('det-guia-ref').innerText = otActiva.GUIA || 'S/G'; 
+            document.getElementById('det-falla').innerText = otActiva.FALLA || 'Sin registro';
+            
+            document.getElementById('foto-status').innerText = ""; 
+            document.getElementById('foto-status').className = "hidden";
+            
+            // 📥 RECUPERAMOS LO YA ESCRITO: Diagnóstico y Valor
+            document.getElementById('diagnostico').value = gV(p, 'DIAGNOSTICO') || "";
+            document.getElementById('valor-neto').value = gV(p, 'NETO') || gV(p, 'VALOR_NETO') || "";
+            
+            // Vaciamos la lista visual de repuestos para que agregues los nuevos/modificados
+            repuestosActuales = []; 
+            renderRep(); 
+            
+            // Mostramos la pantalla de presupuesto
+            showScreen('presupuesto-detail-screen');
         }
 
         // =========================================================================
