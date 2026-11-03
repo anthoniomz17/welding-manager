@@ -1600,8 +1600,7 @@
                 cY = 100; 
                 
                 const diagText = datos.diagnostico || "Sin diagnóstico registrado.";
-                const rT = repuestosActuales.length > 0 ? repuestosActuales.map(r => `• ${r.nombre} (x${r.cantidad})`).join('
-') : "Servicios técnicos especializados y mano de obra.";
+                const rT = repuestosActuales.length > 0 ? repuestosActuales.map(r => `• ${r.nombre} (x${r.cantidad})`).join('\n') : "Servicios técnicos especializados y mano de obra.";
                 
                 let dynFontSize = 10;
                 let lineHeight = 6;
@@ -1764,9 +1763,7 @@
                 
                 await generarPDFGlobal('COT', otActiva, { diagnostico: d, valorNeto: v, plazo: p }); 
                 
-                alert("✅ Presupuesto guardado y PDF generado.
-
-Ve a 'Gestión > Presupuestos' para enviarlo por WhatsApp.");
+                alert("✅ Presupuesto guardado y PDF generado.\n\nVe a 'Gestión > Presupuestos' para enviarlo por WhatsApp.");
                 location.reload(); 
 
             } catch (e) { 
@@ -2011,8 +2008,7 @@ Ve a 'Gestión > Presupuestos' para enviarlo por WhatsApp.");
         function importarRepuestosMasivo() { 
             const t = document.getElementById('import-repuestos').value; 
             if(!t.trim()) return; 
-            const l = t.split('
-').map(x => x.trim()).filter(x => x !== ""); 
+            const l = t.split('\n').map(x => x.trim()).filter(x => x !== ""); 
             repuestosDB = [...new Set([...repuestosDB, ...l])]; 
             localStorage.setItem('wm_repuestos', JSON.stringify(repuestosDB)); 
             alert("✅ Base de repuestos actualizada."); 
@@ -2021,9 +2017,8 @@ Ve a 'Gestión > Presupuestos' para enviarlo por WhatsApp.");
         function importarClientesMasivo() { 
             const t = document.getElementById('import-clientes').value; 
             if(!t.trim()) return; 
-            const l = t.split('
-').map(x => { 
-                const sep = x.includes('	') ? '	' : ',';
+            const l = t.split('\n').map(x => { 
+                const sep = x.includes('\t') ? '\t' : ',';
                 const p = x.split(sep).map(s => s.trim()); 
                 // Col A (RUT), Col B (NOMBRE), Col C (WHATSAPP), Col D (CORREO), Col E (DIRECCION), Col F (COMUNA)
                 return { RUT: p[0] || '', NOMBRE: p[1] || p[0] || '', WHATSAPP: p[2] || '', CORREO: p[3] || '', DIRECCION: p[4] || '', COMUNA: p[5] || '' }; 
