@@ -271,7 +271,13 @@
                 </div>
             </div>
 
-            <div class="space-y-1">
+            <!-- NUEVO CAMPO CONDICIÓN DE PAGO COTIZACIÓN COMERCIAL -->
+            <div class="space-y-1 mt-2">
+                <label class="text-[10px] font-bold text-gray-400 uppercase px-1">Medio de Pago / Condición</label>
+                <input type="text" id="cot-condiciones-pago" value="Transferencia Bancaria, Tarjeta o Efectivo" class="w-full p-4 rounded-xl border bg-gray-50 font-bold text-sm text-gray-900">
+            </div>
+
+            <div class="space-y-1 mt-2">
                 <label class="text-[10px] font-bold text-gray-400 uppercase px-1">Vendedor Asignado</label>
                 <input type="text" id="cot-vendedor" value="Antonio Martinez / SETECSI" class="w-full p-4 rounded-xl border bg-gray-50 font-bold text-sm text-gray-900">
             </div>
@@ -474,8 +480,14 @@
                     <input type="number" id="valor-neto" placeholder="Neto CLP" class="w-full p-4 rounded-xl border bg-gray-50 text-xl font-black text-gray-900 shadow-sm">
                 </div>
             </div>
+
+            <!-- NUEVO CAMPO CONDICIÓN DE PAGO OT -->
+            <div class="space-y-1 mt-4">
+                <label class="text-[10px] font-bold text-gray-400 uppercase px-1">Medio de Pago / Condición</label>
+                <input type="text" id="condiciones-pago" value="Transferencia Bancaria, Tarjeta o Efectivo" class="w-full p-4 rounded-xl border bg-gray-50 font-bold text-sm text-gray-900">
+            </div>
             
-            <button id="btn-enviar-presupuesto" onclick="enviarPresupuesto()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-xl shadow-xl active:scale-95 transition uppercase tracking-widest text-center text-white">Guardar y Enviar al Cliente</button>
+            <button id="btn-enviar-presupuesto" onclick="enviarPresupuesto()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold text-xl shadow-xl active:scale-95 transition uppercase tracking-widest text-center text-white mt-4">Guardar y Enviar al Cliente</button>
         </div>
     </div>
 
@@ -722,6 +734,9 @@
             const validez = document.getElementById('cot-validez').value;
             const plazo = document.getElementById('cot-plazo').value;
             const vendedor = document.getElementById('cot-vendedor').value;
+            
+            // DATO AÑADIDO: CONDICIONES DE PAGO DE COTIZACIÓN COMERCIAL
+            const condPagoCot = document.getElementById('cot-condiciones-pago').value.trim() || "Transferencia Bancaria, Tarjeta de Débito, Crédito o Efectivo.";
 
             const nCot = Math.floor(1000 + Math.random() * 9000);
 
@@ -843,10 +858,12 @@
 
             doc.setFont("helvetica", "normal");
             doc.setFontSize(8);
+            
+            // CONDICIONES ACTUALIZADAS CON DATOS DE BANCO DE CHILE Y CAMPO EDITABLE
             const condiciones = [
-                "- Transferencia bancaria, Tarjeta de Débito, Crédito o Efectivo.",
+                `- Condición de Pago: ${condPagoCot}`,
                 "- Garantía legal de 3 meses ante fallas de fabricación.",
-                "- Cuenta Corriente Banco BCI: 327778 230300 502.000 CLP | RUT: 76.349.984-7",
+                "- Cuenta Corriente Banco de Chile: 1680610301 | RUT: 76.349.984-7",
                 "- Enviar comprobante de pago al correo amsetecsi@gmail.com"
             ];
             condiciones.forEach((c, idx) => {
@@ -1686,10 +1703,14 @@
                 doc.text("MEDIOS DE PAGO Y CONDICIONES COMERCIALES:", 10, termsY);
                 
                 doc.setFont("helvetica", "normal");
+                
+                // CONDICIONES ACTUALIZADAS CON DATOS DE BANCO DE CHILE Y CAMPO EDITABLE
+                const cp = datos.condicionesPago || "Transferencia Bancaria, Tarjeta o Efectivo.";
                 const nC = [
-                    "- Pago vía Transferencia Bancaria, Tarjeta de Débito, Crédito o Efectivo.", 
+                    `- Condición de Pago: ${cp}`, 
                     `- Plazo de entrega estimado: ${datos.plazo} días hábiles tras aprobación formal.`, 
-                    "- Validez de esta Cotización: 7 días corridos.", 
+                    "- Validez de este presupuesto: 7 días corridos.", 
+                    "- Cuenta Corriente Banco de Chile: 1680610301 | RUT: 76.349.984-7",
                     "- Para aprobar este presupuesto, envíe WhatsApp al correo amsetecsi@gmail.com"
                 ];
                 nC.forEach((n, i) => { doc.text(n, 10, termsY + 6 + (i * 4.5)); });
@@ -1740,6 +1761,9 @@
             const v = document.getElementById('valor-neto').value;
             const p = document.getElementById('plazo').value; 
             
+            // DATO AÑADIDO: CONDICIONES DE PAGO DE PRESUPUESTO TÉCNICO
+            const cp = document.getElementById('condiciones-pago').value; 
+            
             if(!d || !v) {
                 return alert("⚠️ Complete el Diagnóstico y el Valor Neto.");
             }
@@ -1761,7 +1785,7 @@
                     }) 
                 }); 
                 
-                await generarPDFGlobal('COT', otActiva, { diagnostico: d, valorNeto: v, plazo: p }); 
+                await generarPDFGlobal('COT', otActiva, { diagnostico: d, valorNeto: v, plazo: p, condicionesPago: cp }); 
                 
                 alert("✅ Presupuesto guardado y PDF generado.\n\nVe a 'Gestión > Presupuestos' para enviarlo por WhatsApp.");
                 location.reload(); 
