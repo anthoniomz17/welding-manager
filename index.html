@@ -236,20 +236,27 @@
                 <input type="email" id="cot-correo" placeholder="Correo Electrónico (Columna D)" class="w-full p-3 rounded-xl border text-gray-900 bg-white">
                 <input type="text" id="cot-direccion" placeholder="Dirección (Columna E)" class="w-full p-3 rounded-xl border text-gray-900 bg-white">
                 <input type="text" id="cot-comuna" placeholder="Comuna (Columna F)" class="w-full p-3 rounded-xl border text-gray-900 bg-white">
+                <button type="button" onclick="guardarClienteDesdeCotizacion(this)" class="w-full bg-teal-600 text-white py-3 rounded-xl text-[11px] font-black uppercase mt-2 shadow-md active:scale-95 transition flex items-center justify-center gap-2"><i class="fa-solid fa-cloud-arrow-up"></i> Guardar Cliente Nuevo en BD</button>
             </div>
 
             <div class="bg-gray-50 p-5 rounded-3xl border border-gray-200 shadow-sm relative">
                 <label class="font-bold text-azul uppercase text-[10px] tracking-widest px-1"><i class="fa-solid fa-boxes-stacked"></i> Repuestos o Ítems a Cotizar</label>
-                <div class="flex gap-2 mt-2">
-                    <div class="flex-1 relative">
-                        <input type="text" id="cot-buscador-repuesto" placeholder="Descripción del repuesto..." class="w-full p-3 rounded-xl border text-sm text-gray-900 bg-white" autocomplete="off">
+                <div class="flex flex-col gap-2 mt-2">
+                    <div class="flex gap-2">
+                        <input type="text" id="cot-codigo-repuesto" onkeyup="buscarProductoCotizacion(this.value, 'codigo')" placeholder="CÓDIGO (0=Manual)" class="w-32 p-3 rounded-xl border text-sm font-bold text-gray-900 bg-white uppercase" autocomplete="off">
+                        <div class="flex-1 relative">
+                            <input type="text" id="cot-buscador-repuesto" onkeyup="buscarProductoCotizacion(this.value, 'desc')" placeholder="Buscar por descripción..." class="w-full p-3 rounded-xl border text-sm text-gray-900 bg-white" autocomplete="off">
+                            <ul id="cot-sugerencias-producto" class="autocomplete-dropdown absolute w-full bg-white border hidden mt-1 left-0 z-50 shadow-xl"></ul>
+                        </div>
                     </div>
-                    <input type="number" id="cot-cantidad-repuesto" value="1" min="1" class="w-16 p-3 rounded-xl border text-center font-bold text-gray-900 bg-white">
-                    <input type="number" id="cot-precio-repuesto" placeholder="P. Unitario" class="w-24 p-3 rounded-xl border text-center font-bold text-gray-900 bg-white">
-                    <button onclick="agregarItemCotizacionComercial()" class="bg-azul text-white px-4 rounded-xl shadow-md active:scale-90 transition"><i class="fa-solid fa-plus text-white"></i></button>
+                    <div class="flex gap-2 items-center">
+                        <label class="text-[10px] font-bold text-gray-400 uppercase">Cant:</label>
+                        <input type="number" id="cot-cantidad-repuesto" value="1" min="1" class="w-16 p-3 rounded-xl border text-center font-bold text-gray-900 bg-white">
+                        <label class="text-[10px] font-bold text-gray-400 uppercase ml-2">P. Unit:</label>
+                        <input type="number" id="cot-precio-repuesto" placeholder="Precio $" class="flex-1 p-3 rounded-xl border text-center font-bold text-gray-900 bg-white">
+                        <button onclick="agregarItemCotizacionComercial()" class="bg-azul text-white px-4 py-3 rounded-xl shadow-md active:scale-90 transition font-bold"><i class="fa-solid fa-plus text-white"></i> Add</button>
+                    </div>
                 </div>
-                <ul id="cot-lista-items" class="space-y-2 mt-4"></ul>
-            </div>
 
             <div class="grid grid-cols-2 gap-4 text-gray-900">
                 <div class="space-y-1">
@@ -352,6 +359,7 @@
                 <input type="tel" id="whatsapp" placeholder="WhatsApp (Ej: +569...)" class="w-full p-3 rounded-xl border text-gray-900">
                 <input type="text" id="direccion" placeholder="Dirección del Cliente" class="w-full p-3 rounded-xl border text-gray-900">
                 <input type="email" id="correo" placeholder="Correo Electrónico" class="w-full p-3 rounded-xl border text-gray-900">
+                <button type="button" onclick="guardarClienteDesdeIngreso(this)" class="w-full bg-teal-600 text-white py-3 rounded-xl text-[11px] font-black uppercase mt-2 shadow-md active:scale-95 transition flex items-center justify-center gap-2"><i class="fa-solid fa-cloud-arrow-up"></i> Guardar Cliente Nuevo en BD</button>
             </div>
             
             <div class="bg-gray-50 p-4 rounded-2xl space-y-3 border border-gray-100 text-gray-900">
@@ -555,6 +563,13 @@
                 <textarea id="import-clientes" class="w-full p-3 rounded-xl border h-32 text-sm mt-2 text-gray-900" placeholder="RUT, NOMBRE, WHATSAPP, CORREO, DIRECCION, COMUNA"></textarea>
                 <button onclick="importarClientesMasivo()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-2 shadow-md">Actualizar Clientes</button>
             </div>
+            
+            <div class="bg-teal-50 p-4 rounded-2xl border border-teal-200 shadow-sm text-gray-900 mt-6">
+                <label class="font-bold text-teal-700 uppercase text-xs">Base de Productos (Venta Cotización)</label>
+                <p class="text-[10px] text-gray-500 mt-1">Columnas Pestaña Productos: A (CÓDIGO), B (DESCRIPCIÓN), C (VALOR)</p>
+                <textarea id="import-productos" class="w-full p-3 rounded-xl border h-32 text-sm mt-2 text-gray-900" placeholder="Ej: 1001, Regulador Argón, $1.500,00"></textarea>
+                <button onclick="importarProductosMasivo()" class="w-full bg-teal-600 text-white py-3 rounded-xl font-bold mt-2 shadow-md">Actualizar Base de Productos</button>
+            </div>
 
             <div class="bg-red-50 p-4 rounded-2xl border border-red-200 shadow-sm text-gray-900 mt-6">
                 <label class="font-bold text-red-700 uppercase text-xs"><i class="fa-solid fa-triangle-exclamation"></i> Zona de Emergencia</label>
@@ -573,6 +588,11 @@
         let otActiva = null; 
         let repuestosActuales = [];
         let cotComercialItems = [];
+        let productosLocales = [];
+        try {
+            const prod = localStorage.getItem('wm_productos_locales');
+            if (prod && prod !== "undefined" && prod !== "null") productosLocales = JSON.parse(prod);
+        } catch(e) { localStorage.removeItem('wm_productos_locales'); }
 
         try {
             const cl = localStorage.getItem('wm_clientes_locales');
@@ -591,6 +611,7 @@
             }
             cargarImagenesVisuales(); 
             sincronizarBaseAlInicio();
+            descargarBasesSecundariasSilencioso();
         };
 
         function limpiarMotorApp() {
@@ -700,6 +721,7 @@
             document.getElementById('cot-buscador-repuesto').value = '';
             document.getElementById('cot-precio-repuesto').value = '';
             document.getElementById('cot-cantidad-repuesto').value = '1';
+            document.getElementById('cot-codigo-repuesto').value = '';
             renderCotComercialItems();
         }
 
@@ -2051,6 +2073,158 @@
             clientesLocales = l; 
             localStorage.setItem('wm_clientes_locales', JSON.stringify(l)); 
             alert("✅ Base de clientes habituales actualizada."); 
+        }
+
+        // FUNCIONES DE PRODUCTOS Y LIMPIEZA DE FORMATO "$1.500,00"
+        function limpiarPrecioCLP(precioStr) {
+            if (!precioStr) return 0;
+            if (typeof precioStr === 'number') return precioStr;
+            let str = precioStr.toString().replace(/\$/g, '').trim(); // Quita signo $
+            str = str.replace(/\./g, '').replace(/,/g, '.'); // Quita puntos de miles, convierte coma a punto decimal
+            return Math.round(parseFloat(str)) || 0;
+        }
+
+        function buscarProductoCotizacion(t, tipo) {
+            const ul = document.getElementById('cot-sugerencias-producto');
+            const inputDesc = document.getElementById('cot-buscador-repuesto');
+            const inputPrecio = document.getElementById('cot-precio-repuesto');
+            const inputCodigo = document.getElementById('cot-codigo-repuesto');
+
+            ul.innerHTML = '';
+            
+            // Lógica de Código 0 (Libre manual)
+            if(tipo === 'codigo' && t.trim() === '0') {
+                inputDesc.value = '';
+                inputPrecio.value = '';
+                inputDesc.focus();
+                ul.classList.add('hidden');
+                return;
+            }
+
+            if(t.length < 2 && tipo === 'desc') { 
+                ul.classList.add('hidden'); 
+                return; 
+            }
+
+            let fil = [];
+            if (tipo === 'codigo') {
+                fil = productosLocales.filter(p => (p.CODIGO || "").toString().toLowerCase().includes(t.toLowerCase()));
+                // Autocompletado inmediato si el código coincide exactamente
+                if(fil.length === 1 && fil[0].CODIGO.toString().toLowerCase() === t.toLowerCase()) {
+                    inputDesc.value = fil[0].DESCRIPCION;
+                    inputPrecio.value = limpiarPrecioCLP(fil[0].VALOR);
+                    ul.classList.add('hidden');
+                    return;
+                }
+            } else {
+                fil = productosLocales.filter(p => (p.DESCRIPCION || "").toString().toLowerCase().includes(t.toLowerCase()));
+            }
+
+            if(fil.length === 0) { 
+                ul.classList.add('hidden'); 
+                return; 
+            }
+            
+            ul.classList.remove('hidden'); 
+            
+            fil.forEach(p => {
+                const li = document.createElement('li'); 
+                li.className = "p-3 border-b text-xs font-bold text-gray-900 cursor-pointer hover:bg-teal-50 flex justify-between"; 
+                li.innerHTML = `<span>[${p.CODIGO}] ${p.DESCRIPCION}</span> <span class="text-azul font-black">$${limpiarPrecioCLP(p.VALOR).toLocaleString('es-CL')}</span>`;
+                li.onclick = () => { 
+                    inputCodigo.value = p.CODIGO;
+                    inputDesc.value = p.DESCRIPCION; 
+                    inputPrecio.value = limpiarPrecioCLP(p.VALOR);
+                    ul.classList.add('hidden'); 
+                };
+                ul.appendChild(li);
+            });
+        }
+
+        function importarProductosMasivo() { 
+            const t = document.getElementById('import-productos').value; 
+            if(!t.trim()) return; 
+            const l = t.split('\n').map(x => { 
+                const sep = x.includes('\t') ? '\t' : ',';
+                const p = x.split(sep).map(s => s.trim()); 
+                // A (CÓDIGO), B (DESCRIPCIÓN), C (VALOR)
+                return { CODIGO: p[0] || '', DESCRIPCION: p[1] || '', VALOR: p[2] || '' }; 
+            }).filter(x => x.DESCRIPCION); 
+            productosLocales = l; 
+            localStorage.setItem('wm_productos_locales', JSON.stringify(l)); 
+            alert("✅ Base de Productos actualizada."); 
+        }
+        // =========================================================================
+        // MÓDULO DE SINCRONIZACIÓN AUTOMÁTICA Y GUARDADO DE CLIENTES
+        // =========================================================================
+        async function guardarClienteDesdeCotizacion(btn) {
+            const nom = document.getElementById('cot-nombre').value.trim();
+            const rut = document.getElementById('cot-rut').value.trim();
+            const fono = document.getElementById('cot-whatsapp').value.trim();
+            const correo = document.getElementById('cot-correo').value.trim();
+            const dir = document.getElementById('cot-direccion').value.trim();
+            const com = document.getElementById('cot-comuna') ? document.getElementById('cot-comuna').value.trim() : '';
+            await registrarClienteBD(btn, rut, nom, fono, correo, dir, com);
+        }
+
+        async function guardarClienteDesdeIngreso(btn) {
+            const nom = document.getElementById('nombre').value.trim();
+            const rut = document.getElementById('rut').value.trim();
+            const fono = document.getElementById('whatsapp').value.trim();
+            const correo = document.getElementById('correo').value.trim();
+            const dir = document.getElementById('direccion').value.trim();
+            await registrarClienteBD(btn, rut, nom, fono, correo, dir, "");
+        }
+
+        async function registrarClienteBD(btn, rut, nom, fono, correo, dir, com) {
+            if(!nom) return alert("⚠️ Debes ingresar al menos el Nombre del cliente para guardarlo.");
+            
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> GUARDANDO...';
+            btn.disabled = true;
+
+            try {
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify({
+                        action: "nuevo_cliente",
+                        RUT: rut, NOMBRE: nom, WHATSAPP: fono, CORREO: correo, DIRECCION: dir, COMUNA: com
+                    })
+                });
+                
+                // Actualiza la memoria local al instante para que funcione el buscador sin recargar
+                clientesLocales.push({ RUT: rut, NOMBRE: nom, WHATSAPP: fono, CORREO: correo, DIRECCION: dir, COMUNA: com });
+                localStorage.setItem('wm_clientes_locales', JSON.stringify(clientesLocales));
+                
+                alert("✅ Cliente guardado exitosamente en tu Google Sheets.");
+            } catch(e) {
+                alert("❌ Error de conexión al guardar el cliente.");
+            }
+            
+            btn.innerHTML = originalHTML;
+            btn.disabled = false;
+        }
+
+        // Esta función se ejecuta silenciosamente de fondo para descargar los Excel actualizados
+        function descargarBasesSecundariasSilencioso() {
+            fetch(WEB_APP_URL + "?action=get_clientes")
+                .then(r => r.json())
+                .then(c => { 
+                    if(c && c.length > 0) {
+                        clientesLocales = c; 
+                        localStorage.setItem('wm_clientes_locales', JSON.stringify(c)); 
+                    }
+                }).catch(e => console.log("Caché de clientes en uso."));
+
+            fetch(WEB_APP_URL + "?action=get_productos")
+                .then(r => r.json())
+                .then(p => { 
+                    if(p && p.length > 0) {
+                        productosLocales = p; 
+                        localStorage.setItem('wm_productos_locales', JSON.stringify(p)); 
+                    }
+                }).catch(e => console.log("Caché de productos en uso."));
         }
     </script>
 </body>
