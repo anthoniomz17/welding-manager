@@ -738,7 +738,9 @@
             // DATO AÑADIDO: CONDICIONES DE PAGO DE COTIZACIÓN COMERCIAL
             const condPagoCot = document.getElementById('cot-condiciones-pago').value.trim() || "Transferencia Bancaria, Tarjeta de Débito, Crédito o Efectivo.";
 
-            const nCot = Math.floor(1000 + Math.random() * 9000);
+            let nCotStr = localStorage.getItem('wm_correlativo_cotizacion');
+            let nCot = nCotStr ? parseInt(nCotStr) + 1 : 21600;
+            localStorage.setItem('wm_correlativo_cotizacion', nCot);
 
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
@@ -862,7 +864,6 @@
             // CONDICIONES ACTUALIZADAS CON DATOS DE BANCO DE CHILE Y CAMPO EDITABLE
             const condiciones = [
                 `- Condición de Pago: ${condPagoCot}`,
-                "- Garantía legal de 3 meses ante fallas de fabricación.",
                 "- Cuenta Corriente Banco de Chile: 1680610301 | RUT: 76.349.984-7",
                 "- Enviar comprobante de pago al correo amsetecsi@gmail.com"
             ];
