@@ -673,8 +673,11 @@ function buscarClienteCotizacion(t) {
             ul.innerHTML = ''; 
             if(t.length < 2) { ul.classList.add('hidden'); return; }
             
-            // ELIMINAMOS dbFull DE LA BÚSQUEDA.
-            const fil = clientesLocales.filter(c => (c.NOMBRE || "").toString().toLowerCase().includes(t.toLowerCase()));
+            // ELIMINADA LA VARIABLE dbFull (OTs).
+            const fil = clientesLocales.filter(c => {
+                const nombre = (c.NOMBRE || c.nombre || "").toString().toLowerCase();
+                return nombre.includes(t.toLowerCase()) && nombre !== "";
+            });
             
             if(fil.length === 0) { ul.classList.add('hidden'); return; }
             
@@ -1934,16 +1937,20 @@ function buscarClienteCotizacion(t) {
         // AUTOCOMPLETADO ESTRICTO: SOLO HOJA CLIENTES
         function buscarCliente(t) {
             const ul = document.getElementById('sugerencias-cliente'); 
+            if(!ul) return;
             ul.innerHTML = ''; 
             if(t.length < 2) { ul.classList.add('hidden'); return; }
             
-            // ELIMINAMOS dbFull DE LA BÚSQUEDA. SOLO BUSCA EN clientesLocales.
-            const fil = clientesLocales.filter(c => (c.NOMBRE || "").toString().toLowerCase().includes(t.toLowerCase()));
+            // ELIMINADA LA VARIABLE dbFull (OTs). Ahora solo busca clientes reales.
+            const fil = clientesLocales.filter(c => {
+                const nombre = (c.NOMBRE || c.nombre || "").toString().toLowerCase();
+                return nombre.includes(t.toLowerCase()) && nombre !== "";
+            });
             
             if(fil.length === 0) { ul.classList.add('hidden'); return; }
             
             ul.classList.remove('hidden'); 
-            fil.slice(0, 6).forEach(c => { 
+            fil.slice(0, 6).forEach(c => {
                 const li = document.createElement('li'); 
                 li.className = "p-4 border-b font-bold text-gray-900 cursor-pointer hover:bg-blue-50"; 
                 li.innerText = `${c.NOMBRE} ${c.RUT ? '(' + c.RUT + ')' : ''}`;
@@ -2045,23 +2052,33 @@ function buscarClienteCotizacion(t) {
             const inputPrecio = document.getElementById('cot-precio-repuesto');
             const inputCodigo = document.getElementById('cot-codigo-repuesto');
 
+            if (!ul) return;
             ul.innerHTML = '';
+            
             if(tipo === 'codigo' && t.trim() === '0') {
                 inputDesc.value = ''; inputPrecio.value = ''; inputDesc.focus();
                 ul.classList.add('hidden'); return;
             }
-            if(t.length < 2 && tipo === 'desc') { ul.classList.add('hidden'); return; }
+            if(t.length < 2) { ul.classList.add('hidden'); return; }
 
-            let fil = [];
-            if (tipo === 'codigo') {
-                fil = productosLocales.filter(p => (p.CODIGO || "").toString().toLowerCase().includes(t.toLowerCase()));
-                if(fil.length === 1 && fil[0].CODIGO.toString().toLowerCase() === t.toLowerCase()) {
-                    inputDesc.value = fil[0].DESCRIPCION;
-                    inputPrecio.value = limpiarPrecioCLP(fil[0].VALOR);
-                    ul.classList.add('hidden'); return;
-                }
-            } else {
-                fil = productosLocales.filter(p => (p.DESCRIPCION || "").toString().toLowerCase().includes(t.toLowerCase()));
+            let fil = productosLocales.filter(p => {
+                const cod = (p.CODIGO || p.codigo || "").toString().toLowerCase();
+                const desc = (p.DESCRIPCION || p.descripcion || "").toString().toLowerCase();
+                
+                // FILTRO ESTRICTO: Ignora las filas vacías que causaban el "undefined"
+                if (cod === "" && desc === "") return false;
+                
+                if (tipo === 'codigo') return cod.includes(t.toLowerCase());
+                return desc.includes(t.toLowerCase());
+            });
+
+            // Autocompletado directo si escribes el código exacto
+            if (tipo === 'codigo' && fil.length === 1 && (fil[0].CODIGO || "").toString().toLowerCase() === t.toLowerCase()) {
+                inputDesc.value = fil[0].DESCRIPCION || '';
+                // CORRECCIÓN PRECIO: Se lee VALOR_NETO (como lo manda el script) o VALOR
+                inputPrecio.value = limpiarPrecioCLP(fil[0].VALOR_NETO || fil[0].VALOR);
+                ul.classList.add('hidden'); 
+                return;
             }
 
             if(fil.length === 0) { ul.classList.add('hidden'); return; }
@@ -2070,12 +2087,16 @@ function buscarClienteCotizacion(t) {
             fil.slice(0, 8).forEach(p => {
                 const li = document.createElement('li'); 
                 li.className = "p-3 border-b text-xs font-bold text-gray-900 cursor-pointer hover:bg-teal-50 flex justify-between"; 
-                // Ahora lee correctamente el código y la descripción
-                li.innerHTML = `<span>[${p.CODIGO || 'S/C'}] ${p.DESCRIPCION || 'Sin nombre'}</span> <span class="text-azul font-black">$${limpiarPrecioCLP(p.VALOR).toLocaleString('es-CL')}</span>`;
+                
+                const precioMostrado = limpiarPrecioCLP(p.VALOR_NETO || p.VALOR);
+                const codMostrado = p.CODIGO || 'S/C';
+                const descMostrada = p.DESCRIPCION || 'Sin Descripción';
+                
+                li.innerHTML = `<span>[${codMostrado}] ${descMostrada}</span> <span class="text-azul font-black">$${precioMostrado.toLocaleString('es-CL')}</span>`;
                 li.onclick = () => { 
-                    inputCodigo.value = p.CODIGO || '';
-                    inputDesc.value = p.DESCRIPCION || ''; 
-                    inputPrecio.value = limpiarPrecioCLP(p.VALOR);
+                    inputCodigo.value = codMostrado;
+                    inputDesc.value = descMostrada; 
+                    inputPrecio.value = precioMostrado;
                     ul.classList.add('hidden'); 
                 };
                 ul.appendChild(li);
