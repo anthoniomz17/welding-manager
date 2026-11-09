@@ -598,7 +598,7 @@
     </div>
 
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyKAg4H-P4LDBzZTxFmazSesllXn3ydV8OQfWX2AycINpTwE-s1xKiq_B9U4qJbMuS-/exec"; 
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzAK1Bo1AQBepchBLCWZ5zEISoSmTCBfdmyH8xMkVUe6yuVr8c4Eh0FlTCemKRdMNaC/exec"; 
         
         let dbFull = [];
         let clientesLocales = [];
@@ -1842,8 +1842,17 @@ function buscarClienteCotizacion(t) {
                     body: JSON.stringify(d) 
                 });
                 
-                const otFicticia = Math.floor(1000 + Math.random() * 9000);
-                await generarPDFGlobal('OT', { ...d, ot: otFicticia }, {});
+                                // Leer la hoja recién actualizada para obtener la OT real y correlativa
+                await sincronizarBaseAlInicio(true);
+                let otReal = null;
+                if (dbFull.length > 0) {
+                    const ultimo = dbFull[dbFull.length - 1];
+                    otReal = gV(ultimo, 'OT') || gV(ultimo, 'N° OT') || ultimo.fila - 1;
+                }
+                if (!otReal) otReal = 1001;
+
+                await generarPDFGlobal('OT', { ...d, ot: otReal }, {});
+
                 
                 alert("✅ Ingreso registrado exitosamente en la nube y PDF generado."); 
                 location.reload(); 
