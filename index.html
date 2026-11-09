@@ -1213,15 +1213,16 @@ function buscarClienteCotizacion(t) {
                 .then(data => {
                     if (data.ots) { 
                         dbFull = data.ots;
-                        clientesLocales = data.clientes;
-                        productosLocales = data.productos;
+                        clientesLocales = data.clientes || [];
+                        productosLocales = data.productos || [];
                         localStorage.setItem('wm_db_cache', JSON.stringify(data));
+                        localStorage.setItem('wm_clientes_locales', JSON.stringify(clientesLocales));
+                        localStorage.setItem('wm_productos_locales', JSON.stringify(productosLocales));
                     }
                 }).catch(e => console.log("Modo sin conexión."));
 
             if (forzarEspera || dbFull.length === 0) await peticionNube;
         }
-
         function showScreen(id) { 
             document.querySelectorAll('div[id$="-screen"]').forEach(s => { 
                 s.style.display = 'none'; 
@@ -1934,16 +1935,15 @@ function buscarClienteCotizacion(t) {
             }
         }
 
-        // AUTOCOMPLETADO ESTRICTO: SOLO HOJA CLIENTES
+        // AUTOCOMPLETADO ROBUSTO: BUSCADOR DE CLIENTES EN NUEVO INGRESO
         function buscarCliente(t) {
             const ul = document.getElementById('sugerencias-cliente'); 
             if(!ul) return;
             ul.innerHTML = ''; 
             if(t.length < 2) { ul.classList.add('hidden'); return; }
             
-            // ELIMINADA LA VARIABLE dbFull (OTs). Ahora solo busca clientes reales.
             const fil = clientesLocales.filter(c => {
-                const nombre = (c.NOMBRE || c.nombre || "").toString().toLowerCase();
+                const nombre = (c.NOMBRE || c.nombre || c.CLIENTE || "").toString().toLowerCase();
                 return nombre.includes(t.toLowerCase()) && nombre !== "";
             });
             
@@ -1953,13 +1953,21 @@ function buscarClienteCotizacion(t) {
             fil.slice(0, 6).forEach(c => {
                 const li = document.createElement('li'); 
                 li.className = "p-4 border-b font-bold text-gray-900 cursor-pointer hover:bg-blue-50"; 
-                li.innerText = `${c.NOMBRE} ${c.RUT ? '(' + c.RUT + ')' : ''}`;
+                const nomMostrado = c.NOMBRE || c.nombre || c.CLIENTE || '';
+                const rutMostrado = c.RUT || c.rut || '';
+                li.innerText = `${nomMostrado} ${rutMostrado ? '(' + rutMostrado + ')' : ''}`;
+                
                 li.onclick = () => { 
-                    document.getElementById('nombre').value = c.NOMBRE || ''; 
-                    document.getElementById('rut').value = c.RUT || ''; 
-                    document.getElementById('whatsapp').value = c.WHATSAPP || ''; 
-                    document.getElementById('direccion').value = c.DIRECCION ? c.DIRECCION + (c.COMUNA ? ', ' + c.COMUNA : '') : ''; 
-                    document.getElementById('correo').value = c.CORREO || ''; 
+                    const wspVal = c.WHATSAPP || c.whatsapp || c.TELEFONO || c.telefono || c.CELULAR || c.celular || '';
+                    const dirVal = c.DIRECCION || c.direccion || c.DIRECCIÓN || c.dirección || '';
+                    const comVal = c.COMUNA || c.comuna || '';
+                    const corVal = c.CORREO || c.correo || c.EMAIL || c.email || '';
+
+                    document.getElementById('nombre').value = nomMostrado; 
+                    document.getElementById('rut').value = rutMostrado; 
+                    document.getElementById('whatsapp').value = wspVal; 
+                    document.getElementById('direccion').value = dirVal ? (dirVal + (comVal ? ', ' + comVal : '')) : ''; 
+                    document.getElementById('correo').value = corVal; 
                     ul.classList.add('hidden'); 
                 };
                 ul.appendChild(li);
