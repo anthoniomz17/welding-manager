@@ -245,28 +245,26 @@
             <div class="bg-gray-50 p-5 rounded-3xl border border-gray-200 shadow-sm relative">
                 <label class="font-bold text-azul uppercase text-[10px] tracking-widest px-1"><i class="fa-solid fa-boxes-stacked"></i> Repuestos o Ítems a Cotizar</label>
                 
-                <div class="flex flex-col gap-3 mt-3">
+                <div class="flex flex-col gap-2 mt-2">
                     <div class="flex gap-2">
-                        <input type="text" id="cot-codigo-repuesto" onkeyup="buscarProductoCotizacion(this.value, 'codigo')" placeholder="CÓDIGO (0=Man)" class="w-1/3 p-3 rounded-xl border text-[11px] font-bold text-gray-900 bg-white uppercase" autocomplete="off">
+                        <input type="text" id="cot-codigo-repuesto" onkeyup="buscarProductoCotizacion(this.value, 'codigo')" placeholder="CÓDIGO (0=Manual)" class="w-1/3 p-3 rounded-xl border text-[11px] font-bold text-gray-900 bg-white uppercase" autocomplete="off">
                         <div class="flex-1 relative">
                             <input type="text" id="cot-buscador-repuesto" onkeyup="buscarProductoCotizacion(this.value, 'desc')" placeholder="Buscar por descripción..." class="w-full p-3 rounded-xl border text-[12px] text-gray-900 bg-white" autocomplete="off">
                             <ul id="cot-sugerencias-producto" class="autocomplete-dropdown absolute w-full bg-white border hidden mt-1 left-0 z-50 shadow-xl"></ul>
                         </div>
                     </div>
                     
-                    <div class="flex items-end gap-2 w-full">
-                        <div class="w-1/4">
-                            <label class="text-[9px] font-bold text-gray-400 uppercase ml-1 block mb-1">Cant.</label>
+                    <div class="grid grid-cols-3 gap-2 items-end">
+                        <div>
+                            <label class="text-[9px] font-bold text-gray-400 uppercase ml-1">Cant.</label>
                             <input type="number" id="cot-cantidad-repuesto" value="1" min="1" class="w-full p-3 rounded-xl border text-center font-bold text-gray-900 bg-white">
                         </div>
-                        <div class="w-1/2">
-                            <label class="text-[9px] font-bold text-gray-400 uppercase ml-1 block mb-1">Precio Unit.</label>
-                            <input type="number" id="cot-precio-repuesto" placeholder="Precio $" class="w-full p-3 rounded-xl border text-center font-bold text-gray-900 bg-white">
-                        </div>
-                        <div class="w-1/4">
-                            <button onclick="agregarItemCotizacionComercial()" class="w-full bg-azul text-white p-3 rounded-xl shadow-md active:scale-90 transition font-black text-sm h-[46px] flex items-center justify-center">
-                                <i class="fa-solid fa-plus mr-1"></i> ADD
-                            </button>
+                        <div class="col-span-2">
+                            <label class="text-[9px] font-bold text-gray-400 uppercase ml-1">Precio Unitario</label>
+                            <div class="flex gap-2">
+                                <input type="number" id="cot-precio-repuesto" placeholder="Precio $" class="flex-1 p-3 rounded-xl border text-center font-bold text-gray-900 bg-white">
+                                <button onclick="agregarItemCotizacionComercial()" class="bg-azul text-white px-4 py-3 rounded-xl shadow-md active:scale-90 transition font-bold"><i class="fa-solid fa-plus text-white"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -278,7 +276,7 @@
             <div class="grid grid-cols-2 gap-4 text-gray-900">
                 <div class="space-y-1">
                     <label class="text-[10px] font-bold text-gray-400 uppercase px-1">Validez de Oferta</label>
-                    <select id="cot-validez" class="w-full p-3 rounded-xl border bg-gray-50 font-bold text-sm text-gray-700">
+                    <select id="cot-validez" class="w-full p-4 rounded-xl border bg-gray-50 font-bold text-sm text-gray-700">
                         <option value="7 días corridos">7 días corridos</option>
                         <option value="15 días">15 días</option>
                         <option value="30 días">30 días</option>
@@ -286,7 +284,7 @@
                 </div>
                 <div class="space-y-1">
                     <label class="text-[10px] font-bold text-gray-400 uppercase px-1">Plazo de Entrega</label>
-                    <select id="cot-plazo" class="w-full p-3 rounded-xl border bg-gray-50 font-bold text-sm text-gray-700">
+                    <select id="cot-plazo" class="w-full p-4 rounded-xl border bg-gray-50 font-bold text-sm text-gray-700">
                         <option value="Inmediata / Stock">Inmediata / Stock</option>
                         <option value="3 días hábiles">3 días hábiles</option>
                         <option value="5 días hábiles">5 días hábiles</option>
@@ -298,15 +296,15 @@
             <!-- 4. MEDIO DE PAGO Y VENDEDOR -->
             <div class="space-y-1 mt-2">
                 <label class="text-[10px] font-bold text-gray-400 uppercase px-1">Medio de Pago / Condición</label>
-                <input type="text" id="cot-condiciones-pago" value="Transferencia Bancaria, Tarjeta o Efectivo" class="w-full p-3 rounded-xl border bg-gray-50 font-bold text-sm text-gray-900">
+                <input type="text" id="cot-condiciones-pago" value="Transferencia Bancaria, Tarjeta o Efectivo" class="w-full p-4 rounded-xl border bg-gray-50 font-bold text-sm text-gray-900">
             </div>
 
             <div class="space-y-1 mt-2">
                 <label class="text-[10px] font-bold text-gray-400 uppercase px-1">Vendedor Asignado</label>
-                <input type="text" id="cot-vendedor" value="Antonio Martinez / SETECSI" class="w-full p-3 rounded-xl border bg-gray-50 font-bold text-sm text-gray-900">
+                <input type="text" id="cot-vendedor" value="Antonio Martinez / SETECSI" class="w-full p-4 rounded-xl border bg-gray-50 font-bold text-sm text-gray-900">
             </div>
             
-            <button id="btn-generar-cot-comercial" onclick="generarPDFCotizacionComercial()" class="w-full bg-purple-600 text-white py-4 rounded-2xl font-bold text-[15px] shadow-xl active:scale-95 transition uppercase tracking-widest text-center mt-4 flex justify-center items-center gap-2"><i class="fa-solid fa-file-pdf"></i> Generar PDF Cotización</button>
+            <button id="btn-generar-cot-comercial" onclick="generarPDFCotizacionComercial()" class="w-full bg-purple-600 text-white py-5 rounded-2xl font-bold text-[16px] shadow-xl active:scale-95 transition uppercase tracking-widest text-center mt-4"><i class="fa-solid fa-file-pdf"></i> Generar PDF Cotización Comercial</button>
             
         </div>
     </div>
