@@ -245,26 +245,28 @@
             <div class="bg-gray-50 p-5 rounded-3xl border border-gray-200 shadow-sm relative">
                 <label class="font-bold text-azul uppercase text-[10px] tracking-widest px-1"><i class="fa-solid fa-boxes-stacked"></i> Repuestos o Ítems a Cotizar</label>
                 
-                <div class="flex flex-col gap-2 mt-2">
+                <div class="flex flex-col gap-2 mt-3">
                     <div class="flex gap-2">
-                        <input type="text" id="cot-codigo-repuesto" onkeyup="buscarProductoCotizacion(this.value, 'codigo')" placeholder="CÓDIGO (0=Manual)" class="w-1/3 p-3 rounded-xl border text-[11px] font-bold text-gray-900 bg-white uppercase" autocomplete="off">
+                        <input type="text" id="cot-codigo-repuesto" onkeyup="buscarProductoCotizacion(this.value, 'codigo')" placeholder="CÓD(0=Man)" class="w-1/3 p-3 rounded-xl border text-[11px] font-bold text-gray-900 bg-white uppercase" autocomplete="off">
                         <div class="flex-1 relative">
                             <input type="text" id="cot-buscador-repuesto" onkeyup="buscarProductoCotizacion(this.value, 'desc')" placeholder="Buscar por descripción..." class="w-full p-3 rounded-xl border text-[12px] text-gray-900 bg-white" autocomplete="off">
                             <ul id="cot-sugerencias-producto" class="autocomplete-dropdown absolute w-full bg-white border hidden mt-1 left-0 z-50 shadow-xl"></ul>
                         </div>
                     </div>
                     
-                    <div class="grid grid-cols-3 gap-2 items-end">
-                        <div>
-                            <label class="text-[9px] font-bold text-gray-400 uppercase ml-1">Cant.</label>
+                    <div class="flex items-end gap-2 w-full mt-1">
+                        <div class="w-1/4">
+                            <label class="text-[9px] font-bold text-gray-400 uppercase ml-1 block mb-1">Cant</label>
                             <input type="number" id="cot-cantidad-repuesto" value="1" min="1" class="w-full p-3 rounded-xl border text-center font-bold text-gray-900 bg-white">
                         </div>
-                        <div class="col-span-2">
-                            <label class="text-[9px] font-bold text-gray-400 uppercase ml-1">Precio Unitario</label>
-                            <div class="flex gap-2">
-                                <input type="number" id="cot-precio-repuesto" placeholder="Precio $" class="flex-1 p-3 rounded-xl border text-center font-bold text-gray-900 bg-white">
-                                <button onclick="agregarItemCotizacionComercial()" class="bg-azul text-white px-4 py-3 rounded-xl shadow-md active:scale-90 transition font-bold"><i class="fa-solid fa-plus text-white"></i></button>
-                            </div>
+                        <div class="w-2/4">
+                            <label class="text-[9px] font-bold text-gray-400 uppercase ml-1 block mb-1">Precio $</label>
+                            <input type="number" id="cot-precio-repuesto" placeholder="Valor" class="w-full p-3 rounded-xl border text-center font-bold text-gray-900 bg-white">
+                        </div>
+                        <div class="w-1/4">
+                            <button onclick="agregarItemCotizacionComercial()" class="w-full bg-azul text-white p-3 rounded-xl shadow-md active:scale-90 transition font-black h-[48px] flex items-center justify-center text-sm">
+                                ADD
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -666,84 +668,32 @@
 
         // 🔍 AUTOCOMPLETADO DE CLIENTE — VERSIÓN CORREGIDA
 function buscarClienteCotizacion(t) {
-    const ul = document.getElementById('cot-sugerencias-cliente'); 
-    if (!ul) return;
-    ul.innerHTML = ''; 
-    
-    if(t.length < 2) { 
-        ul.classList.add('hidden'); 
-        return; 
-    }
-    
-    // 🔴 FUENTE UNIFICADA: HOJA PRINCIPAL + CLIENTES DESCARGADOS + LOCALES
-    const todosClientes = [];
-    
-    // Desde hoja principal (todos los clientes que han ingresado)
-    dbFull.forEach(item => {
-        const nombre = gV(item, 'NOMBRE') || gV(item, 'CLIENTE');
-        if (nombre) {
-            todosClientes.push({
-                NOMBRE: nombre,
-                RUT: gV(item, 'RUT'),
-                WHATSAPP: gV(item, 'WHATSAPP') || gV(item, 'CELULAR') || gV(item, 'TELEFONO'),
-                CORREO: gV(item, 'CORREO') || gV(item, 'EMAIL'),
-                DIRECCION: gV(item, 'DIRECCION') || gV(item, 'DOMICILIO'),
-                COMUNA: gV(item, 'COMUNA')
+            const ul = document.getElementById('cot-sugerencias-cliente'); 
+            if (!ul) return;
+            ul.innerHTML = ''; 
+            if(t.length < 2) { ul.classList.add('hidden'); return; }
+            
+            const fil = clientesLocales.filter(c => (c.NOMBRE || "").toString().toLowerCase().includes(t.toLowerCase()));
+            
+            if(fil.length === 0) { ul.classList.add('hidden'); return; }
+            
+            ul.classList.remove('hidden'); 
+            fil.forEach(c => {
+                const li = document.createElement('li'); 
+                li.className = "p-3 border-b font-bold text-gray-900 cursor-pointer hover:bg-purple-100 text-xs"; 
+                li.innerText = `${c.NOMBRE} ${c.RUT ? '(' + c.RUT + ')' : ''}`;
+                li.onclick = () => { 
+                    document.getElementById('cot-nombre').value = c.NOMBRE || ''; 
+                    document.getElementById('cot-rut').value = c.RUT || ''; 
+                    document.getElementById('cot-whatsapp').value = c.WHATSAPP || ''; 
+                    document.getElementById('cot-correo').value = c.CORREO || ''; 
+                    document.getElementById('cot-direccion').value = c.DIRECCION || ''; 
+                    if (document.getElementById('cot-comuna')) document.getElementById('cot-comuna').value = c.COMUNA || '';
+                    ul.classList.add('hidden'); 
+                };
+                ul.appendChild(li);
             });
         }
-    });
-    
-    // Desde pestaña Clientes (descargada)
-    clientesLocales.forEach(c => {
-        const existe = todosClientes.find(x => 
-            x.NOMBRE === c.NOMBRE && x.RUT === c.RUT
-        );
-        if (!existe) todosClientes.push(c);
-    });
-    
-    // Filtrar por texto ingresado
-    const fil = todosClientes.filter(c => 
-        (c.NOMBRE || "").toString().toLowerCase().includes(t.toLowerCase())
-    );
-    
-    if(fil.length === 0) { 
-        ul.classList.add('hidden'); 
-        return; 
-    }
-    
-    ul.classList.remove('hidden'); 
-    
-    // Eliminar duplicados por NOMBRE + RUT
-    const unicos = [];
-    const vistos = new Set();
-    
-    fil.forEach(c => {
-        const clave = `${c.NOMBRE}|${c.RUT}`;
-        if (!vistos.has(clave)) {
-            vistos.add(clave);
-            unicos.push(c);
-        }
-    });
-    
-    // Mostrar resultados
-    unicos.forEach(c => {
-        const li = document.createElement('li'); 
-        li.className = "p-3 border-b font-bold text-gray-900 cursor-pointer hover:bg-purple-100 text-xs"; 
-        li.innerText = `${c.NOMBRE} ${c.RUT ? '(' + c.RUT + ')' : ''}`;
-        li.onclick = () => { 
-            document.getElementById('cot-nombre').value = c.NOMBRE || ''; 
-            document.getElementById('cot-rut').value = c.RUT || ''; 
-            document.getElementById('cot-whatsapp').value = c.WHATSAPP || ''; 
-            document.getElementById('cot-correo').value = c.CORREO || ''; 
-            document.getElementById('cot-direccion').value = c.DIRECCION || ''; 
-            if (document.getElementById('cot-comuna')) {
-                document.getElementById('cot-comuna').value = c.COMUNA || '';
-            }
-            ul.classList.add('hidden'); 
-        };
-        ul.appendChild(li);
-    });
-}
 
 
         function agregarItemCotizacionComercial() {
@@ -1244,28 +1194,24 @@ function buscarClienteCotizacion(t) {
         async function sincronizarBaseAlInicio(forzarEspera = false) {
             const cache = localStorage.getItem('wm_db_cache');
             if (cache && cache !== "undefined" && cache !== "null") {
-                try { 
-                    const datosCache = JSON.parse(cache); 
-                    if (Array.isArray(datosCache)) {
-                        dbFull = datosCache;
-                    } else {
-                        localStorage.removeItem('wm_db_cache');
-                    }
-                } catch(e) {
-                    localStorage.removeItem('wm_db_cache');
-                }
+                try { dbFull = JSON.parse(cache); } catch(e) {}
             }
 
             const peticionNube = fetch(WEB_APP_URL + "?t=" + new Date().getTime())
                 .then(res => res.json())
                 .then(data => {
-                    if (Array.isArray(data)) {
-                        dbFull = data;
+                    if (data.ots) {
+                        dbFull = data.ots;
+                        clientesLocales = data.clientes || [];
+                        productosLocales = data.productos || [];
+                        
                         localStorage.setItem('wm_db_cache', JSON.stringify(dbFull));
+                        localStorage.setItem('wm_clientes_locales', JSON.stringify(clientesLocales));
+                        localStorage.setItem('wm_productos_locales', JSON.stringify(productosLocales));
                     }
-                }).catch(e => console.log("Modo sin conexión o red lenta."));
+                }).catch(e => console.log("Modo sin conexión."));
 
-            if (forzarEspera || dbFull.length === 0) {
+            if (forzarEspera || dbFull.length === 0 || clientesLocales.length === 0) {
                 await peticionNube;
             }
         }
@@ -1982,51 +1928,18 @@ function buscarClienteCotizacion(t) {
             }
         }
 
-        // =========================================================================
-        // 🚀 INICIO: BÚSQUEDA, AUTOCOMPLETADO Y BASES DE DATOS
-        // =========================================================================
+        // AUTOCOMPLETADO ESTRICTO: SOLO HOJA CLIENTES
         function buscarCliente(t) {
             const ul = document.getElementById('sugerencias-cliente'); 
             ul.innerHTML = ''; 
+            if(t.length < 2) { ul.classList.add('hidden'); return; }
             
-            if(t.length < 2) { 
-                ul.classList.add('hidden'); 
-                return; 
-            }
+            const fil = clientesLocales.filter(c => (c.NOMBRE || "").toString().toLowerCase().includes(t.toLowerCase()));
             
-            const fil = [...dbFull, ...clientesLocales].filter(c => (gV(c, 'NOMBRE') || "").toString().toLowerCase().includes(t.toLowerCase()));
-            
-            if(fil.length === 0) { 
-                ul.classList.add('hidden'); 
-                return; 
-            }
+            if(fil.length === 0) { ul.classList.add('hidden'); return; }
             
             ul.classList.remove('hidden'); 
-            const unicos = [];
-            const filRecientes = [...fil].reverse();
-            
-            filRecientes.forEach(c => { 
-                let existente = unicos.find(u => gV(u, 'NOMBRE') === gV(c, 'NOMBRE'));
-                
-                if(!existente) {
-                    unicos.push({
-                        NOMBRE: gV(c, 'NOMBRE'),
-                        RUT: gV(c, 'RUT'),
-                        WHATSAPP: gV(c, 'WHATSAPP') || gV(c, 'CELULAR') || gV(c, 'TELEFONO'),
-                        DIRECCION: gV(c, 'DIRECCION') || gV(c, 'DOMICILIO'),
-                        COMUNA: gV(c, 'COMUNA'),
-                        CORREO: gV(c, 'CORREO') || gV(c, 'EMAIL')
-                    }); 
-                } else {
-                    if (!existente.WHATSAPP) existente.WHATSAPP = gV(c, 'WHATSAPP') || gV(c, 'CELULAR') || gV(c, 'TELEFONO');
-                    if (!existente.DIRECCION) existente.DIRECCION = gV(c, 'DIRECCION') || gV(c, 'DOMICILIO');
-                    if (!existente.COMUNA) existente.COMUNA = gV(c, 'COMUNA');
-                    if (!existente.CORREO) existente.CORREO = gV(c, 'CORREO') || gV(c, 'EMAIL');
-                    if (!existente.RUT) existente.RUT = gV(c, 'RUT');
-                }
-            });
-            
-            unicos.forEach(c => {
+            fil.forEach(c => {
                 const li = document.createElement('li'); 
                 li.className = "p-4 border-b font-bold text-gray-900 cursor-pointer hover:bg-blue-50"; 
                 li.innerText = `${c.NOMBRE} ${c.RUT ? '(' + c.RUT + ')' : ''}`;
