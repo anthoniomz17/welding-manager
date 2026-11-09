@@ -598,7 +598,7 @@
     </div>
 
     <script>
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzAK1Bo1AQBepchBLCWZ5zEISoSmTCBfdmyH8xMkVUe6yuVr8c4Eh0FlTCemKRdMNaC/exec"; 
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwDdAnMqWF0lEFDEIKuEpnaOtiIITOsI7UcGotco8Fcc18bseFc8F175WNnpjc5HtwW/exec"; 
         
         let dbFull = [];
         let clientesLocales = [];
@@ -622,17 +622,21 @@
             if (rep && rep !== "undefined" && rep !== "null") repuestosDB = JSON.parse(rep);
         } catch(e) { localStorage.removeItem('wm_repuestos'); }
 
-        window.onload = () => {
+               window.onload = () => {
     const iaK = localStorage.getItem('wm_ia_key');
     if(iaK) {
         document.getElementById('ia-key-input').value = iaK;
     }
-    cargarImagenesVisuales(); 
+    cargarImagenesVisuales();
     sincronizarBaseAlInicio();
     
     // ✅ FORZAR CARGA DE CLIENTES ANTES DE TODO
     descargarBasesSecundariasSilencioso();
+
+    // NUEVO: baja logo, banner e imagen de inicio desde la nube
+    sincronizarAssetsNube();
 };
+
 
         function limpiarMotorApp() {
             if(confirm("¿Seguro que deseas destrabar el motor? Esto resolverá cualquier problema de lentitud o bloqueo.")) {
@@ -734,11 +738,13 @@ function buscarClienteCotizacion(t) {
             `).join('');
         }
 
-        async function generarPDFCotizacionComercial() {
+               async function generarPDFCotizacionComercial() {
             const nombre = document.getElementById('cot-nombre').value.trim();
             if(!nombre || cotComercialItems.length === 0) {
                 return alert("⚠️ Ingrese el nombre del cliente y al menos un ítem a cotizar.");
             }
+
+            await sincronizarAssetsNube();   // 👈 NUEVO
 
             const rut = document.getElementById('cot-rut').value.trim() || "No registrado";
             const whatsapp = document.getElementById('cot-whatsapp').value.trim() || "No registrado";
@@ -1112,6 +1118,72 @@ function buscarClienteCotizacion(t) {
         // =========================================================================
         // 🚀 INICIO: SISTEMA TRIPLE IDENTIDAD CORPORATIVA (IMÁGENES)
         // =========================================================================
+        // Qué nombre de nube corresponde a cada clave local
+const ASSET_MAP = {
+  'wm_logo': 'LOGO',
+  'wm_banner': 'BANNER',
+  'wm_main_img': 'MAINIMG'
+};
+
+// Sube la imagen a la nube además de guardarla en este equipo
+async function subirAssetNube(key, dataUrl) {
+  const asset = ASSET_MAP[key];
+  if (!asset || !dataUrl) return;
+  const base64 = dataUrl.split(',')[1] || '';
+  try {
+    await fetch(WEB_APP_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify({ action: "save_asset", asset: asset, base64: base64 })
+    });
+  } catch (e) { console.log("No se pudo subir la imagen a la nube."); }
+}
+
+async function eliminarAssetNube(key) {
+  const asset = ASSET_MAP[key];
+  if (!asset) return;
+  try {
+    await fetch(WEB_APP_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify({ action: "delete_asset", asset: asset })
+    });
+  } catch (e) {}
+}
+
+// Descarga las imágenes fijas desde la nube; si este equipo ya tiene una pero la nube está vacía, la sube
+async function sincronizarAssetsNube() {
+  const lista = [
+    { key: 'wm_logo', asset: 'LOGO' },
+    { key: 'wm_banner', asset: 'BANNER' },
+    { key: 'wm_main_img', asset: 'MAINIMG' }
+  ];
+
+  for (const item of lista) {
+    try {
+      const resp = await fetch(WEB_APP_URL + "?asset=" + item.asset + "&t=" + new Date().getTime());
+      const blob = await resp.blob();
+
+      if (blob && blob.size >= 600) {
+        const dataUrl = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.readAsDataURL(blob);
+        });
+        localStorage.setItem(item.key, dataUrl);
+      } else {
+        const local = localStorage.getItem(item.key);
+        if (local) subirAssetNube(item.key, local);
+      }
+    } catch (e) {
+      const local = localStorage.getItem(item.key);
+      if (local) subirAssetNube(item.key, local);
+    }
+  }
+  cargarImagenesVisuales();
+}
+
+        
         function guardarImagen(inputId, storageKey) {
             const file = document.getElementById(inputId).files[0];
             if (!file) return alert("⚠️ Selecciona una imagen.");
@@ -1144,18 +1216,21 @@ function buscarClienteCotizacion(t) {
                     try {
                         localStorage.setItem(storageKey, dataUrl);
                         cargarImagenesVisuales();
-                        alert("✅ Imagen guardada correctamente.");
+                        subirAssetNube(storageKey, dataUrl);
+                        alert("✅ Imagen guardada en este equipo y en la nube (visible en celular y PC).");
                     } catch (e) {
                         alert("❌ Error: La memoria del navegador está llena. Usa el Botón de Emergencia en Ajustes.");
                     }
+
                 };
             };
         }
 
         function borrarImagen(storageKey) {
             localStorage.removeItem(storageKey);
+            eliminarAssetNube(storageKey);
             cargarImagenesVisuales();
-            alert("🗑️ Imagen eliminada.");
+            alert("🗑️ Imagen eliminada de este equipo y de la nube.");
         }
 
         function cargarImagenesVisuales() {
@@ -1439,9 +1514,12 @@ function buscarClienteCotizacion(t) {
         // =========================================================================
         // 🚀 INICIO: MOTOR PDF (GENERACIÓN DE DOCUMENTOS)
         // =========================================================================
-        async function generarPDFGlobal(tipo, ot, datos) {
+         async function generarPDFGlobal(tipo, ot, datos) {
+            await sincronizarAssetsNube();   // 👈 NUEVO
+
             const { jsPDF } = window.jspdf; 
             const doc = new jsPDF(); 
+
             
             const r = 0; 
             const g = 112; 
