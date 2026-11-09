@@ -621,14 +621,16 @@
         } catch(e) { localStorage.removeItem('wm_repuestos'); }
 
         window.onload = () => {
-            const iaK = localStorage.getItem('wm_ia_key');
-            if(iaK) {
-                document.getElementById('ia-key-input').value = iaK;
-            }
-            cargarImagenesVisuales(); 
-            sincronizarBaseAlInicio();
-            descargarBasesSecundariasSilencioso();
-        };
+    const iaK = localStorage.getItem('wm_ia_key');
+    if(iaK) {
+        document.getElementById('ia-key-input').value = iaK;
+    }
+    cargarImagenesVisuales(); 
+    sincronizarBaseAlInicio();
+    
+    // ✅ FORZAR CARGA DE CLIENTES ANTES DE TODO
+    descargarBasesSecundariasSilencioso();
+};
 
         function limpiarMotorApp() {
             if(confirm("¿Seguro que deseas destrabar el motor? Esto resolverá cualquier problema de lentitud o bloqueo.")) {
@@ -662,67 +664,87 @@
             showScreen('cotizacion-comercial-screen');
         }
 
-        // 🔍 AUTOCOMPLETADO DE CLIENTE DESDE LA PESTAÑA 'CLIENTES' (A=RUT, B=NOMBRE, C=WHATSAPP, D=CORREO, E=DIRECCION, F=COMUNA)
-        function buscarClienteCotizacion(t) {
-            const ul = document.getElementById('cot-sugerencias-cliente'); 
-            if (!ul) return;
-            ul.innerHTML = ''; 
-            
-            if(t.length < 2) { 
-                ul.classList.add('hidden'); 
-                return; 
-            }
-            
-            const fil = [...dbFull, ...clientesLocales].filter(c => (gV(c, 'NOMBRE') || "").toString().toLowerCase().includes(t.toLowerCase()));
-            
-            if(fil.length === 0) { 
-                ul.classList.add('hidden'); 
-                return; 
-            }
-            
-            ul.classList.remove('hidden'); 
-            const unicos = [];
-            const filRecientes = [...fil].reverse();
-            
-            filRecientes.forEach(c => { 
-                let existente = unicos.find(u => gV(u, 'NOMBRE') === gV(c, 'NOMBRE'));
-                
-                if(!existente) {
-                    unicos.push({
-                        NOMBRE: gV(c, 'NOMBRE'),
-                        RUT: gV(c, 'RUT'),
-                        WHATSAPP: gV(c, 'WHATSAPP') || gV(c, 'CELULAR') || gV(c, 'TELEFONO'),
-                        CORREO: gV(c, 'CORREO') || gV(c, 'EMAIL'),
-                        DIRECCION: gV(c, 'DIRECCION') || gV(c, 'DOMICILIO'),
-                        COMUNA: gV(c, 'COMUNA')
-                    }); 
-                } else {
-                    if (!existente.WHATSAPP) existente.WHATSAPP = gV(c, 'WHATSAPP') || gV(c, 'CELULAR') || gV(c, 'TELEFONO');
-                    if (!existente.DIRECCION) existente.DIRECCION = gV(c, 'DIRECCION') || gV(c, 'DOMICILIO');
-                    if (!existente.COMUNA) existente.COMUNA = gV(c, 'COMUNA');
-                    if (!existente.CORREO) existente.CORREO = gV(c, 'CORREO') || gV(c, 'EMAIL');
-                    if (!existente.RUT) existente.RUT = gV(c, 'RUT');
-                }
-            });
-            
-            unicos.forEach(c => {
-                const li = document.createElement('li'); 
-                li.className = "p-3 border-b font-bold text-gray-900 cursor-pointer hover:bg-purple-100 text-xs"; 
-                li.innerText = `${c.NOMBRE} ${c.RUT ? '(' + c.RUT + ')' : ''}`;
-                li.onclick = () => { 
-                    document.getElementById('cot-nombre').value = c.NOMBRE || ''; 
-                    document.getElementById('cot-rut').value = c.RUT || ''; 
-                    document.getElementById('cot-whatsapp').value = c.WHATSAPP || ''; 
-                    document.getElementById('cot-correo').value = c.CORREO || ''; 
-                    document.getElementById('cot-direccion').value = c.DIRECCION || ''; 
-                    if (document.getElementById('cot-comuna')) {
-                        document.getElementById('cot-comuna').value = c.COMUNA || '';
-                    }
-                    ul.classList.add('hidden'); 
-                };
-                ul.appendChild(li);
+        // 🔍 AUTOCOMPLETADO DE CLIENTE — VERSIÓN CORREGIDA
+function buscarClienteCotizacion(t) {
+    const ul = document.getElementById('cot-sugerencias-cliente'); 
+    if (!ul) return;
+    ul.innerHTML = ''; 
+    
+    if(t.length < 2) { 
+        ul.classList.add('hidden'); 
+        return; 
+    }
+    
+    // 🔴 FUENTE UNIFICADA: HOJA PRINCIPAL + CLIENTES DESCARGADOS + LOCALES
+    const todosClientes = [];
+    
+    // Desde hoja principal (todos los clientes que han ingresado)
+    dbFull.forEach(item => {
+        const nombre = gV(item, 'NOMBRE') || gV(item, 'CLIENTE');
+        if (nombre) {
+            todosClientes.push({
+                NOMBRE: nombre,
+                RUT: gV(item, 'RUT'),
+                WHATSAPP: gV(item, 'WHATSAPP') || gV(item, 'CELULAR') || gV(item, 'TELEFONO'),
+                CORREO: gV(item, 'CORREO') || gV(item, 'EMAIL'),
+                DIRECCION: gV(item, 'DIRECCION') || gV(item, 'DOMICILIO'),
+                COMUNA: gV(item, 'COMUNA')
             });
         }
+    });
+    
+    // Desde pestaña Clientes (descargada)
+    clientesLocales.forEach(c => {
+        const existe = todosClientes.find(x => 
+            x.NOMBRE === c.NOMBRE && x.RUT === c.RUT
+        );
+        if (!existe) todosClientes.push(c);
+    });
+    
+    // Filtrar por texto ingresado
+    const fil = todosClientes.filter(c => 
+        (c.NOMBRE || "").toString().toLowerCase().includes(t.toLowerCase())
+    );
+    
+    if(fil.length === 0) { 
+        ul.classList.add('hidden'); 
+        return; 
+    }
+    
+    ul.classList.remove('hidden'); 
+    
+    // Eliminar duplicados por NOMBRE + RUT
+    const unicos = [];
+    const vistos = new Set();
+    
+    fil.forEach(c => {
+        const clave = `${c.NOMBRE}|${c.RUT}`;
+        if (!vistos.has(clave)) {
+            vistos.add(clave);
+            unicos.push(c);
+        }
+    });
+    
+    // Mostrar resultados
+    unicos.forEach(c => {
+        const li = document.createElement('li'); 
+        li.className = "p-3 border-b font-bold text-gray-900 cursor-pointer hover:bg-purple-100 text-xs"; 
+        li.innerText = `${c.NOMBRE} ${c.RUT ? '(' + c.RUT + ')' : ''}`;
+        li.onclick = () => { 
+            document.getElementById('cot-nombre').value = c.NOMBRE || ''; 
+            document.getElementById('cot-rut').value = c.RUT || ''; 
+            document.getElementById('cot-whatsapp').value = c.WHATSAPP || ''; 
+            document.getElementById('cot-correo').value = c.CORREO || ''; 
+            document.getElementById('cot-direccion').value = c.DIRECCION || ''; 
+            if (document.getElementById('cot-comuna')) {
+                document.getElementById('cot-comuna').value = c.COMUNA || '';
+            }
+            ul.classList.add('hidden'); 
+        };
+        ul.appendChild(li);
+    });
+}
+
 
         function agregarItemCotizacionComercial() {
             const desc = document.getElementById('cot-buscador-repuesto').value.trim();
