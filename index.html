@@ -673,12 +673,13 @@ function buscarClienteCotizacion(t) {
             ul.innerHTML = ''; 
             if(t.length < 2) { ul.classList.add('hidden'); return; }
             
+            // ELIMINAMOS dbFull DE LA BÚSQUEDA.
             const fil = clientesLocales.filter(c => (c.NOMBRE || "").toString().toLowerCase().includes(t.toLowerCase()));
             
             if(fil.length === 0) { ul.classList.add('hidden'); return; }
             
             ul.classList.remove('hidden'); 
-            fil.forEach(c => {
+            fil.slice(0, 6).forEach(c => {
                 const li = document.createElement('li'); 
                 li.className = "p-3 border-b font-bold text-gray-900 cursor-pointer hover:bg-purple-100 text-xs"; 
                 li.innerText = `${c.NOMBRE} ${c.RUT ? '(' + c.RUT + ')' : ''}`;
@@ -1194,26 +1195,28 @@ function buscarClienteCotizacion(t) {
         async function sincronizarBaseAlInicio(forzarEspera = false) {
             const cache = localStorage.getItem('wm_db_cache');
             if (cache && cache !== "undefined" && cache !== "null") {
-                try { dbFull = JSON.parse(cache); } catch(e) {}
+                try { 
+                    const parsed = JSON.parse(cache);
+                    if(parsed.ots) {
+                        dbFull = parsed.ots;
+                        clientesLocales = parsed.clientes || [];
+                        productosLocales = parsed.productos || [];
+                    }
+                } catch(e) {}
             }
 
             const peticionNube = fetch(WEB_APP_URL + "?t=" + new Date().getTime())
                 .then(res => res.json())
                 .then(data => {
-                    if (data.ots) {
+                    if (data.ots) { 
                         dbFull = data.ots;
-                        clientesLocales = data.clientes || [];
-                        productosLocales = data.productos || [];
-                        
-                        localStorage.setItem('wm_db_cache', JSON.stringify(dbFull));
-                        localStorage.setItem('wm_clientes_locales', JSON.stringify(clientesLocales));
-                        localStorage.setItem('wm_productos_locales', JSON.stringify(productosLocales));
+                        clientesLocales = data.clientes;
+                        productosLocales = data.productos;
+                        localStorage.setItem('wm_db_cache', JSON.stringify(data));
                     }
                 }).catch(e => console.log("Modo sin conexión."));
 
-            if (forzarEspera || dbFull.length === 0 || clientesLocales.length === 0) {
-                await peticionNube;
-            }
+            if (forzarEspera || dbFull.length === 0) await peticionNube;
         }
 
         function showScreen(id) { 
@@ -1934,12 +1937,13 @@ function buscarClienteCotizacion(t) {
             ul.innerHTML = ''; 
             if(t.length < 2) { ul.classList.add('hidden'); return; }
             
+            // ELIMINAMOS dbFull DE LA BÚSQUEDA. SOLO BUSCA EN clientesLocales.
             const fil = clientesLocales.filter(c => (c.NOMBRE || "").toString().toLowerCase().includes(t.toLowerCase()));
             
             if(fil.length === 0) { ul.classList.add('hidden'); return; }
             
             ul.classList.remove('hidden'); 
-            fil.forEach(c => {
+            fil.slice(0, 6).forEach(c => { 
                 const li = document.createElement('li'); 
                 li.className = "p-4 border-b font-bold text-gray-900 cursor-pointer hover:bg-blue-50"; 
                 li.innerText = `${c.NOMBRE} ${c.RUT ? '(' + c.RUT + ')' : ''}`;
@@ -2042,49 +2046,35 @@ function buscarClienteCotizacion(t) {
             const inputCodigo = document.getElementById('cot-codigo-repuesto');
 
             ul.innerHTML = '';
-            
-            // Lógica de Código 0 (Libre manual)
             if(tipo === 'codigo' && t.trim() === '0') {
-                inputDesc.value = '';
-                inputPrecio.value = '';
-                inputDesc.focus();
-                ul.classList.add('hidden');
-                return;
+                inputDesc.value = ''; inputPrecio.value = ''; inputDesc.focus();
+                ul.classList.add('hidden'); return;
             }
-
-            if(t.length < 2 && tipo === 'desc') { 
-                ul.classList.add('hidden'); 
-                return; 
-            }
+            if(t.length < 2 && tipo === 'desc') { ul.classList.add('hidden'); return; }
 
             let fil = [];
             if (tipo === 'codigo') {
                 fil = productosLocales.filter(p => (p.CODIGO || "").toString().toLowerCase().includes(t.toLowerCase()));
-                // Autocompletado inmediato si el código coincide exactamente
                 if(fil.length === 1 && fil[0].CODIGO.toString().toLowerCase() === t.toLowerCase()) {
                     inputDesc.value = fil[0].DESCRIPCION;
                     inputPrecio.value = limpiarPrecioCLP(fil[0].VALOR);
-                    ul.classList.add('hidden');
-                    return;
+                    ul.classList.add('hidden'); return;
                 }
             } else {
                 fil = productosLocales.filter(p => (p.DESCRIPCION || "").toString().toLowerCase().includes(t.toLowerCase()));
             }
 
-            if(fil.length === 0) { 
-                ul.classList.add('hidden'); 
-                return; 
-            }
+            if(fil.length === 0) { ul.classList.add('hidden'); return; }
             
             ul.classList.remove('hidden'); 
-            
-            fil.forEach(p => {
+            fil.slice(0, 8).forEach(p => {
                 const li = document.createElement('li'); 
                 li.className = "p-3 border-b text-xs font-bold text-gray-900 cursor-pointer hover:bg-teal-50 flex justify-between"; 
-                li.innerHTML = `<span>[${p.CODIGO}] ${p.DESCRIPCION}</span> <span class="text-azul font-black">$${limpiarPrecioCLP(p.VALOR).toLocaleString('es-CL')}</span>`;
+                // Ahora lee correctamente el código y la descripción
+                li.innerHTML = `<span>[${p.CODIGO || 'S/C'}] ${p.DESCRIPCION || 'Sin nombre'}</span> <span class="text-azul font-black">$${limpiarPrecioCLP(p.VALOR).toLocaleString('es-CL')}</span>`;
                 li.onclick = () => { 
-                    inputCodigo.value = p.CODIGO;
-                    inputDesc.value = p.DESCRIPCION; 
+                    inputCodigo.value = p.CODIGO || '';
+                    inputDesc.value = p.DESCRIPCION || ''; 
                     inputPrecio.value = limpiarPrecioCLP(p.VALOR);
                     ul.classList.add('hidden'); 
                 };
@@ -2158,25 +2148,7 @@ function buscarClienteCotizacion(t) {
         }
 
         // Esta función se ejecuta silenciosamente de fondo para descargar los Excel actualizados
-        function descargarBasesSecundariasSilencioso() {
-            fetch(WEB_APP_URL + "?action=get_clientes")
-                .then(r => r.json())
-                .then(c => { 
-                    if(c && c.length > 0) {
-                        clientesLocales = c; 
-                        localStorage.setItem('wm_clientes_locales', JSON.stringify(c)); 
-                    }
-                }).catch(e => console.log("Caché de clientes en uso."));
-
-            fetch(WEB_APP_URL + "?action=get_productos")
-                .then(r => r.json())
-                .then(p => { 
-                    if(p && p.length > 0) {
-                        productosLocales = p; 
-                        localStorage.setItem('wm_productos_locales', JSON.stringify(p)); 
-                    }
-                }).catch(e => console.log("Caché de productos en uso."));
-        }
+        function descargarBasesSecundariasSilencioso() { return; }
     </script>
 </body>
 </html>
